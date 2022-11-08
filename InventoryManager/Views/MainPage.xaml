@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
     mc:Ignorable="d"
+    DataContext="{RelativeSource Mode=Self}"
+    Loaded="Page_Loaded"
     d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -25,6 +27,14 @@
             The Mahapps Gray10 color represents where you should place your content.
             Place your content here.
             -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding Source=ProductList,Mode=TwoWay}">
+                </DataGrid>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
