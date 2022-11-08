@@ -26,7 +26,14 @@
                 x:Name="ContentArea"
                 Grid.Row="1"
                 Margin="{StaticResource MediumLeftRightMargin}">
-
+                <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Style="{StaticResource SubtitleTextStyle}"
+                    Text="{x:Static properties:Resources.SettingsPageServerTitle}" />
+                <TextBox
+                    Text="{Binding ServerAddress, Mode=TwoWay}"
+                    Margin="{StaticResource XSmallTopMargin}"
+                    Style="{StaticResource MahApps.Styles.TextBox}" />
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"

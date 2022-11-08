@@ -19,6 +19,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private readonly IApplicationInfoService _applicationInfoService;
     private bool _isInitialized;
     private AppTheme _theme;
+    private string _serverAddress;
     private string _versionDescription;
 
     public AppTheme Theme
@@ -31,6 +32,12 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     {
         get { return _versionDescription; }
         set { Set(ref _versionDescription, value); }
+    }
+
+    public string ServerAddress
+    {
+        get { return _serverAddress; }
+        set { Set(ref _serverAddress ,value); }
     }
 
     public SettingsPage(IOptions<AppConfig> appConfig, IThemeSelectorService themeSelectorService, ISystemService systemService, IApplicationInfoService applicationInfoService)
