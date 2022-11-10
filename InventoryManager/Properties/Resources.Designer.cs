@@ -70,7 +70,7 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main.
+        ///   Looks up a localized string similar to Products.
         /// </summary>
         public static string MainPageTitle {
             get {
@@ -88,7 +88,7 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About this application.
+        ///   Looks up a localized string similar to This application is made by Zana Masoud to help make managing inventories easier.
         /// </summary>
         public static string SettingsPageAboutTitle {
             get {
@@ -187,7 +187,7 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main.
+        ///   Looks up a localized string similar to Product.
         /// </summary>
         public static string ShellMainPage {
             get {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +8,9 @@ using System.Windows.Input;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
+using Microsoft.Data.Sqlite;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 
 namespace InventoryManager.Views;
 
@@ -30,14 +34,21 @@ public partial class MainPage : Page, INotifyPropertyChanged
     {
         ProductList.Clear();
         foreach (var item in await ProductsORM.SelectAll())
-        {
             ProductList.Add(item);
-        }
     }
     async void AddProduct(Product value)
     {
-        await ProductsORM.Insert(value);
-        ProductList.Add(value);
+        if (ProductList.Contains(value))
+            return;
+        try
+        {
+            await ProductsORM.Insert(value);
+            ProductList.Add(value);
+        }
+        catch (SqliteException ex)
+        {
+            MessageBox.Show(ex.Message,"Database Error!",MessageBoxButton.OK,MessageBoxImage.Error);
+        }
     }
     bool canAdd()
     {
@@ -85,6 +96,50 @@ public partial class MainPage : Page, INotifyPropertyChanged
         {
             await ProductsORM.Delete(p);
             ProductList.Remove(p);
+        }
+    }
+
+    private async void OnImportClicked(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog();
+        dialog.DefaultExt = ".json"; // Default file extension
+        dialog.Filter = "Json files (*.json)|*.json"; // Filter files by extension
+        var result = dialog.ShowDialog();
+        if(result == true)
+        {
+            string filename = dialog.FileName;
+            string json = await File.ReadAllTextAsync(filename);
+            var obj = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);
+            foreach(Product product in obj)
+            {
+                if (!ProductList.Contains(product))
+                {
+                    try
+                    {
+                        await ProductsORM.Insert(product);
+                        ProductList.Add(product);
+                    }
+                    catch (SqliteException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Database Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+    }
+    private async void OnExportClicked(object sender, RoutedEventArgs e)
+    {
+        var dialog = new SaveFileDialog();
+        dialog.FileName = "InventoryProducts";
+        dialog.DefaultExt = ".json"; // Default file extension
+        dialog.Filter = "Json files (*.json)|*.json"; // Filter files by extension
+        var result = dialog.ShowDialog();
+        if (result == true)
+        {
+            string filename = dialog.FileName;
+
+            string stringJson = JsonConvert.SerializeObject(ProductList);
+            await File.WriteAllTextAsync(filename, stringJson);
         }
     }
 }

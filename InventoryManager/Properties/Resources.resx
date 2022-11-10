@@ -127,7 +127,7 @@
     <value>Settings page placeholder text.  Your app description goes here.</value>
   </data>
   <data name="SettingsPageAboutTitle" xml:space="preserve">
-    <value>About this application</value>
+    <value>This application is made by Zana Masoud to help make managing inventories easier</value>
   </data>
   <data name="SettingsPageChooseThemeText" xml:space="preserve">
     <value>Choose Theme</value>
@@ -148,10 +148,10 @@
     <value>Default</value>
   </data>
   <data name="ShellMainPage" xml:space="preserve">
-    <value>Main</value>
+    <value>Product</value>
   </data>
   <data name="MainPageTitle" xml:space="preserve">
-    <value>Main</value>
+    <value>Products</value>
   </data>
   <data name="ShellGoBackButton" xml:space="preserve">
     <value>Go back</value>
