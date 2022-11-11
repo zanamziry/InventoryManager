@@ -27,7 +27,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public override async Task Insert(LocalInventory param) {
-            string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ID)}, {nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}) values(@{nameof(LocalInventory.ID)}, @{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)});";
+            string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}) values(@{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)});";
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 

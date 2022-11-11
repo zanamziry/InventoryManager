@@ -27,10 +27,11 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private readonly IDBSetup _dBSetup;
     public event PropertyChangedEventHandler PropertyChanged;
     public Product SelectedProduct { get; set; }
-    public int System { get; set; } = 0;
+
     public int Outside { get; set; } = 0;
     public int GivenAway { get; set; } = 0;
-    public int Result => Real + Outside + GivenAway - System;
+    public int Sys { get; set; } = 0;
+    public int Result => Real + Outside + GivenAway - Sys;
     public int Real
     {
         get
