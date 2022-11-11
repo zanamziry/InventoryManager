@@ -16,7 +16,6 @@ namespace InventoryManager.Core.Services {
             $"{nameof(LocalInventory.Inventory)} INTEGER NOT NULL," +
             $"{nameof(LocalInventory.Open)} INTEGER NOT NULL," +
             $"{nameof(LocalInventory.ExpireDate)} TEXT," +
-            $"{nameof(LocalInventory.Note)} TEXT," +
             $"PRIMARY KEY({nameof(LocalInventory.ID)} AUTOINCREMENT)," +
             $"FOREIGN KEY({nameof(LocalInventory.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE);";
             _dataAccess.Execute(cmd);
@@ -28,7 +27,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public override async Task Insert(LocalInventory param) {
-            string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ID)}, {nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}, {nameof(LocalInventory.Note)}) values(@{nameof(LocalInventory.ID)}, @{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)}, @{nameof(LocalInventory.Note)});";
+            string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ID)}, {nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}) values(@{nameof(LocalInventory.ID)}, @{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)});";
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 

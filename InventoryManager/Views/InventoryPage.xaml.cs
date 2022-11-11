@@ -1,21 +1,19 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using InventoryManager.Contracts.Services;
+using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
-using InventoryManager.Models;
 using Microsoft.Data.Sqlite;
-using Microsoft.Win32;
-using Newtonsoft.Json;
 
 namespace InventoryManager.Views;
 
-public partial class InventoryPage : Page, INotifyPropertyChanged
+public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAware
 {
     public InventoryPage(IDBSetup dBSetup)
     {
@@ -23,40 +21,48 @@ public partial class InventoryPage : Page, INotifyPropertyChanged
         DataContext = this;
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
-        updateList();
     }
     
-    public event PropertyChangedEventHandler PropertyChanged;
-    public ObservableCollection<InventoryListItem> InventorySource { get; } = new ObservableCollection<InventoryListItem>();
-
+    private readonly LocalInventoryORM InventoryORM;
     private readonly IDBSetup _dBSetup;
-    public LocalInventoryORM InventoryORM { get; set; }
-    async void updateList()
+    public event PropertyChangedEventHandler PropertyChanged;
+    public Product SelectedProduct { get; set; }
+    public int System { get; set; } = 0;
+    public int Outside { get; set; } = 0;
+    public int GivenAway { get; set; } = 0;
+    public int Result => Real + Outside + GivenAway - System;
+    public int Real
     {
-        InventorySource.Clear();
-        foreach (var item in await InventoryORM.SelectAll())
-            InventorySource.Add(item);
+        get
+        {
+            int result = 0;
+            foreach (var i in InventoryList)
+            {
+                result += i.Open + i.Inventory;
+            }
+            return result;
+        }
     }
-    async void AddProduct(Product value)
+    public ObservableCollection<LocalInventory> InventoryList { get; set; } = new ObservableCollection<LocalInventory>();
+
+    async void AddInventory(LocalInventory value)
     {
-        if (InventorySource.Contains(value))
+        if (InventoryList.Contains(value))
             return;
         try
         {
             await InventoryORM.Insert(value);
-            InventorySource.Add(value);
+            InventoryList.Add(value);
         }
         catch (SqliteException ex)
         {
             MessageBox.Show(ex.Message,"Database Error!",MessageBoxButton.OK,MessageBoxImage.Error);
         }
     }
-    bool canAdd()
-    {
-        if (string.IsNullOrEmpty(ProductName.Text) || string.IsNullOrEmpty(ProductCode.Text) || string.IsNullOrEmpty(ProductPrice.Text))
-            return false;
-        return true;
-    }
+
+    bool CanAdd() =>
+        Regex.IsMatch(InventoryAmount.Text, "^[0-9]") && Regex.IsMatch(OpenAmount.Text, "^[0-9]");
+
     private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
     {
         if (Equals(storage, value))
@@ -70,12 +76,11 @@ public partial class InventoryPage : Page, INotifyPropertyChanged
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void OnAddButtonClicked(object sender, System.Windows.RoutedEventArgs e)
+    private void OnAddButtonClicked(object sender, RoutedEventArgs e)
     {
-        if (canAdd())
+        if (CanAdd())
         {
-            if (decimal.TryParse(ProductPrice.Text, out decimal price))
-                AddProduct(new Product { ID = ProductCode.Text, Name = ProductName.Text, Price = price });
+            AddInventory(new LocalInventory {ProductID = SelectedProduct.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = DateTime.Parse(ProductExpire.Text)});
         }
     }
     private async void OnKeyUp(object sender, KeyEventArgs e)
@@ -83,20 +88,34 @@ public partial class InventoryPage : Page, INotifyPropertyChanged
         switch (e.Key)
         {
             case Key.Delete:
-                if ((e.OriginalSource as FrameworkElement).DataContext is InventoryListItem p)
+                if ((e.OriginalSource as FrameworkElement).DataContext is LocalInventory p)
                 {
                     await InventoryORM.Delete(p);
-                    InventorySource.Remove(p);
+                    InventoryList.Remove(p);
                 }
                 break;
         }
     }
-    private async void OnRemoveButtonClicked(object sender, System.Windows.RoutedEventArgs e)
+    private async void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
-        if(GridOfProducts.SelectedItem is InventoryListItem p)
+        if(GridOfInventory.SelectedItem is LocalInventory p)
         {
             await InventoryORM.Delete(p);
-            InventorySource.Remove(p);
+            InventoryList.Remove(p);
         }
+    }
+
+    async void INavigationAware.OnNavigatedTo(object parameter)
+    {
+        if (parameter is Product p)
+            SelectedProduct = p;
+        InventoryList.Clear();
+        foreach (var item in await InventoryORM.SelectAll())
+            InventoryList.Add(item);
+    }
+
+    void INavigationAware.OnNavigatedFrom()
+    {
+        
     }
 }

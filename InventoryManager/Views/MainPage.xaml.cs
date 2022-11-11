@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using InventoryManager.Contracts.Services;
+using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using Microsoft.Data.Sqlite;
@@ -14,28 +15,23 @@ using Newtonsoft.Json;
 
 namespace InventoryManager.Views;
 
-public partial class MainPage : Page, INotifyPropertyChanged
+public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    public MainPage(IDBSetup dBSetup)
+    public MainPage(IDBSetup dBSetup,INavigationService navigationService)
     {
         InitializeComponent();
         DataContext = this;
+        _navigationService = navigationService;
         _dBSetup = dBSetup;
         ProductsORM = _dBSetup.GetTable<ProductsORM>();
-        updateList();
     }
     
-    public event PropertyChangedEventHandler PropertyChanged;
     public ObservableCollection<Product> ProductList { get; } = new ObservableCollection<Product>();
-
+    private readonly INavigationService _navigationService;
     private readonly IDBSetup _dBSetup;
-    public ProductsORM ProductsORM { get; set; }
-    async void updateList()
-    {
-        ProductList.Clear();
-        foreach (var item in await ProductsORM.SelectAll())
-            ProductList.Add(item);
-    }
+    public event PropertyChangedEventHandler PropertyChanged;
+    private ProductsORM ProductsORM { get; }
+
     async void AddProduct(Product value)
     {
         if (ProductList.Contains(value))
@@ -141,5 +137,24 @@ public partial class MainPage : Page, INotifyPropertyChanged
             string stringJson = JsonConvert.SerializeObject(ProductList);
             await File.WriteAllTextAsync(filename, stringJson);
         }
+    }
+
+    private void OnGridDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if(e.OriginalSource is FrameworkElement FE && FE.DataContext is Product SelectedProduct)
+        {
+            _navigationService.NavigateTo(typeof(InventoryPage), SelectedProduct);
+        }
+    }
+
+    async void INavigationAware.OnNavigatedTo(object parameter)
+    {
+        ProductList.Clear();
+        foreach (var item in await ProductsORM.SelectAll())
+            ProductList.Add(item);
+    }
+
+    void INavigationAware.OnNavigatedFrom()
+    {
     }
 }

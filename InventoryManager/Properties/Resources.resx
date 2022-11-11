@@ -165,4 +165,7 @@
   <data name="SettingsPageServerTitle" xml:space="preserve">
     <value>Server</value>
   </data>
+  <data name="InventoryPageTitle" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
 </root>

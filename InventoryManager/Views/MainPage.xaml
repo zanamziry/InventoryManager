@@ -43,7 +43,7 @@
                     <Button Content="Import JSON" VerticalAlignment="Stretch" Padding="20,0" Style="{StaticResource MahApps.Styles.Button}" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightGray" Click="OnImportClicked"/>
                     <Button Content="Export JSON" VerticalAlignment="Stretch" Padding="20,0" Style="{StaticResource MahApps.Styles.Button}" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightGray" Click="OnExportClicked"/>
                 </StackPanel>
-                <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding ProductList}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="True" KeyUp="OnKeyUp">
+                <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding ProductList}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="150"/>
                         <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>

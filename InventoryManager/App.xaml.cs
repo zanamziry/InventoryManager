@@ -74,7 +74,7 @@ public partial class App : Application
         services.AddTransient<IShellWindow, ShellWindow>();
 
         services.AddTransient<MainPage>();
-
+        services.AddTransient<InventoryPage>();
         services.AddTransient<SettingsPage>();
 
         // Configuration
