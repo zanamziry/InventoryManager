@@ -32,20 +32,28 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
+        GivenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
+        SentOutsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
+    private readonly GivenAwayORM GivenAwayORM;
+    private readonly SentOutsideORM SentOutsideORM;
+    private readonly SystemProductsORM SystemORM;
     private readonly SystemProductsORM SystemORM;
     private readonly IDBSetup _dBSetup;
     private readonly ISystemDataGather _dataGather;
     private int sysvalue;
+    private int real;
     private int outside;
     private int giveaway;
 
     public ObservableCollection<LocalInventory> InventoryList { get; } = new ObservableCollection<LocalInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
     public Product SelectedProduct { get; set; }
+    
     public int SysValue
     {
         get { return sysvalue; }
@@ -64,19 +72,34 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         set { Set(ref giveaway, value); }
     }
 
-    public int Result => Real + Outside + GiveAway - SysValue;
     public int Real
     {
-        get
+        get { return real; }
+        set 
         {
             int result = 0;
             foreach (var i in InventoryList)
             {
                 result += i.Open + i.Inventory;
             }
-            return result;
+            Set(ref real, result); 
         }
     }
+
+    async void updateValues()
+    {
+        SysValue = (await SystemORM.SelectProduct(SelectedProduct)).CloseBalance;
+        GiveAway = 0;
+        Outside = 0;
+        foreach (LocalInventory i in InventoryList)
+        {
+            GiveAway += await GivenAwayORM.SelectTotalAmount(i);
+            Outside += await SentOutsideORM.SelectTotalAmount(i);
+        }
+        Real = 0;
+    }
+
+    public int Result => Real + Outside + GiveAway - SysValue;
 
     async void AddInventory(LocalInventory value)
     {
@@ -86,6 +109,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         {
             await InventoryORM.Insert(value);
             InventoryList.Add(value);
+            updateValues();
         }
         catch (SqliteException ex)
         {
@@ -113,29 +137,38 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
         if (CanAdd())
         {
-            AddInventory(new LocalInventory {ProductID = SelectedProduct.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = DateTime.Parse(ProductExpire.Text)});
+            DateTime.TryParse(ProductExpire.Text, out DateTime r);
+            AddInventory(new LocalInventory {ProductID = SelectedProduct.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r});
+            updateValues();
         }
     }
-    private async void OnKeyUp(object sender, KeyEventArgs e)
+
+    private void OnKeyUp(object sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
             case Key.Delete:
                 if ((e.OriginalSource as FrameworkElement).DataContext is LocalInventory p)
                 {
-                    await InventoryORM.Delete(p);
-                    InventoryList.Remove(p);
+                    Remove(p);
                 }
                 break;
         }
     }
-    private async void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
+
+    private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
         if(GridOfInventory.SelectedItem is LocalInventory p)
         {
-            await InventoryORM.Delete(p);
-            InventoryList.Remove(p);
+            Remove(p);
         }
+    }
+
+    async void Remove(LocalInventory p)
+    {
+        await InventoryORM.Delete(p);
+        InventoryList.Remove(p);
+        updateValues();
     }
 
     async void INavigationAware.OnNavigatedTo(object parameter)
@@ -145,6 +178,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryList.Clear();
         foreach (var item in await InventoryORM.SelectAll())
             InventoryList.Add(item);
+        updateValues();
         try
         {
             var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync("141100033", DateTime.Now));

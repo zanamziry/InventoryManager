@@ -57,6 +57,10 @@ namespace InventoryManager.Services {
             Configure(new ProductsORM(dataAccess));
             Configure(new LocalInventoryORM(dataAccess));
             Configure(new SystemProductsORM(dataAccess));
+            Configure(new GivenAwayORM(dataAccess));
+            Configure(new SentOutsideORM(dataAccess));
+            Configure(new SoldOutsideORM(dataAccess));
+
             foreach (ITable table in _listOfTables.Values) {
                 table.Create();
             }
