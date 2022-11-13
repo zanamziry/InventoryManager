@@ -15,6 +15,13 @@ namespace InventoryManager.Views;
 
 public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAware
 {
+    /*
+     TODO: Things to add to InventoryPage
+        - Export As Excel
+        - Refresh System
+        - Next and Previous Product
+     */
+
     public InventoryPage(IDBSetup dBSetup)
     {
         InitializeComponent();
@@ -25,13 +32,32 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     
     private readonly LocalInventoryORM InventoryORM;
     private readonly IDBSetup _dBSetup;
+    private int sysvalue;
+    private int outside;
+    private int giveaway;
+
+    public ObservableCollection<LocalInventory> InventoryList { get; } = new ObservableCollection<LocalInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
     public Product SelectedProduct { get; set; }
+    public int SysValue
+    {
+        get { return sysvalue; }
+        set { Set(ref sysvalue , value); }
+    }
 
-    public int Outside { get; set; } = 0;
-    public int GivenAway { get; set; } = 0;
-    public int Sys { get; set; } = 0;
-    public int Result => Real + Outside + GivenAway - Sys;
+    public int Outside
+    {
+        get { return outside; }
+        set { Set(ref outside, value); }
+    }
+
+    public int GiveAway
+    {
+        get { return giveaway; }
+        set { Set(ref giveaway, value); }
+    }
+
+    public int Result => Real + Outside + GiveAway - SysValue;
     public int Real
     {
         get
@@ -44,7 +70,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             return result;
         }
     }
-    public ObservableCollection<LocalInventory> InventoryList { get; set; } = new ObservableCollection<LocalInventory>();
 
     async void AddInventory(LocalInventory value)
     {
