@@ -35,5 +35,21 @@ namespace InventoryManager.Core.Services {
             var products = (await _dataAccess.ReadDataAsync<GivenAway>(cmd));
             return products;
         }
+
+        public async Task<IEnumerable<GivenAway>> SelectByInventoryID(LocalInventory inventory) {
+            string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.InventoryID)} = @{nameof(LocalInventory.ID)};";
+            var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd, inventory);
+            return products;
+        }
+        public async Task<int> SelectTotalAmount(LocalInventory inventory)
+        {
+            string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.InventoryID)} = @{nameof(LocalInventory.ID)};";
+            var givenAways = await _dataAccess.ReadDataAsync<GivenAway>(cmd, inventory);
+            int total = 0;
+            foreach (var i in givenAways) {
+                total += i.Amount;
+            }
+            return total;
+        }
     }
 }
