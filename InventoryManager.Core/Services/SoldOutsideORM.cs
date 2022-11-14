@@ -7,26 +7,32 @@ namespace InventoryManager.Core.Services {
     public class SoldOutsideORM : TableBase<SoldOutside> {
         public SoldOutsideORM(IDataAccess dataAccess) : base(dataAccess) {
         }
-        /*
-         *   CREATE TABLE "SoldOutside" (
-	        "ID"	INTEGER NOT NULL UNIQUE,
-	        "OutsideID"	INTEGER NOT NULL,
-	        "Amount"	INTEGER NOT NULL,
-	        "Date"	TEXT NOT NULL,
-	        "Code"	TEXT,
-	        FOREIGN KEY("OutsideID") REFERENCES "SentOutside"("ID") ON DELETE RESTRICT,
-	        PRIMARY KEY("ID" AUTOINCREMENT)
-)
-         */
-        public override void Create() {
-            string cmd =
-            $"CREATE TABLE IF NOT EXISTS {nameof(SoldOutside)}(" +
-            $"{nameof(SoldOutside.ID)} INTEGER NOT NULL UNIQUE," +
-            $"{nameof(SoldOutside.Name)} TEXT NOT NULL," +
-            $"{nameof(SoldOutside.Price)} REAL NOT NULL," +
-            $"PRIMARY KEY({nameof(SoldOutside.ID)} AUTOINCREMENT));";
-            _dataAccess.Execute(cmd);
+
+        public override void Create()
+        {
+            throw new NotImplementedException();
         }
+
+        /*
+*   CREATE TABLE "SoldOutside" (
+   "ID"	INTEGER NOT NULL UNIQUE,
+   "OutsideID"	INTEGER NOT NULL,
+   "Amount"	INTEGER NOT NULL,
+   "Date"	TEXT NOT NULL,
+   "Code"	TEXT,
+   FOREIGN KEY("OutsideID") REFERENCES "SentOutside"("ID") ON DELETE RESTRICT,
+   PRIMARY KEY("ID" AUTOINCREMENT)
+)
+public override void Create() {
+   string cmd =
+   $"CREATE TABLE IF NOT EXISTS {nameof(SoldOutside)}(" +
+   $"{nameof(SoldOutside.ID)} INTEGER NOT NULL UNIQUE," +
+   $"{nameof(SoldOutside.Name)} TEXT NOT NULL," +
+   $"{nameof(SoldOutside.Price)} REAL NOT NULL," +
+   $"PRIMARY KEY({nameof(SoldOutside.ID)} AUTOINCREMENT));";
+   _dataAccess.Execute(cmd);
+}
+*/
 
         public override async Task Delete(SoldOutside param) {
             string cmd = $"DELETE FROM {nameof(SoldOutside)} WHERE {nameof(SoldOutside.ID)} = @{nameof(SoldOutside.ID)};";

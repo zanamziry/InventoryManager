@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -7,9 +8,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
+using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 
 namespace InventoryManager.Views;
 
@@ -22,16 +25,20 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         - Next and Previous Product
      */
 
-    public InventoryPage(IDBSetup dBSetup)
+    public InventoryPage(IDBSetup dBSetup, ISystemDataGather dataGather)
     {
         InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
+        _dataGather = dataGather;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
+        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
+    private readonly SystemProductsORM SystemORM;
     private readonly IDBSetup _dBSetup;
+    private readonly ISystemDataGather _dataGather;
     private int sysvalue;
     private int outside;
     private int giveaway;
@@ -138,6 +145,21 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryList.Clear();
         foreach (var item in await InventoryORM.SelectAll())
             InventoryList.Add(item);
+        try
+        {
+            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync("141100033", DateTime.Now));
+            foreach (var i in s.list)
+            {
+                await SystemORM.Insert(i);
+                if (SelectedProduct.ID == i.ID)
+                    SysValue = i.CloseBalance;
+            }
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return;
+        }
     }
 
     void INavigationAware.OnNavigatedFrom()
