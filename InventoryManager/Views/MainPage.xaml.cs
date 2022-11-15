@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -7,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
+using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using Microsoft.Data.Sqlite;
@@ -17,20 +19,25 @@ namespace InventoryManager.Views;
 
 public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    public MainPage(IDBSetup dBSetup,INavigationService navigationService)
+    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather)
     {
         InitializeComponent();
         DataContext = this;
         _navigationService = navigationService;
         _dBSetup = dBSetup;
+        _dataGather = dataGather;
         ProductsORM = _dBSetup.GetTable<ProductsORM>();
+        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
-    public ObservableCollection<Product> ProductList { get; } = new ObservableCollection<Product>();
     private readonly INavigationService _navigationService;
+    private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
-    public event PropertyChangedEventHandler PropertyChanged;
+    private readonly SystemProductsORM SystemORM;
     private ProductsORM ProductsORM { get; }
+
+    public ObservableCollection<Product> ProductList { get; } = new ObservableCollection<Product>();
+    public event PropertyChangedEventHandler PropertyChanged;
 
     async void AddProduct(Product value)
     {
@@ -156,5 +163,22 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     void INavigationAware.OnNavigatedFrom()
     {
+    }
+
+    private async void OnRefreshClicked(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync("141100033", DateTime.Now));
+            foreach (var i in s.list)
+            {
+                await SystemORM.Insert(i);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message,"Error Updating", MessageBoxButton.OK,MessageBoxImage.Error);
+            return;
+        }
     }
 }

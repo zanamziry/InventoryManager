@@ -20,22 +20,16 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 {
     /*
      TODO: Things to add to InventoryPage
-        - Export As Excel
-        - Refresh System
         - Next and Previous Product
      */
 
-    public InventoryPage(IDBSetup dBSetup, ISystemDataGather dataGather)
+    public InventoryPage(IDBSetup dBSetup)
     {
         InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
-        _dataGather = dataGather;
+        
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
-        GivenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
-        SentOutsideORM = _dBSetup.GetTable<SentOutsideORM>();
-        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
-        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
@@ -178,22 +172,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryList.Clear();
         foreach (var item in await InventoryORM.SelectAll())
             InventoryList.Add(item);
-        updateValues();
-        try
-        {
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync("141100033", DateTime.Now));
-            foreach (var i in s.list)
-            {
-                await SystemORM.Insert(i);
-                if (SelectedProduct.ID == i.ID)
-                    SysValue = i.CloseBalance;
-            }
-        }
-        catch(Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-            return;
-        }
     }
 
     void INavigationAware.OnNavigatedFrom()
