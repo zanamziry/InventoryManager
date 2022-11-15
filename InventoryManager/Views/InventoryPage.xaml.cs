@@ -28,17 +28,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
-        
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
     private readonly GivenAwayORM GivenAwayORM;
     private readonly SentOutsideORM SentOutsideORM;
-    private readonly SystemProductsORM SystemORM;
-    private readonly SystemProductsORM SystemORM;
     private readonly IDBSetup _dBSetup;
-    private readonly ISystemDataGather _dataGather;
     private int sysvalue;
     private int real;
     private int outside;
@@ -82,7 +78,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     async void updateValues()
     {
-        SysValue = (await SystemORM.SelectProduct(SelectedProduct)).CloseBalance;
+        SysValue = 0;
         GiveAway = 0;
         Outside = 0;
         foreach (LocalInventory i in InventoryList)
