@@ -29,6 +29,9 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         DataContext = this;
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
+        GivenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
+        SentOutsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
@@ -168,6 +171,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryList.Clear();
         foreach (var item in await InventoryORM.SelectAll())
             InventoryList.Add(item);
+        updateValues();
     }
 
     void INavigationAware.OnNavigatedFrom()
