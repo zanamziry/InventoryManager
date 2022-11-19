@@ -30,9 +30,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         _dBSetup = dBSetup;
         
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
+        GivenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
+        SentOutsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
+    private readonly SystemProductsORM SystemORM;
     private readonly GivenAwayORM GivenAwayORM;
     private readonly SentOutsideORM SentOutsideORM;
     private readonly IDBSetup _dBSetup;
@@ -43,8 +47,21 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     public ObservableCollection<LocalInventory> InventoryList { get; } = new ObservableCollection<LocalInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
-    public Product SelectedProduct { get; set; }
-    
+    private Product _selectedProduct;
+    private SystemProduct _systemProduct;
+
+    public SystemProduct SelectedSystemProduct
+    {
+        get { return _systemProduct; }
+        set { Set(ref _systemProduct, value); }
+    }
+
+    public Product SelectedProduct
+    {
+        get { return _selectedProduct; }
+        set { Set(ref _selectedProduct ,value); }
+    }
+
     public int SysValue
     {
         get { return sysvalue; }
@@ -169,6 +186,15 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryList.Clear();
         foreach (var item in await InventoryORM.SelectAll())
             InventoryList.Add(item);
+        try
+        {
+            SelectedSystemProduct = await SystemORM.SelectProduct(SelectedProduct);
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return;
+        }
     }
 
     void INavigationAware.OnNavigatedFrom()

@@ -168,4 +168,7 @@
   <data name="InventoryPageTitle" xml:space="preserve">
     <value>Inventory</value>
   </data>
+  <data name="ShellSystemInventoryPage" xml:space="preserve">
+    <value>System Inventory</value>
+  </data>
 </root>
