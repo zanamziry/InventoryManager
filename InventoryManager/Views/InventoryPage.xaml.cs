@@ -85,7 +85,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         foreach (LocalInventory i in InventoryList)
         {
             GiveAway += await GivenAwayORM.SelectTotalAmount(i);
-            Outside += await SentOutsideORM.SelectTotalAmount(i);
+            Outside += await SentOutsideORM.SelectTotalAmountSent(i);
         }
         Real = 0;
     }
