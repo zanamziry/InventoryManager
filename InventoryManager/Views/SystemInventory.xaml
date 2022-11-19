@@ -33,7 +33,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                     <TextBlock Text="Agent ID" Margin="0,3"/>
-                    <TextBox x:Name="AgentID"/>
+                    <TextBox Text="{Binding AgentID,Mode=TwoWay}"/>
                     <TextBlock Text="Date" Margin="0,3"/>
                     <DatePicker x:Name="SelectedDate"/>
                     <Button Content="Get Data" Padding="20,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Click="OnGetDataClicked"/>

@@ -40,5 +40,13 @@ namespace InventoryManager.Core.Services {
             var products = (await _dataAccess.ReadDataAsync<SystemProduct>(cmd));
             return products;
         }
+        public async Task<SystemProduct> SelectProduct(Product product)
+        {
+            string cmd = $"SELECT * FROM {nameof(SystemProduct)} WHERE {nameof(SystemProduct.ID)} = @{nameof(Product.ID)};";
+            var products = (await _dataAccess.ReadDataAsync<SystemProduct>(cmd,product));
+            if (products.Count() > 0)
+                return products.First();
+            return new SystemProduct { ID = "NULL", Name = "NULL", CloseBalance = 0, OpenBalance = 0, Sold = 0};
+        }
     }
 }

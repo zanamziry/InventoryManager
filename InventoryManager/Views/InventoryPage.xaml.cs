@@ -34,10 +34,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         GivenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
         SentOutsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
     private readonly SystemProductsORM SystemORM;
+    private readonly GivenAwayORM GivenAwayORM;
+    private readonly SentOutsideORM SentOutsideORM;
     private readonly IDBSetup _dBSetup;
     private readonly ISystemDataGather _dataGather;
     private int sysvalue;
@@ -46,7 +49,21 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     public ObservableCollection<LocalInventory> InventoryList { get; } = new ObservableCollection<LocalInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
-    public Product SelectedProduct { get; set; }
+    private Product _selectedProduct;
+    private SystemProduct _systemProduct;
+
+    public SystemProduct SelectedSystemProduct
+    {
+        get { return _systemProduct; }
+        set { Set(ref _systemProduct, value); }
+    }
+
+    public Product SelectedProduct
+    {
+        get { return _selectedProduct; }
+        set { Set(ref _selectedProduct ,value); }
+    }
+
     public int SysValue
     {
         get { return sysvalue; }
@@ -148,13 +165,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             InventoryList.Add(item);
         try
         {
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync("141100033", DateTime.Now));
-            foreach (var i in s.list)
-            {
-                await SystemORM.Insert(i);
-                if (SelectedProduct.ID == i.ID)
-                    SysValue = i.CloseBalance;
-            }
+            SelectedSystemProduct = await SystemORM.SelectProduct(SelectedProduct);
         }
         catch(Exception ex)
         {

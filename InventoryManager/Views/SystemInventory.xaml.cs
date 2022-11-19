@@ -11,6 +11,7 @@ using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
+using InventoryManager.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -28,7 +29,18 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
-    
+    readonly string SettingsKey = "AgentID";
+    private string _agentId;
+    public string AgentID
+    {
+        get { return _agentId; }
+        set 
+        { 
+            Set(ref _agentId, value);
+            SaveAgentID(_agentId);
+        }
+    }
+
     private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
@@ -60,7 +72,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         {
             await SystemORM.DeleteAll();
             SystemProducts.Clear();
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync(AgentID.Text, d));
+            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync(AgentID, d));
             foreach (var i in s.list)
             {
                 await SystemORM.Insert(i);
@@ -76,11 +88,25 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
+        AgentID = GetOldID();
         SystemProducts.Clear();
         foreach (var item in await SystemORM.SelectAll())
             SystemProducts.Add(item);
     }
-
+    private string GetOldID()
+    {
+        if (App.Current.Properties.Contains(SettingsKey))
+        {
+            string Agent = App.Current.Properties[SettingsKey].ToString();
+            return Agent;
+        }
+        return "";
+    }
+    private void SaveAgentID(string val)
+    {
+        if(!string.IsNullOrWhiteSpace(val))
+            App.Current.Properties[SettingsKey] = val;
+    }
     void INavigationAware.OnNavigatedFrom()
     {
     }
