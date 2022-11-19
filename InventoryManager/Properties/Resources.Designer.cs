@@ -212,5 +212,14 @@ namespace InventoryManager.Properties {
                 return ResourceManager.GetString("ShellSettingsPage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Inventory.
+        /// </summary>
+        public static string ShellSystemInventoryPage {
+            get {
+                return ResourceManager.GetString("ShellSystemInventoryPage", resourceCulture);
+            }
+        }
     }
 }

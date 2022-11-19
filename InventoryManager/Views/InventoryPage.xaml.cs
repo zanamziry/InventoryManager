@@ -32,7 +32,8 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
-        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
+        GivenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
+        SentOutsideORM = _dBSetup.GetTable<SentOutsideORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;

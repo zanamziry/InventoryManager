@@ -5,5 +5,8 @@
     <Page Update="Views\InventoryPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\SystemInventory.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>
