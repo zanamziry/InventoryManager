@@ -2,6 +2,6 @@
 {
     public interface ISystemDataGather
     {
-        Task<string> getDataAsync(string id, DateTime date);
+        Task<string> GetInventoryAsync(string id, DateTime date);
     }
 }

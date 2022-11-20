@@ -22,6 +22,11 @@ namespace InventoryManager.Core.Services {
             string cmd = $"DELETE FROM {nameof(Product)} WHERE {nameof(Product.ID)} = @{nameof(Product.ID)};";
             await _dataAccess.ExecuteAsync(cmd, param);
         }
+        public async Task DeleteAll()
+        {
+            string cmd = $"DELETE FROM {nameof(Product)} WHERE 1 = 1;";
+            await _dataAccess.ExecuteAsync(cmd);
+        }
 
         public override async Task Insert(Product param) {
             string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Price)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Price)});";

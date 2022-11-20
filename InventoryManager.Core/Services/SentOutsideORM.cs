@@ -21,7 +21,6 @@ namespace InventoryManager.Core.Services {
             _dataAccess.Execute(cmd);
         }
 
-*/
         public override async Task Delete(SentOutside param) {
             string cmd = $"DELETE FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ID)} = @{nameof(SentOutside.ID)};";
             await _dataAccess.ExecuteAsync(cmd, param);

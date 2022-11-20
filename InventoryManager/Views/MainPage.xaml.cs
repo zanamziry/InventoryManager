@@ -93,7 +93,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
                 break;
         }
     }
-    private async void OnRemoveButtonClicked(object sender, System.Windows.RoutedEventArgs e)
+    private async void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
         if(GridOfProducts.SelectedItem is Product p)
         {
@@ -101,7 +101,11 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             ProductList.Remove(p);
         }
     }
-
+    private async void OnRemoveAllButtonClicked(object sender, RoutedEventArgs e)
+    {
+        await ProductsORM.DeleteAll();
+        ProductList.Clear();
+    }
     private async void OnImportClicked(object sender, RoutedEventArgs e)
     {
         var dialog = new OpenFileDialog();
@@ -163,22 +167,5 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     void INavigationAware.OnNavigatedFrom()
     {
-    }
-
-    private async void OnRefreshClicked(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync("141100033", DateTime.Now));
-            foreach (var i in s.list)
-            {
-                await SystemORM.Insert(i);
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message,"Error Updating", MessageBoxButton.OK,MessageBoxImage.Error);
-            return;
-        }
     }
 }

@@ -20,15 +20,15 @@ namespace InventoryManager.Views;
 
 public partial class SystemInventory : Page, INotifyPropertyChanged, INavigationAware
 {
-    public SystemInventory(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather)
+    public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather)
     {
         InitializeComponent();
         DataContext = this;
-        _navigationService = navigationService;
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
+
     readonly string SettingsKey = "AgentID";
     private string _agentId;
     public string AgentID
@@ -41,7 +41,6 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         }
     }
 
-    private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
     private readonly SystemProductsORM SystemORM;
@@ -64,6 +63,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     private async void OnGetDataClicked(object sender, System.Windows.RoutedEventArgs e)
     {
+        Loading(true);
         DateTime d;
         if (SelectedDate.SelectedDate != null)
             d = SelectedDate.SelectedDate.Value;
@@ -72,7 +72,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         {
             await SystemORM.DeleteAll();
             SystemProducts.Clear();
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.getDataAsync(AgentID, d));
+            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(AgentID, d));
             foreach (var i in s.list)
             {
                 await SystemORM.Insert(i);
@@ -84,14 +84,29 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
             MessageBox.Show(ex.Message, "Error Updating", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
+        Loading(false);
     }
-
+    void Loading(bool val)
+    {
+        if(val == true)
+        {
+            loadingBackground.Visibility = Visibility.Visible;
+            loadingCircle.IsLoading = true;
+        }
+        else
+        {
+            loadingBackground.Visibility = Visibility.Collapsed;
+            loadingCircle.IsLoading = false;
+        }
+    }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
+        Loading(true);
         AgentID = GetOldID();
         SystemProducts.Clear();
         foreach (var item in await SystemORM.SelectAll())
             SystemProducts.Add(item);
+        Loading(false);
     }
     private string GetOldID()
     {
