@@ -21,44 +21,30 @@ namespace InventoryManager.Views;
 
 public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather)
+    public MainPage(IDBSetup dBSetup,INavigationService navigationService)
     {
         InitializeComponent();
         DataContext = this;
         _navigationService = navigationService;
         _dBSetup = dBSetup;
-        _dataGather = dataGather;
         ProductsORM = _dBSetup.GetTable<ProductsORM>();
+        LocalORM = _dBSetup.GetTable<LocalInventoryORM>();
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
         GivenORM = _dBSetup.GetTable<GivenAwayORM>();
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
     }
     
     private readonly INavigationService _navigationService;
-    private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
     private readonly SystemProductsORM SystemORM;
     private readonly ProductsORM ProductsORM;
     private readonly GivenAwayORM GivenORM;
+    private readonly LocalInventoryORM LocalORM;
     private readonly SentOutsideORM OutsideORM;
 
-    public ObservableCollection<MainInventory> ProductList { get; } = new ObservableCollection<MainInventory>();
+    public ObservableCollection<MainInventory> Source { get; } = new ObservableCollection<MainInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
 
-    async void AddProduct(Product value)
-    {
-        if (ProductList.Where(o => o.Product == value).Count() > 0)
-            return;
-        try
-        {
-            await ProductsORM.Insert(value);
-            ProductList.Add(new MainInventory {Product = value });
-        }
-        catch (SqliteException ex)
-        {
-            MessageBox.Show(ex.Message,"Database Error!",MessageBoxButton.OK,MessageBoxImage.Error);
-        }
-    }
     bool canAdd()
     {
         if (string.IsNullOrEmpty(ProductName.Text) || string.IsNullOrEmpty(ProductCode.Text) || string.IsNullOrEmpty(ProductPrice.Text))
@@ -78,12 +64,23 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void OnAddButtonClicked(object sender, RoutedEventArgs e)
+    private async void OnAddButtonClicked(object sender, RoutedEventArgs e)
     {
         if (canAdd())
         {
             if (decimal.TryParse(ProductPrice.Text, out decimal price))
-                AddProduct(new Product { ID = ProductCode.Text, Name = ProductName.Text, Price = price });
+            {
+                var p = new Product { ID = ProductCode.Text, Name = ProductName.Text, Price = price };
+                try
+                {
+                    await ProductsORM.Insert(p);
+                    AddToView(p);
+                }
+                catch (SqliteException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
         }
     }
     private async void OnKeyUp(object sender, KeyEventArgs e)
@@ -94,10 +91,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
                 if ((e.OriginalSource as FrameworkElement).DataContext is Product p)
                 {
                     await ProductsORM.Delete(p);
-                    var ns = ProductList.Where(o => o.Product == p);
+                    var ns = Source.Where(o => o.Product == p);
                     if (ns.Count() < 1)
                         return;
-                    ProductList.Remove(ns.First());
+                    Source.Remove(ns.First());
                 }
                 break;
         }
@@ -107,16 +104,16 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         if(GridOfProducts.SelectedItem is Product p)
         {
             await ProductsORM.Delete(p);
-            var ns = ProductList.Where(o => o.Product == p);
+            var ns = Source.Where(o => o.Product == p);
             if (ns.Count() < 1)
                 return;
-            ProductList.Remove(ns.First());
+            Source.Remove(ns.First());
         }
     }
     private async void OnRemoveAllButtonClicked(object sender, RoutedEventArgs e)
     {
         await ProductsORM.DeleteAll();
-        ProductList.Clear();
+        Source.Clear();
     }
     private async void OnImportClicked(object sender, RoutedEventArgs e)
     {
@@ -131,12 +128,12 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             var obj = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);
             foreach(Product product in obj)
             {
-                if (ProductList.Where(o => o.Product == product).Count() < 1)
+                if (Source.Where(o => o.Product == product).Count() == 0)
                 {
                     try
                     {
                         await ProductsORM.Insert(product);
-                        ProductList.Add(new MainInventory { Product = product });
+                        AddToView(product);
                     }
                     catch (SqliteException ex)
                     {
@@ -155,32 +152,52 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         var result = dialog.ShowDialog();
         if (result == true)
         {
+            List<Product> products = new List<Product>();
             string filename = dialog.FileName;
-
-            string stringJson = JsonConvert.SerializeObject(ProductList);
+            foreach (var item in Source)
+            {
+                products.Add(item.Product);
+            }
+            string stringJson = JsonConvert.SerializeObject(products);
             await File.WriteAllTextAsync(filename, stringJson);
         }
     }
 
     private void OnGridDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if(e.OriginalSource is FrameworkElement FE && FE.DataContext is Product SelectedProduct)
+        if(e.OriginalSource is FrameworkElement FE && FE.DataContext is MainInventory SelectedProduct)
         {
             _navigationService.NavigateTo(typeof(InventoryPage), SelectedProduct);
         }
     }
+    async void AddToView(Product p)
+    {
+        var localDB = await LocalORM.SelectProduct(p);
+        var sys = await SystemORM.SelectProduct(p);
+        var totalReal = 0;
+        var totalGiven = 0;
+        var totalOut = 0;
+        foreach (var item in localDB)
+        {
+            totalReal += item.Real;
+            totalGiven += await GivenORM.SelectTotalAmount(item);
+            totalOut += await OutsideORM.SelectTotalAmountSent(item);
+        }
+        Source.Add(new MainInventory
+        {
+            Product = p,
+            System = sys,
+            TotalLocal = totalReal,
+            TotalGivenAway = totalGiven,
+            TotalOutside = totalOut,
+        });
 
+    }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        ProductList.Clear();
-        foreach (var item in await ProductsORM.SelectAll())
-            ProductList.Add(new MainInventory
-            {
-                System = await SystemORM.SelectProduct(item),
-                Product = item,
-                Given = GivenORM.SelectProduct()
-
-            });
+        Source.Clear();
+        foreach (var p in await ProductsORM.SelectAll())
+            AddToView(p);
     }
 
     void INavigationAware.OnNavigatedFrom()

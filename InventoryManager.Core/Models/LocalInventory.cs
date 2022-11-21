@@ -11,5 +11,6 @@ namespace InventoryManager.Core.Models
         public int Inventory { get; set; }
         public int Open { get; set; }
         public DateTime ExpireDate { get; set; }
+        public int Real => Inventory + Open;
     }
 }

@@ -36,5 +36,19 @@ namespace InventoryManager.Core.Services {
             var products = (await _dataAccess.ReadDataAsync<LocalInventory>(cmd));
             return products;
         }
+        public async Task<int> GetReal(Product product)
+        {
+            string cmd = $"SELECT * FROM {nameof(LocalInventory)} WHERE {nameof(LocalInventory.ProductID)} = @{nameof(Product.ID)};";
+            var products = await _dataAccess.ReadDataAsync<LocalInventory>(cmd, product);
+            if (products.Count() > 0)
+                return products.First().Real;
+            return 0;
+        }
+        public async Task<IEnumerable<LocalInventory>> SelectProduct(Product product)
+        {
+            string cmd = $"SELECT * FROM {nameof(LocalInventory)} WHERE {nameof(LocalInventory.ProductID)} = @{nameof(Product.ID)};";
+            var products = await _dataAccess.ReadDataAsync<LocalInventory>(cmd, product);
+            return products;
+        }
     }
 }

@@ -11,6 +11,7 @@ using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
+using InventoryManager.Models;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 
@@ -47,7 +48,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     public ObservableCollection<LocalInventory> InventoryList { get; } = new ObservableCollection<LocalInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
-    private Product _selectedProduct;
+    private MainInventory _selectedProduct;
     private SystemProduct _systemProduct;
 
     public SystemProduct SelectedSystemProduct
@@ -56,7 +57,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         set { Set(ref _systemProduct, value); }
     }
 
-    public Product SelectedProduct
+    public MainInventory SelectedProduct
     {
         get { return _selectedProduct; }
         set { Set(ref _selectedProduct ,value); }
@@ -146,7 +147,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         if (CanAdd())
         {
             DateTime.TryParse(ProductExpire.Text, out DateTime r);
-            AddInventory(new LocalInventory {ProductID = SelectedProduct.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r});
+            AddInventory(new LocalInventory {ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r});
             updateValues();
         }
     }
@@ -181,14 +182,14 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        if (parameter is Product p)
+        if (parameter is MainInventory p)
             SelectedProduct = p;
         InventoryList.Clear();
         foreach (var item in await InventoryORM.SelectAll())
             InventoryList.Add(item);
         try
         {
-            SelectedSystemProduct = await SystemORM.SelectProduct(SelectedProduct);
+            SelectedSystemProduct = await SystemORM.SelectProduct(SelectedProduct.Product);
         }
         catch(Exception ex)
         {

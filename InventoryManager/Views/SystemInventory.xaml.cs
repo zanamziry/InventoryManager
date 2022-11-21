@@ -70,21 +70,26 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         else d = DateTime.Now;
         try
         {
-            await SystemORM.DeleteAll();
-            SystemProducts.Clear();
             var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(AgentID, d));
-            foreach (var i in s.list)
+            if (s != null && s.list != null && s.list.Count() > 0)
             {
-                await SystemORM.Insert(i);
-                SystemProducts.Add(i);
+                await SystemORM.DeleteAll();
+                SystemProducts.Clear();
+                foreach (var i in s.list)
+                {
+                    await SystemORM.Insert(i);
+                    SystemProducts.Add(i);
+                }
             }
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message, "Error Updating", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
         }
-        Loading(false);
+        finally
+        {
+            Loading(false);
+        }
     }
     void Loading(bool val)
     {
