@@ -11,9 +11,11 @@ using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
+using InventoryManager.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace InventoryManager.Views;
 
@@ -28,25 +30,29 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         _dataGather = dataGather;
         ProductsORM = _dBSetup.GetTable<ProductsORM>();
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
+        GivenORM = _dBSetup.GetTable<GivenAwayORM>();
+        OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
     }
     
     private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
     private readonly SystemProductsORM SystemORM;
-    private ProductsORM ProductsORM { get; }
+    private readonly ProductsORM ProductsORM;
+    private readonly GivenAwayORM GivenORM;
+    private readonly SentOutsideORM OutsideORM;
 
-    public ObservableCollection<Product> ProductList { get; } = new ObservableCollection<Product>();
+    public ObservableCollection<MainInventory> ProductList { get; } = new ObservableCollection<MainInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
 
     async void AddProduct(Product value)
     {
-        if (ProductList.Contains(value))
+        if (ProductList.Where(o => o.Product == value).Count() > 0)
             return;
         try
         {
             await ProductsORM.Insert(value);
-            ProductList.Add(value);
+            ProductList.Add(new MainInventory {Product = value });
         }
         catch (SqliteException ex)
         {
@@ -72,7 +78,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void OnAddButtonClicked(object sender, System.Windows.RoutedEventArgs e)
+    private void OnAddButtonClicked(object sender, RoutedEventArgs e)
     {
         if (canAdd())
         {
@@ -88,7 +94,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
                 if ((e.OriginalSource as FrameworkElement).DataContext is Product p)
                 {
                     await ProductsORM.Delete(p);
-                    ProductList.Remove(p);
+                    var ns = ProductList.Where(o => o.Product == p);
+                    if (ns.Count() < 1)
+                        return;
+                    ProductList.Remove(ns.First());
                 }
                 break;
         }
@@ -98,7 +107,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         if(GridOfProducts.SelectedItem is Product p)
         {
             await ProductsORM.Delete(p);
-            ProductList.Remove(p);
+            var ns = ProductList.Where(o => o.Product == p);
+            if (ns.Count() < 1)
+                return;
+            ProductList.Remove(ns.First());
         }
     }
     private async void OnRemoveAllButtonClicked(object sender, RoutedEventArgs e)
@@ -119,12 +131,12 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             var obj = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);
             foreach(Product product in obj)
             {
-                if (!ProductList.Contains(product))
+                if (ProductList.Where(o => o.Product == product).Count() < 1)
                 {
                     try
                     {
                         await ProductsORM.Insert(product);
-                        ProductList.Add(product);
+                        ProductList.Add(new MainInventory { Product = product });
                     }
                     catch (SqliteException ex)
                     {
@@ -162,7 +174,13 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     {
         ProductList.Clear();
         foreach (var item in await ProductsORM.SelectAll())
-            ProductList.Add(item);
+            ProductList.Add(new MainInventory
+            {
+                System = await SystemORM.SelectProduct(item),
+                Product = item,
+                Given = GivenORM.SelectProduct()
+
+            });
     }
 
     void INavigationAware.OnNavigatedFrom()
