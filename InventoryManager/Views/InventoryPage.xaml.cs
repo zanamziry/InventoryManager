@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ControlzEx.Standard;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
@@ -29,96 +30,28 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
-        
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
-        GivenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
-        SentOutsideORM = _dBSetup.GetTable<SentOutsideORM>();
-        SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
     
     private readonly LocalInventoryORM InventoryORM;
-    private readonly SystemProductsORM SystemORM;
-    private readonly GivenAwayORM GivenAwayORM;
-    private readonly SentOutsideORM SentOutsideORM;
     private readonly IDBSetup _dBSetup;
-    private int sysvalue;
-    private int real;
-    private int outside;
-    private int giveaway;
 
-    public ObservableCollection<LocalInventory> InventoryList { get; } = new ObservableCollection<LocalInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
     private MainInventory _selectedProduct;
-    private SystemProduct _systemProduct;
-
-    public SystemProduct SelectedSystemProduct
-    {
-        get { return _systemProduct; }
-        set { Set(ref _systemProduct, value); }
-    }
-
     public MainInventory SelectedProduct
     {
         get { return _selectedProduct; }
         set { Set(ref _selectedProduct ,value); }
     }
 
-    public int SysValue
-    {
-        get { return sysvalue; }
-        set { Set(ref sysvalue , value); }
-    }
-
-    public int Outside
-    {
-        get { return outside; }
-        set { Set(ref outside, value); }
-    }
-
-    public int GiveAway
-    {
-        get { return giveaway; }
-        set { Set(ref giveaway, value); }
-    }
-
-    public int Real
-    {
-        get { return real; }
-        set 
-        {
-            int result = 0;
-            foreach (var i in InventoryList)
-            {
-                result += i.Open + i.Inventory;
-            }
-            Set(ref real, result); 
-        }
-    }
-
-    async void updateValues()
-    {
-        SysValue = 0;
-        GiveAway = 0;
-        Outside = 0;
-        foreach (LocalInventory i in InventoryList)
-        {
-            GiveAway += await GivenAwayORM.SelectTotalAmount(i);
-            Outside += await SentOutsideORM.SelectTotalAmountSent(i);
-        }
-        Real = 0;
-    }
-
-    public int Result => Real + Outside + GiveAway - SysValue;
-
     async void AddInventory(LocalInventory value)
     {
-        if (InventoryList.Contains(value))
+        if (SelectedProduct.Locals.Contains(value))
             return;
         try
         {
             await InventoryORM.Insert(value);
-            InventoryList.Add(value);
-            updateValues();
+            SelectedProduct.Locals.Add(value);
         }
         catch (SqliteException ex)
         {
@@ -148,7 +81,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         {
             DateTime.TryParse(ProductExpire.Text, out DateTime r);
             AddInventory(new LocalInventory {ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r});
-            updateValues();
         }
     }
 
@@ -176,30 +108,26 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     async void Remove(LocalInventory p)
     {
         await InventoryORM.Delete(p);
-        InventoryList.Remove(p);
-        updateValues();
+        SelectedProduct.Locals.Remove(p);
     }
 
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
         if (parameter is MainInventory p)
             SelectedProduct = p;
-        InventoryList.Clear();
-        foreach (var item in await InventoryORM.SelectAll())
-            InventoryList.Add(item);
-        try
-        {
-            SelectedSystemProduct = await SystemORM.SelectProduct(SelectedProduct.Product);
-        }
-        catch(Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-            return;
-        }
+        SelectedProduct.Locals.Clear();
+        SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;
+        foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+            SelectedProduct.Locals.Add(item);
+    }
+
+    private void Locals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(SelectedProduct.TotalReal));
     }
 
     void INavigationAware.OnNavigatedFrom()
     {
-        
+        SelectedProduct.Locals.CollectionChanged -= Locals_CollectionChanged;
     }
 }

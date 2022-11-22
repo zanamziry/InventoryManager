@@ -55,7 +55,7 @@
                         <DataGridTextColumn Header="Product Name" Binding="{Binding Product.Name}" Width="150"/>
                         <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}"/>
                         <DataGridTextColumn Header="System" Binding="{Binding System.CloseBalance}" />
-                        <DataGridTextColumn Header="Local" Binding="{Binding TotalLocal}" />
+                        <DataGridTextColumn Header="Local" Binding="{Binding TotalReal}" />
                         <DataGridTextColumn Header="Outside" Binding="{Binding TotalOutside}" />
                         <DataGridTextColumn Header="GiveAway" Binding="{Binding TotalGivenAway}" />
                     </DataGrid.Columns>

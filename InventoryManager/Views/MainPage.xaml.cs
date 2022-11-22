@@ -174,12 +174,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     {
         var localDB = await LocalORM.SelectProduct(p);
         var sys = await SystemORM.SelectProduct(p);
-        var totalReal = 0;
         var totalGiven = 0;
         var totalOut = 0;
         foreach (var item in localDB)
         {
-            totalReal += item.Real;
             totalGiven += await GivenORM.SelectTotalAmount(item);
             totalOut += await OutsideORM.SelectTotalAmountSent(item);
         }
@@ -187,7 +185,6 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         {
             Product = p,
             System = sys,
-            TotalLocal = totalReal,
             TotalGivenAway = totalGiven,
             TotalOutside = totalOut,
         });

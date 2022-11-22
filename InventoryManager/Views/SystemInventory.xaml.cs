@@ -29,8 +29,10 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
 
-    readonly string SettingsKey = "AgentID";
+    readonly string AgentSettingsKey = "AgentID";
+    readonly string LastUpdatedSettingsKey = "LastUpdate";
     private string _agentId;
+    private string lastUpdated;
     public string AgentID
     {
         get { return _agentId; }
@@ -39,6 +41,12 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
             Set(ref _agentId, value);
             SaveAgentID(_agentId);
         }
+    }
+
+    public string LastUpdated
+    {
+        get { return lastUpdated; }
+        set { Set(ref lastUpdated ,value); }
     }
 
     private readonly ISystemDataGather _dataGather;
@@ -115,9 +123,9 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     }
     private string GetOldID()
     {
-        if (App.Current.Properties.Contains(SettingsKey))
+        if (App.Current.Properties.Contains(AgentSettingsKey))
         {
-            string Agent = App.Current.Properties[SettingsKey].ToString();
+            string Agent = App.Current.Properties[AgentSettingsKey].ToString();
             return Agent;
         }
         return "";
@@ -125,7 +133,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     private void SaveAgentID(string val)
     {
         if(!string.IsNullOrWhiteSpace(val))
-            App.Current.Properties[SettingsKey] = val;
+            App.Current.Properties[AgentSettingsKey] = val;
     }
     void INavigationAware.OnNavigatedFrom()
     {

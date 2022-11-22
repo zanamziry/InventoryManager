@@ -33,6 +33,8 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+                    <TextBlock Text="Last Update" Margin="0,3"/>
+                    <TextBlock Text="{Binding LastUpdated,Mode=TwoWay}"/>
                     <TextBlock Text="Agent ID" Margin="0,3"/>
                     <TextBox Text="{Binding AgentID,Mode=TwoWay}"/>
                     <TextBlock Text="Date" Margin="0,3"/>
