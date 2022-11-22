@@ -12,6 +12,7 @@ using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
+using InventoryManager.Helpers;
 using InventoryManager.Models;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
@@ -32,10 +33,51 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
     }
-    
+    private IList<MainInventory> Inventories = new List<MainInventory>();
     private readonly LocalInventoryORM InventoryORM;
     private readonly IDBSetup _dBSetup;
+    private ICommand gotoNext;
+    private ICommand gotoPrevious;
 
+    public ICommand GotoNext => gotoNext ??= new RelayCommand(Next,CanNext);
+    public ICommand GotoPrevious => gotoPrevious ??= new RelayCommand(Previous, CanPrevious);
+
+    bool CanNext()
+    {
+        if (Inventories.Count() > 1 && Inventories.Last() != SelectedProduct)
+            return true;
+        return false;
+    }
+    
+    async void Next()
+    {
+        int s = Inventories.IndexOf(SelectedProduct);
+        if (s == -1)
+            return;
+        s += 1;
+        SelectedProduct = Inventories[s];
+        SelectedProduct.Locals.Clear();
+        foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+            SelectedProduct.Locals.Add(item);
+    }
+    bool CanPrevious()
+    {
+        if (Inventories.Count() > 1 && Inventories.First() != SelectedProduct)
+            return true;
+        return false;
+    }
+
+    async void Previous()
+    {
+        int s = Inventories.IndexOf(SelectedProduct);
+        if (s == -1)
+            return;
+        s -= 1;
+        SelectedProduct = Inventories[s];
+        SelectedProduct.Locals.Clear();
+        foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+            SelectedProduct.Locals.Add(item);
+    }
     public event PropertyChangedEventHandler PropertyChanged;
     private MainInventory _selectedProduct;
     public MainInventory SelectedProduct
@@ -113,21 +155,34 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        if (parameter is MainInventory p)
+        if ((parameter as dynamic).SelectedProduct is MainInventory p && (parameter as dynamic).Source is ObservableCollection<MainInventory> s)
+        {
+            Inventories = s.ToList();
             SelectedProduct = p;
-        SelectedProduct.Locals.Clear();
-        SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;
-        foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
-            SelectedProduct.Locals.Add(item);
+            SelectedProduct.Locals.Clear();
+            SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;
+            foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+                SelectedProduct.Locals.Add(item);
+        }
     }
 
     private void Locals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        OnPropertyChanged(nameof(SelectedProduct.TotalReal));
+        SelectedProduct.OnPropertyChanged();
     }
 
     void INavigationAware.OnNavigatedFrom()
     {
         SelectedProduct.Locals.CollectionChanged -= Locals_CollectionChanged;
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+
     }
 }

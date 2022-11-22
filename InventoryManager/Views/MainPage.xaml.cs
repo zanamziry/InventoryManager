@@ -167,7 +167,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     {
         if(e.OriginalSource is FrameworkElement FE && FE.DataContext is MainInventory SelectedProduct)
         {
-            _navigationService.NavigateTo(typeof(InventoryPage), SelectedProduct);
+            _navigationService.NavigateTo(typeof(InventoryPage), new { SelectedProduct , Source });
         }
     }
     async void AddToView(Product p)

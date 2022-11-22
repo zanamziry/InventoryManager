@@ -9,6 +9,10 @@
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     d:DesignHeight="450" d:DesignWidth="800">
+    <Page.InputBindings>
+        <KeyBinding Key="Right" Command="{Binding GotoNext}"/>
+        <KeyBinding Key="Left" Command="{Binding GotoPrevious}"/>
+    </Page.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -32,6 +36,8 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+                    <TextBlock Text="{Binding SelectedProduct.Product.Name}" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock Text="{Binding SelectedProduct.Product.ID}" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <TextBlock Text="Inventory" Margin="0,3"/>
                     <TextBox x:Name="InventoryAmount"/>
                     <TextBlock Text="Open" Margin="0,3"/>
@@ -40,6 +46,24 @@
                     <DatePicker x:Name="ProductExpire"/>
                     <Button Content="Add" VerticalAlignment="Stretch" Padding="20,0" Style="{StaticResource MahApps.Styles.Button}" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Click="OnAddButtonClicked"/>
                     <Button Content="Remove" VerticalAlignment="Stretch" Padding="20,0" Style="{StaticResource MahApps.Styles.Button}" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightPink" Click="OnRemoveButtonClicked"/>
+                    <Grid HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Padding="0,0" Margin="0,0,2,0" BorderThickness="1" Background="LightGray" Command="{Binding GotoPrevious}" >
+                            <DockPanel>
+                                <TextBlock VerticalAlignment="Center" Style="{StaticResource SmallIconStyle}" Text="&#xE892;" Margin="2"/>
+                                <TextBlock VerticalAlignment="Center" Text="Previous"/>
+                            </DockPanel>
+                        </Button>
+                        <Button Grid.Column="1" Padding="0,0" Margin="0,0,2,0" BorderThickness="1" Background="LightGray" Command="{Binding GotoNext}">
+                            <DockPanel>
+                                <TextBlock VerticalAlignment="Center" Style="{StaticResource SmallIconStyle}" Text="&#xE893;" Margin="2"/>
+                                <TextBlock VerticalAlignment="Center" Text="Next"/>
+                            </DockPanel>
+                        </Button>
+                    </Grid>
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
@@ -48,7 +72,7 @@
                     </Grid.RowDefinitions>
                 <DataGrid Grid.Row="0" x:Name="GridOfInventory" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="False" KeyUp="OnKeyUp">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="150"/>
+                        <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding ID}" Width="150"/>
                         <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="150"/>
                         <DataGridTextColumn Header="Opened" Binding="{Binding Open}"/>
                         <DataGridTextColumn Header="Expire Date" Binding="{Binding ExpireDate, StringFormat='{}{0:dd/M/yyyy}'}" />

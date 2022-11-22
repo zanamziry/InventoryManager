@@ -1,15 +1,11 @@
-﻿using InventoryManager.Core.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using InventoryManager.Core.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManager.Models
 {
-    public class MainInventory
+    public class MainInventory : INotifyPropertyChanged
     {
         public Product Product { get; set; }
         public SystemProduct System { get; set; }
@@ -28,7 +24,13 @@ namespace InventoryManager.Models
                 return r;
             }
         }
-        public int Result => System.CloseBalance - TotalReal + TotalGivenAway + TotalOutside;
+        public int Result => (TotalReal + TotalGivenAway + TotalOutside) - System.CloseBalance;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalReal)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
+        }
     }
 }
