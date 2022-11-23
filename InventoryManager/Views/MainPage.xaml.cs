@@ -176,19 +176,21 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         var sys = await SystemORM.SelectProduct(p);
         var totalGiven = 0;
         var totalOut = 0;
+        ObservableCollection<LocalInventory> locals = new ObservableCollection<LocalInventory>();
         foreach (var item in localDB)
         {
             totalGiven += await GivenORM.SelectTotalAmount(item);
             totalOut += await OutsideORM.SelectTotalAmountSent(item);
+            locals.Add(item);
         }
         Source.Add(new MainInventory
         {
             Product = p,
             System = sys,
+            Locals = locals,
             TotalGivenAway = totalGiven,
             TotalOutside = totalOut,
         });
-
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {

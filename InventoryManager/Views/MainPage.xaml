@@ -58,6 +58,7 @@
                         <DataGridTextColumn Header="Local" Binding="{Binding TotalReal}" />
                         <DataGridTextColumn Header="Outside" Binding="{Binding TotalOutside}" />
                         <DataGridTextColumn Header="GiveAway" Binding="{Binding TotalGivenAway}" />
+                        <DataGridTextColumn Header="Result" Binding="{Binding Result}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

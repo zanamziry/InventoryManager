@@ -36,11 +36,11 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private IList<MainInventory> Inventories = new List<MainInventory>();
     private readonly LocalInventoryORM InventoryORM;
     private readonly IDBSetup _dBSetup;
-    private ICommand gotoNext;
-    private ICommand gotoPrevious;
+    private RelayCommand gotoNext;
+    private RelayCommand gotoPrevious;
 
-    public ICommand GotoNext => gotoNext ??= new RelayCommand(Next,CanNext);
-    public ICommand GotoPrevious => gotoPrevious ??= new RelayCommand(Previous, CanPrevious);
+    public RelayCommand GotoNext => gotoNext ??= new RelayCommand(Next,CanNext);
+    public RelayCommand GotoPrevious => gotoPrevious ??= new RelayCommand(Previous, CanPrevious);
 
     bool CanNext()
     {
@@ -59,6 +59,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.Locals.Clear();
         foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
             SelectedProduct.Locals.Add(item);
+        update();
     }
     bool CanPrevious()
     {
@@ -66,7 +67,12 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             return true;
         return false;
     }
-
+    void update()
+    {
+        GotoNext.OnCanExecuteChanged();
+        GotoPrevious.OnCanExecuteChanged();
+        SelectedProduct.OnPropertyChanged();
+    }
     async void Previous()
     {
         int s = Inventories.IndexOf(SelectedProduct);
@@ -77,6 +83,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.Locals.Clear();
         foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
             SelectedProduct.Locals.Add(item);
+        update();
     }
     public event PropertyChangedEventHandler PropertyChanged;
     private MainInventory _selectedProduct;
@@ -163,6 +170,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;
             foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
                 SelectedProduct.Locals.Add(item);
+            update();
         }
     }
 
@@ -174,15 +182,5 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     void INavigationAware.OnNavigatedFrom()
     {
         SelectedProduct.Locals.CollectionChanged -= Locals_CollectionChanged;
-    }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void Button_Click_1(object sender, RoutedEventArgs e)
-    {
-
     }
 }

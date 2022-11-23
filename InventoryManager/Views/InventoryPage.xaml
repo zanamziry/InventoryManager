@@ -32,12 +32,12 @@
             -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="30*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <TextBlock Text="{Binding SelectedProduct.Product.Name}" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
-                    <TextBlock Text="{Binding SelectedProduct.Product.ID}" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock Text="{Binding SelectedProduct.Product.ID}" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <TextBlock Text="Inventory" Margin="0,3"/>
                     <TextBox x:Name="InventoryAmount"/>
                     <TextBlock Text="Open" Margin="0,3"/>
@@ -72,10 +72,10 @@
                     </Grid.RowDefinitions>
                 <DataGrid Grid.Row="0" x:Name="GridOfInventory" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="False" KeyUp="OnKeyUp">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding ID}" Width="150"/>
-                        <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="150"/>
-                        <DataGridTextColumn Header="Opened" Binding="{Binding Open}"/>
-                        <DataGridTextColumn Header="Expire Date" Binding="{Binding ExpireDate, StringFormat='{}{0:dd/M/yyyy}'}" />
+                        <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="100"/>
+                            <DataGridTextColumn Header="Opened" Binding="{Binding Open}" Width="100"/>
+                            <DataGridTextColumn Header="Total" IsReadOnly="True" Binding="{Binding Real}" Width="100"/>
+                            <DataGridTextColumn Header="Expire Date" Binding="{Binding ExpireDate, StringFormat='{}{0:M/yyyy}'}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
                     <DockPanel Grid.Row="1" Margin="0,10">
