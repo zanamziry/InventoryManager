@@ -133,19 +133,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         }
     }
 
-    private void OnKeyUp(object sender, KeyEventArgs e)
-    {
-        switch (e.Key)
-        {
-            case Key.Delete:
-                if ((e.OriginalSource as FrameworkElement).DataContext is LocalInventory p)
-                {
-                    Remove(p);
-                }
-                break;
-        }
-    }
-
     private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
         if(GridOfInventory.SelectedItem is LocalInventory p)
@@ -182,5 +169,26 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     void INavigationAware.OnNavigatedFrom()
     {
         SelectedProduct.Locals.CollectionChanged -= Locals_CollectionChanged;
+    }
+
+    private async void OnKeyUp(object sender, KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Delete:
+                if ((e.OriginalSource as FrameworkElement).DataContext is LocalInventory p)
+                {
+                    await InventoryORM.Delete(p);
+                    SelectedProduct.Locals.Remove(p);
+                }
+                break;
+        }
+    }
+    private void GridOfInventory_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+    {
+        if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
+        {
+            Remove(e.Row.DataContext as LocalInventory);
+        }
     }
 }

@@ -35,6 +35,10 @@
                     <ColumnDefinition Width="15*"/>
                     <ColumnDefinition Width="30*"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                     <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <TextBlock Text="{Binding SelectedProduct.Product.ID}" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
@@ -65,42 +69,40 @@
                         </Button>
                     </Grid>
                 </StackPanel>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="70"/>
-                    </Grid.RowDefinitions>
-                <DataGrid Grid.Row="0" x:Name="GridOfInventory" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="False" KeyUp="OnKeyUp">
+                <DataGrid Grid.Row="0" Grid.Column="1" x:Name="GridOfInventory" CellEditEnding="GridOfInventory_CellEditEnding" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="100"/>
+                            <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="100"/>
                             <DataGridTextColumn Header="Opened" Binding="{Binding Open}" Width="100"/>
                             <DataGridTextColumn Header="Total" IsReadOnly="True" Binding="{Binding Real}" Width="100"/>
                             <DataGridTextColumn Header="Expire Date" Binding="{Binding ExpireDate, StringFormat='{}{0:M/yyyy}'}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
-                    <DockPanel Grid.Row="1" Margin="0,10">
-                        <DockPanel Width="80" >
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="System"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.System.CloseBalance,Mode=OneWay}"/>
-                        </DockPanel>
-                        <DockPanel Width="80" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Outside"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalOutside,Mode=OneWay}"/>
-                        </DockPanel>
-                        <DockPanel Width="80" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Given Away"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalGivenAway,Mode=OneWay}"/>
-                        </DockPanel>
-                        <DockPanel  Width="80" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Real"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalReal,Mode=OneWay}"/>
-                        </DockPanel>
-                        <DockPanel HorizontalAlignment="Stretch" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Result"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}"/>
-                        </DockPanel>
+                <DockPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="10,10,0,10">
+                    <DockPanel Width="80" >
+                        <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="System"/>
+                        <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.System.CloseBalance,Mode=OneWay}"/>
                     </DockPanel>
-                </Grid>
+                    <DockPanel Width="80" Margin="{StaticResource SmallLeftMargin}">
+                        <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Outside"/>
+                        <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalOutside,Mode=OneWay}"/>
+                    </DockPanel>
+                    <DockPanel Width="80" Margin="{StaticResource SmallLeftMargin}">
+                        <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Given Away"/>
+                        <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalGivenAway,Mode=OneWay}"/>
+                    </DockPanel>
+                    <DockPanel  Width="80" Margin="{StaticResource SmallLeftMargin}">
+                        <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Real"/>
+                        <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalReal,Mode=OneWay}"/>
+                    </DockPanel>
+                    <DockPanel Width="80" Margin="{StaticResource SmallLeftMargin}">
+                        <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Result"/>
+                        <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}"/>
+                    </DockPanel>
+                    <DockPanel HorizontalAlignment="Stretch" Margin="{StaticResource SmallLeftMargin}">
+                        <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" HorizontalAlignment="Stretch" TextAlignment="Center" DockPanel.Dock="Top" Text="Result"/>
+                        <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}"/>
+                    </DockPanel>
+                </DockPanel>
             </Grid>
         </Grid>
     </Grid>

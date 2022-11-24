@@ -31,22 +31,26 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
-    private string _agentId;
-    private string lastUpdated;
+    private string agentID;
+    private DateTime lastUpdated;
     public string AgentID
     {
-        get { return _agentId; }
+        get { return agentID; }
         set 
         { 
-            Set(ref _agentId, value);
-            SaveAgentID(_agentId);
+            Set(ref agentID, value);
+            SaveSetting(agentID, AgentSettingsKey);
         }
     }
 
-    public string LastUpdated
+    public DateTime LastUpdated
     {
         get { return lastUpdated; }
-        set { Set(ref lastUpdated ,value); }
+        set 
+        { 
+            Set(ref lastUpdated ,value);
+            SaveSetting(value.ToString(), LastUpdatedSettingsKey);
+        }
     }
 
     private readonly ISystemDataGather _dataGather;
@@ -88,6 +92,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
                     await SystemORM.Insert(i);
                     SystemProducts.Add(i);
                 }
+                LastUpdated = d;
             }
         }
         catch (Exception ex)
@@ -115,25 +120,27 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
         Loading(true);
-        AgentID = GetOldID();
+        AgentID = GetSavedSetting(AgentSettingsKey);
+        DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
+        LastUpdated = d;
         SystemProducts.Clear();
         foreach (var item in await SystemORM.SelectAll())
             SystemProducts.Add(item);
         Loading(false);
     }
-    private string GetOldID()
+    private string GetSavedSetting(string key)
     {
-        if (App.Current.Properties.Contains(AgentSettingsKey))
+        if (App.Current.Properties.Contains(key))
         {
-            string Agent = App.Current.Properties[AgentSettingsKey].ToString();
-            return Agent;
+            string savedString = App.Current.Properties[key].ToString();
+            return savedString;
         }
         return "";
     }
-    private void SaveAgentID(string val)
+    private void SaveSetting(string val,string key)
     {
         if(!string.IsNullOrWhiteSpace(val))
-            App.Current.Properties[AgentSettingsKey] = val;
+            App.Current.Properties[key] = val;
     }
     void INavigationAware.OnNavigatedFrom()
     {
