@@ -41,7 +41,7 @@ namespace InventoryManager.Core.Services {
             string cmd = $"SELECT * FROM {nameof(LocalInventory)} WHERE {nameof(LocalInventory.ProductID)} = @{nameof(Product.ID)};";
             var products = await _dataAccess.ReadDataAsync<LocalInventory>(cmd, product);
             if (products.Count() > 0)
-                return products.First().Real;
+                return products.First().Total;
             return 0;
         }
         public async Task<IEnumerable<LocalInventory>> SelectProduct(Product product)

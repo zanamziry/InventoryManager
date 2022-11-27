@@ -38,10 +38,17 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private readonly IDBSetup _dBSetup;
     private RelayCommand gotoNext;
     private RelayCommand gotoPrevious;
+    private MainInventory _selectedProduct;
 
+    public event PropertyChangedEventHandler PropertyChanged;
     public RelayCommand GotoNext => gotoNext ??= new RelayCommand(Next,CanNext);
     public RelayCommand GotoPrevious => gotoPrevious ??= new RelayCommand(Previous, CanPrevious);
 
+    public MainInventory SelectedProduct
+    {
+        get { return _selectedProduct; }
+        set { Set(ref _selectedProduct ,value); }
+    }
     bool CanNext()
     {
         if (Inventories.Count() > 1 && Inventories.Last() != SelectedProduct)
@@ -59,15 +66,15 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.Locals.Clear();
         foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
             SelectedProduct.Locals.Add(item);
-        update();
+        UpdateUI();
     }
     bool CanPrevious()
     {
-        if (Inventories.Count() > 1 && Inventories.First() != SelectedProduct)
+        if (Inventories.Count > 1 && Inventories.First() != SelectedProduct)
             return true;
         return false;
     }
-    void update()
+    void UpdateUI()
     {
         GotoNext.OnCanExecuteChanged();
         GotoPrevious.OnCanExecuteChanged();
@@ -83,14 +90,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.Locals.Clear();
         foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
             SelectedProduct.Locals.Add(item);
-        update();
-    }
-    public event PropertyChangedEventHandler PropertyChanged;
-    private MainInventory _selectedProduct;
-    public MainInventory SelectedProduct
-    {
-        get { return _selectedProduct; }
-        set { Set(ref _selectedProduct ,value); }
+        UpdateUI();
     }
 
     async void AddInventory(LocalInventory value)
@@ -157,7 +157,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;
             foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
                 SelectedProduct.Locals.Add(item);
-            update();
+            UpdateUI();
         }
     }
 
@@ -189,6 +189,10 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
             Remove(e.Row.DataContext as LocalInventory);
+        }
+        if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
+        {
+            update(e.Row.DataContext as LocalInventory);
         }
     }
 }

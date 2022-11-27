@@ -13,7 +13,7 @@ namespace InventoryManager.Models
 
         public int TotalGivenAway { get; set; }
         public int TotalOutside { get; set; }
-        public int TotalReal => Locals.Sum(o => o.Real);
+        public int TotalReal => Locals.Sum(o => o.Total);
         public int Result => (TotalReal + TotalGivenAway + TotalOutside) - System.CloseBalance;
 
         public event PropertyChangedEventHandler PropertyChanged;
