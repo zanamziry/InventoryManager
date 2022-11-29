@@ -30,6 +30,11 @@ namespace InventoryManager.Core.Services {
             string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}) values(@{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)});";
             await _dataAccess.ExecuteAsync(cmd, param);
         }
+        public async Task Update(LocalInventory param)
+        {
+            string cmd = $"UPDATE {nameof(LocalInventory)} SET {nameof(LocalInventory.Inventory)} = @{nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)} = @{nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)} = @{nameof(LocalInventory.ExpireDate)} WHERE {nameof(LocalInventory.ID)} = @{nameof(LocalInventory.ID)};";
+            await _dataAccess.ExecuteAsync(cmd, param);
+        }
 
         public override async Task<IEnumerable<LocalInventory>> SelectAll() {
             string cmd = $"SELECT * FROM {nameof(LocalInventory)};";

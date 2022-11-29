@@ -69,7 +69,7 @@
                         </Button>
                     </Grid>
                 </StackPanel>
-                <DataGrid Grid.Column="1" x:Name="GridOfInventory" CellEditEnding="GridOfInventory_CellEditEnding" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}">
+                <DataGrid Grid.Column="1" x:Name="GridOfInventory" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="100"/>
                         <DataGridTextColumn Header="Open" Binding="{Binding Open}" Width="100"/>

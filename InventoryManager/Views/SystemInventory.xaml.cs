@@ -83,7 +83,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         try
         {
             var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(AgentID, d));
-            if (s != null && s.list != null && s.list.Count() > 0)
+            if (s != null && s.list != null && s.list.Any())
             {
                 await SystemORM.DeleteAll();
                 SystemProducts.Clear();
@@ -93,6 +93,10 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
                     SystemProducts.Add(i);
                 }
                 LastUpdated = d;
+            }
+            else
+            {
+                throw new Exception("Couldn't Load The Data Correctly, Please Try Again...");
             }
         }
         catch (Exception ex)

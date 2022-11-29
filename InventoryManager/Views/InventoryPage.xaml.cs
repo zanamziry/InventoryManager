@@ -41,13 +41,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private MainInventory _selectedProduct;
 
     public event PropertyChangedEventHandler PropertyChanged;
-    public RelayCommand GotoNext => gotoNext ??= new RelayCommand(Next,CanNext);
+    public RelayCommand GotoNext => gotoNext ??= new RelayCommand(Next, CanNext);
     public RelayCommand GotoPrevious => gotoPrevious ??= new RelayCommand(Previous, CanPrevious);
 
     public MainInventory SelectedProduct
     {
         get { return _selectedProduct; }
-        set { Set(ref _selectedProduct ,value); }
+        set { Set(ref _selectedProduct, value); }
     }
     bool CanNext()
     {
@@ -55,7 +55,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             return true;
         return false;
     }
-    
+
     async void Next()
     {
         int s = Inventories.IndexOf(SelectedProduct);
@@ -104,7 +104,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         }
         catch (SqliteException ex)
         {
-            MessageBox.Show(ex.Message,"Database Error!",MessageBoxButton.OK,MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Database Error!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -129,13 +129,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         if (CanAdd())
         {
             DateTime.TryParse(ProductExpire.Text, out DateTime r);
-            AddInventory(new LocalInventory {ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r});
+            AddInventory(new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r });
         }
     }
 
     private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
-        if(GridOfInventory.SelectedItem is LocalInventory p)
+        if (GridOfInventory.SelectedItem is LocalInventory p)
         {
             Remove(p);
         }
@@ -184,7 +184,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 break;
         }
     }
-    private void GridOfInventory_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+    private async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
@@ -192,7 +192,41 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         }
         if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
         {
-            update(e.Row.DataContext as LocalInventory);
+            if (e.Row.DataContext is LocalInventory l && e.EditingElement is TextBox tb && e.Column.Header is string header)
+            {
+                switch (header)
+                {
+                    case nameof(LocalInventory.Inventory):
+                        {
+                            int.TryParse(tb.Text, out int a);
+                            l.Inventory = a;
+                            break;
+                        }
+                    case nameof(LocalInventory.Open):
+                        {
+                            int.TryParse(tb.Text, out int b);
+                            l.Open = b;
+                            break;
+                        }
+                    case nameof(LocalInventory.ExpireDate):
+                        {
+                            DateTime.TryParse(tb.Text, out DateTime c);
+                            l.ExpireDate = c;
+                            break;
+                        }
+                }
+                try
+                {
+                    await InventoryORM.Update(l);
+                    UpdateUI();
+                    int i = SelectedProduct.Locals.IndexOf(l);
+                    SelectedProduct.Locals[i].OnRealChanged();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Database Error");
+                }
+            }
         }
     }
 }
