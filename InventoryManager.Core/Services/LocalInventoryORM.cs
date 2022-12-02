@@ -26,9 +26,12 @@ namespace InventoryManager.Core.Services {
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override async Task Insert(LocalInventory param) {
+        public override async Task<LocalInventory> Insert(LocalInventory param) {
             string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}) values(@{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)});";
             await _dataAccess.ExecuteAsync(cmd, param);
+            int id = await LastInput();
+            param.ID = id;
+            return param;
         }
         public async Task Update(LocalInventory param)
         {
@@ -36,11 +39,6 @@ namespace InventoryManager.Core.Services {
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override async Task<IEnumerable<LocalInventory>> SelectAll() {
-            string cmd = $"SELECT * FROM {nameof(LocalInventory)};";
-            var products = (await _dataAccess.ReadDataAsync<LocalInventory>(cmd));
-            return products;
-        }
         public async Task<int> GetReal(Product product)
         {
             string cmd = $"SELECT * FROM {nameof(LocalInventory)} WHERE {nameof(LocalInventory.ProductID)} = @{nameof(Product.ID)};";

@@ -25,15 +25,12 @@ namespace InventoryManager.Core.Services {
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override async Task Insert(GivenAway param) {
+        public override async Task<GivenAway> Insert(GivenAway param) {
             string cmd = $"INSERT INTO {nameof(GivenAway)} ({nameof(GivenAway.InventoryID)}, {nameof(GivenAway.Amount)}, {nameof(GivenAway.Event)}) values(@{nameof(GivenAway.InventoryID)}, @{nameof(GivenAway.Amount)}, @{nameof(GivenAway.Event)});";
             await _dataAccess.ExecuteAsync(cmd, param);
-        }
-
-        public override async Task<IEnumerable<GivenAway>> SelectAll() {
-            string cmd = $"SELECT * FROM {nameof(GivenAway)};";
-            var products = (await _dataAccess.ReadDataAsync<GivenAway>(cmd));
-            return products;
+            int id = await LastInput();
+            param.ID = id;
+            return param;
         }
 
         public async Task<IEnumerable<GivenAway>> SelectByInventoryID(LocalInventory inventory) {

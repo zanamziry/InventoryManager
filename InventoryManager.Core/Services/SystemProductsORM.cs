@@ -26,20 +26,17 @@ namespace InventoryManager.Core.Services {
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override async Task Insert(SystemProduct param) {
+        public override async Task<SystemProduct> Insert(SystemProduct param) {
             string cmd = $"INSERT INTO {nameof(SystemProduct)} ({nameof(SystemProduct.ID)}, {nameof(SystemProduct.Name)}, {nameof(SystemProduct.OpenBalance)}, {nameof(SystemProduct.Sold)}, {nameof(SystemProduct.CloseBalance)}) values(@{nameof(SystemProduct.ID)}, @{nameof(SystemProduct.Name)}, @{nameof(SystemProduct.OpenBalance)}, @{nameof(SystemProduct.Sold)}, @{nameof(SystemProduct.CloseBalance)});";
             await _dataAccess.ExecuteAsync(cmd, param);
+            return param;
         }
         public async Task DeleteAll()
         {
             string cmd = $"DELETE FROM {nameof(SystemProduct)} WHERE 1 = 1;";
             await _dataAccess.ExecuteAsync(cmd);
         }
-        public override async Task<IEnumerable<SystemProduct>> SelectAll() {
-            string cmd = $"SELECT * FROM {nameof(SystemProduct)};";
-            var products = (await _dataAccess.ReadDataAsync<SystemProduct>(cmd));
-            return products;
-        }
+
         public async Task<SystemProduct> SelectProduct(Product product)
         {
             string cmd = $"SELECT * FROM {nameof(SystemProduct)} WHERE {nameof(SystemProduct.ID)} = @{nameof(Product.ID)};";

@@ -26,15 +26,12 @@ namespace InventoryManager.Core.Services {
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override async Task Insert(SentOutside param) {
+        public override async Task<SentOutside> Insert(SentOutside param) {
             string cmd = $"INSERT INTO {nameof(SentOutside)} ({nameof(SentOutside.InventoryID)}, {nameof(SentOutside.AmountSent)},{nameof(SentOutside.AmountSold)}, {nameof(SentOutside.Location)}) values(@{nameof(SentOutside.InventoryID)}, @{nameof(SentOutside.AmountSent)}, @{nameof(SentOutside.AmountSold)}, @{nameof(SentOutside.Location)});";
             await _dataAccess.ExecuteAsync(cmd, param);
-        }
-
-        public override async Task<IEnumerable<SentOutside>> SelectAll() {
-            string cmd = $"SELECT * FROM {nameof(SentOutside)};";
-            var products = await _dataAccess.ReadDataAsync<SentOutside>(cmd);
-            return products;
+            int id = await LastInput();
+            param.ID = id;
+            return param;
         }
 
         public async Task<IEnumerable<SentOutside>> SelectByInventoryID(LocalInventory inventory) {

@@ -99,8 +99,8 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             return;
         try
         {
-            await InventoryORM.Insert(value);
-            SelectedProduct.Locals.Add(value);
+            SelectedProduct.Locals.Add(await InventoryORM.Insert(value));
+            UpdateUI();
         }
         catch (SqliteException ex)
         {
@@ -145,6 +145,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
         await InventoryORM.Delete(p);
         SelectedProduct.Locals.Remove(p);
+        UpdateUI();
     }
 
     async void INavigationAware.OnNavigatedTo(object parameter)
@@ -154,32 +155,25 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Inventories = s.ToList();
             SelectedProduct = p;
             SelectedProduct.Locals.Clear();
-            SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;
             foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
                 SelectedProduct.Locals.Add(item);
             UpdateUI();
         }
     }
 
-    private void Locals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        SelectedProduct.OnPropertyChanged();
-    }
 
     void INavigationAware.OnNavigatedFrom()
     {
-        SelectedProduct.Locals.CollectionChanged -= Locals_CollectionChanged;
     }
 
-    private async void OnKeyUp(object sender, KeyEventArgs e)
+    private void OnKeyUp(object sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
             case Key.Delete:
                 if ((e.OriginalSource as FrameworkElement).DataContext is LocalInventory p)
                 {
-                    await InventoryORM.Delete(p);
-                    SelectedProduct.Locals.Remove(p);
+                    Remove(p);
                 }
                 break;
         }

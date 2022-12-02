@@ -28,15 +28,10 @@ namespace InventoryManager.Core.Services {
             await _dataAccess.ExecuteAsync(cmd);
         }
 
-        public override async Task Insert(Product param) {
+        public override async Task<Product> Insert(Product param) {
             string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Price)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Price)});";
             await _dataAccess.ExecuteAsync(cmd, param);
-        }
-
-        public override async Task<IEnumerable<Product>> SelectAll() {
-            string cmd = $"SELECT * FROM {nameof(Product)};";
-            var products = (await _dataAccess.ReadDataAsync<Product>(cmd));
-            return products;
+            return param;
         }
     }
 }
