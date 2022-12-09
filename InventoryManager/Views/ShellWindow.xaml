@@ -10,7 +10,7 @@
     Style="{StaticResource CustomMetroWindow}"
     mc:Ignorable="d"
     MinWidth="500"
-    MinHeight="350"
+    MinHeight="400"
     Loaded="OnLoaded"
     Unloaded="OnUnloaded"
     Title="{x:Static properties:Resources.AppDisplayName}">

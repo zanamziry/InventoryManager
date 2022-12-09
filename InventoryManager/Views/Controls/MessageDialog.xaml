@@ -1,0 +1,21 @@
+﻿<ContentControl x:Class="InventoryManager.Views.Controls.MessageDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:InventoryManager.Views.Controls"
+             Name="messageDialog"
+             mc:Ignorable="d" >
+    <ContentControl.Template>
+        <ControlTemplate TargetType="local:MessageDialog">
+            <Grid Background="#7f000000">
+                <Border CornerRadius="{Binding CornerRadius}" BorderThickness="{Binding BorderStrokeThickness,ElementName=messageDialog}" BorderBrush="{StaticResource MahApps.Brushes.Accent}" Background="{StaticResource MahApps.Brushes.Badged.Background}"  Width="{Binding DialogWidth,ElementName=messageDialog}" Height="{Binding DialogHeight,ElementName=messageDialog}">
+                    <StackPanel Margin="20" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <TextBlock Text="{Binding Title,ElementName=messageDialog}" HorizontalAlignment="Center" FontSize="20" />
+                        <ContentPresenter />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ControlTemplate>
+    </ContentControl.Template>
+</ContentControl>

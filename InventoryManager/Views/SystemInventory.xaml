@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
+    xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:local="clr-namespace:InventoryManager.Views.Controls"
     xmlns:li="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
@@ -53,6 +55,9 @@
                 </DataGrid>
             </Grid>
         </Grid>
+        <local:MessageDialog Grid.RowSpan="2">
+            <TextBlock Text="test"/>
+        </local:MessageDialog>
         <Grid Grid.RowSpan="2">
             <Rectangle Visibility="Collapsed" x:Name="loadingBackground" Stroke="{StaticResource MahApps.Brushes.Accent}" Opacity="0.6" Fill="{StaticResource MahApps.Brushes.Gray8}">
                 <Rectangle.Effect>
