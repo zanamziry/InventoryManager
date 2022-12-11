@@ -55,16 +55,11 @@
                 </DataGrid>
             </Grid>
         </Grid>
-        <local:MessageDialog Grid.RowSpan="2">
-            <TextBlock Text="test"/>
+        <local:MessageDialog x:Name="loadingpopup" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
+            <StackPanel VerticalAlignment="Center">
+                <li:LoadingSpinner IsLoading="True" Diameter="45" Thickness="3" Cap="Round" Color="{StaticResource MahApps.Brushes.Accent}" />
+                <TextBlock Text="Loading" HorizontalAlignment="Stretch" TextAlignment="Center" Padding="5" Margin="{StaticResource SmallTopMargin}"/>
+            </StackPanel>
         </local:MessageDialog>
-        <Grid Grid.RowSpan="2">
-            <Rectangle Visibility="Collapsed" x:Name="loadingBackground" Stroke="{StaticResource MahApps.Brushes.Accent}" Opacity="0.6" Fill="{StaticResource MahApps.Brushes.Gray8}">
-                <Rectangle.Effect>
-                    <BlurEffect Radius="3"/>
-                </Rectangle.Effect>
-            </Rectangle>
-            <li:LoadingSpinner x:Name="loadingCircle" Diameter="45" Thickness="3" Cap="Round" Color="{StaticResource MahApps.Brushes.Accent}" />
-        </Grid>
     </Grid>
 </Page>

@@ -112,13 +112,11 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     {
         if(val == true)
         {
-            loadingBackground.Visibility = Visibility.Visible;
-            loadingCircle.IsLoading = true;
+            loadingpopup.Visibility = Visibility.Visible;
         }
         else
         {
-            loadingBackground.Visibility = Visibility.Collapsed;
-            loadingCircle.IsLoading = false;
+            loadingpopup.Visibility = Visibility.Collapsed;
         }
     }
     async void INavigationAware.OnNavigatedTo(object parameter)

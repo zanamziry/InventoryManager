@@ -9,11 +9,16 @@
     <ContentControl.Template>
         <ControlTemplate TargetType="local:MessageDialog">
             <Grid Background="#7f000000">
-                <Border CornerRadius="{Binding CornerRadius}" BorderThickness="{Binding BorderStrokeThickness,ElementName=messageDialog}" BorderBrush="{StaticResource MahApps.Brushes.Accent}" Background="{StaticResource MahApps.Brushes.Badged.Background}"  Width="{Binding DialogWidth,ElementName=messageDialog}" Height="{Binding DialogHeight,ElementName=messageDialog}">
-                    <StackPanel Margin="20" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <TextBlock Text="{Binding Title,ElementName=messageDialog}" HorizontalAlignment="Center" FontSize="20" />
-                        <ContentPresenter />
-                    </StackPanel>
+                <Border CornerRadius="{Binding CornerRadius, ElementName=messageDialog}" BorderThickness="{Binding BorderStrokeThickness,ElementName=messageDialog}" BorderBrush="{StaticResource MahApps.Brushes.Accent}" Background="{StaticResource MahApps.Brushes.Badged.Foreground}"  Width="{Binding DialogWidth,ElementName=messageDialog}" Height="{Binding DialogHeight,ElementName=messageDialog}">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Name="title" Visibility="{Binding IsTitleVisible, ElementName=messageDialog}" Padding="5" HorizontalAlignment="Stretch"
+                                   TextAlignment="Center" Background="{StaticResource MahApps.Brushes.Badged.Background}" Text="{Binding Title,ElementName=messageDialog}"  Foreground="{StaticResource MahApps.Brushes.Badged.Foreground}" FontSize="15" FontWeight="ExtraLight" />
+                        <ContentPresenter Grid.Row="1" Margin="{StaticResource SmallTopBottomMargin}"/>
+                    </Grid>
                 </Border>
             </Grid>
         </ControlTemplate>

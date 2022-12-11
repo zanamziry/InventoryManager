@@ -59,6 +59,18 @@ namespace InventoryManager.Views.Controls
             DependencyProperty.Register("DialogWidth", typeof(double), typeof(MessageDialog), new PropertyMetadata(200.0));
 
 
+
+        public Visibility IsTitleVisible
+        {
+            get { return (Visibility)GetValue(IsTitleVisibleProperty); }
+            set { SetValue(IsTitleVisibleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsTitleVisible.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsTitleVisibleProperty =
+            DependencyProperty.Register("IsTitleVisible", typeof(Visibility), typeof(MessageDialog), new PropertyMetadata(Visibility.Visible));
+
+
         public Thickness BorderStrokeThickness
         {
             get { return (Thickness)GetValue(BorderStrokeThicknessProperty); }
