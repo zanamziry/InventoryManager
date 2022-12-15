@@ -6,7 +6,6 @@ using System.Windows.Threading;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
-
 using InventoryManager.Core.Services;
 using InventoryManager.Models;
 using InventoryManager.Services;
@@ -79,6 +78,7 @@ public partial class App : Application
         services.AddTransient<InventoryPage>();
         services.AddTransient<SystemInventory>();
         services.AddTransient<SettingsPage>();
+
 
         // Configuration
         services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));

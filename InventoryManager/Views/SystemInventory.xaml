@@ -49,13 +49,13 @@
                         <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="150"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Open Balance" Binding="{Binding OpenBalance}" />
+                        <DataGridTextColumn Header="Close Balance" Binding="{Binding CloseBalance}" />
                         <DataGridTextColumn Header="Sold" Binding="{Binding Sold}" />
-                        <DataGridTextColumn Header="Close Balance" Binding="{Binding OpenBalance}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </Grid>
-        <local:MessageDialog x:Name="loadingpopup" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
+        <local:MessageDialog Style="{DynamicResource messageDialog}" x:Name="loadingpopup" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
             <StackPanel VerticalAlignment="Center">
                 <li:LoadingSpinner IsLoading="True" Diameter="45" Thickness="3" Cap="Round" Color="{StaticResource MahApps.Brushes.Accent}" />
                 <TextBlock Text="Loading" HorizontalAlignment="Stretch" TextAlignment="Center" Padding="5" Margin="{StaticResource SmallTopMargin}"/>

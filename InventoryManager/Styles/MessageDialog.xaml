@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:InventoryManager.Views.Controls">
+    <Style TargetType="{x:Type local:MessageDialog}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:MessageDialog">
+                    <Grid Background="#7f000000">
+                        <Border CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderStrokeThickness}" BorderBrush="{DynamicResource MahApps.Brushes.Accent}" Background="{DynamicResource MahApps.Brushes.Badged.Foreground}"  Width="{TemplateBinding DialogWidth}" Height="{TemplateBinding DialogHeight}">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Name="title" Visibility="{TemplateBinding IsTitleVisible}" Padding="5" HorizontalAlignment="Stretch"
+                                   TextAlignment="Center" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Text="{TemplateBinding Title}"  Foreground="{DynamicResource MahApps.Brushes.Badged.Foreground}" FontSize="15" FontWeight="ExtraLight" />
+                                <ContentPresenter Content="{TemplateBinding Content}" Grid.Row="1" Margin="{DynamicResource SmallTopBottomMargin}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

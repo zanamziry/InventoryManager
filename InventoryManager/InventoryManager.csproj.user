@@ -2,15 +2,13 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="Views\Controls\MessageDialog.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\InventoryPage.xaml">
+    <Page Update="Styles\MessageDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Controls\MessageDialog.xaml">
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\InventoryPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SystemInventory.xaml">

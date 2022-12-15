@@ -42,6 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Styles\MessageDialog.xaml">
+      <Generator></Generator>
+    </Page>
     <Page Update="Views\InventoryPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
