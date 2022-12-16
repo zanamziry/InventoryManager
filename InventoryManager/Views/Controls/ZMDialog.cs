@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace InventoryManager.Views.Controls
 {
@@ -46,15 +35,14 @@ namespace InventoryManager.Views.Controls
     ///
     /// </summary>
     [ContentProperty("Content")]
-    public class MessageDialog : Control
+
+    public class ZMDialog : Control
     {
-        static MessageDialog()
+
+        static ZMDialog()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(MessageDialog), new FrameworkPropertyMetadata(typeof(MessageDialog)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ZMDialog), new FrameworkPropertyMetadata(typeof(ZMDialog)));
         }
-
-
-
         public object Content
         {
             get { return (object)GetValue(ContentProperty); }
@@ -63,7 +51,7 @@ namespace InventoryManager.Views.Controls
 
         // Using a DependencyProperty as the backing store for Content.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(object), typeof(MessageDialog), new PropertyMetadata(null));
+            DependencyProperty.Register("Content", typeof(object), typeof(ZMDialog), new PropertyMetadata(null));
 
 
         public CornerRadius CornerRadius
@@ -74,7 +62,7 @@ namespace InventoryManager.Views.Controls
 
         // Using a DependencyProperty as the backing store for CornerRadius.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(MessageDialog), new PropertyMetadata(new CornerRadius(5)));
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ZMDialog), new PropertyMetadata(new CornerRadius(5)));
 
 
         public double DialogHeight
@@ -85,7 +73,7 @@ namespace InventoryManager.Views.Controls
 
         // Using a DependencyProperty as the backing store for DialogHeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DialogHeightProperty =
-            DependencyProperty.Register("DialogHeight", typeof(double), typeof(MessageDialog), new PropertyMetadata(100.0));
+            DependencyProperty.Register("DialogHeight", typeof(double), typeof(ZMDialog), new PropertyMetadata(100.0));
 
 
         public double DialogWidth
@@ -96,7 +84,7 @@ namespace InventoryManager.Views.Controls
 
         // Using a DependencyProperty as the backing store for DialogWidth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DialogWidthProperty =
-            DependencyProperty.Register("DialogWidth", typeof(double), typeof(MessageDialog), new PropertyMetadata(200.0));
+            DependencyProperty.Register("DialogWidth", typeof(double), typeof(ZMDialog), new PropertyMetadata(200.0));
 
 
 
@@ -108,7 +96,7 @@ namespace InventoryManager.Views.Controls
 
         // Using a DependencyProperty as the backing store for IsTitleVisible.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsTitleVisibleProperty =
-            DependencyProperty.Register("IsTitleVisible", typeof(Visibility), typeof(MessageDialog), new PropertyMetadata(Visibility.Visible));
+            DependencyProperty.Register("IsTitleVisible", typeof(Visibility), typeof(ZMDialog), new PropertyMetadata(Visibility.Visible));
 
 
         public Thickness BorderStrokeThickness
@@ -119,7 +107,7 @@ namespace InventoryManager.Views.Controls
 
         // Using a DependencyProperty as the backing store for BorderThickness.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BorderStrokeThicknessProperty =
-            DependencyProperty.Register("BorderStrokeThickness", typeof(Thickness), typeof(MessageDialog), new PropertyMetadata(new Thickness(1)));
+            DependencyProperty.Register("BorderStrokeThickness", typeof(Thickness), typeof(ZMDialog), new PropertyMetadata(new Thickness(1)));
 
 
         public string Title
@@ -130,7 +118,7 @@ namespace InventoryManager.Views.Controls
 
         // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(MessageDialog), new PropertyMetadata("Dialog"));
+            DependencyProperty.Register("Title", typeof(string), typeof(ZMDialog), new PropertyMetadata("Dialog"));
 
 
     }
