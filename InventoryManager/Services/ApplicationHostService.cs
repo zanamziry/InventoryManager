@@ -10,6 +10,7 @@ namespace InventoryManager.Services;
 public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly ISystemService _systemService;
     private readonly IDBSetup _dBSetup;
     private readonly INavigationService _navigationService;
     private readonly IPersistAndRestoreService _persistAndRestoreService;
@@ -18,7 +19,7 @@ public class ApplicationHostService : IHostedService
     private IShellWindow _shellWindow;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IThemeSelectorService themeSelectorService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IThemeSelectorService themeSelectorService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemService systemService)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
@@ -26,6 +27,7 @@ public class ApplicationHostService : IHostedService
         _themeSelectorService = themeSelectorService;
         _persistAndRestoreService = persistAndRestoreService;
         _dBSetup = dBSetup;
+        _systemService = systemService;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -34,7 +36,7 @@ public class ApplicationHostService : IHostedService
         await InitializeAsync();
 
         await HandleActivationAsync();
-
+        
         // Tasks after activation
         await StartupAsync();
         _isInitialized = true;
@@ -53,6 +55,7 @@ public class ApplicationHostService : IHostedService
             _persistAndRestoreService.RestoreData();
             _themeSelectorService.InitializeTheme();
             _dBSetup.InitializeDatabase();
+            _systemService.StartServer();
             await Task.CompletedTask;
         }
     }

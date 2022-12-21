@@ -10,7 +10,9 @@ public class SystemService : ISystemService
     {
     }
 
-    readonly string cmdArgs = "./dxn_api/manage.py 127.0.0.1 80";
+    readonly string migrateCMD = "./dxn_api/manage.py migrate";
+    readonly string makemigrationsCMD = "./dxn_api/manage.py makemigrations";
+    readonly string runserverCMD = "./dxn_api/manage.py runserver 127.0.0.1:80";
     Process _process;
     public void OpenInWebBrowser(string url)
     {
@@ -27,21 +29,42 @@ public class SystemService : ISystemService
     {
         if (_process != null)
             return;
+        makemigrations();
+        migrate();
         _process = new Process();
-        _process.StartInfo = new ProcessStartInfo(@"C:\Python27\python.exe", cmdArgs)
+        _process.StartInfo = new ProcessStartInfo(@"python.exe", runserverCMD)
         {
-            RedirectStandardOutput = true,
+            RedirectStandardOutput = false,
             UseShellExecute = false,
-            CreateNoWindow = true
+            CreateNoWindow = true,
         };
         _process.Start();
-        
-        string output = _process.StandardOutput.ReadToEnd();
-        p.WaitForExit();
-        Console.WriteLine(output);
-        Console.ReadLine();
     }
 
+    public void migrate()
+    {
+        Process p = new Process();
+        p.StartInfo = new ProcessStartInfo(@"python.exe", migrateCMD)
+        {
+            RedirectStandardOutput = false,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+        };
+        p.Start();
+        p.WaitForExit();
+    }
+    public void makemigrations()
+    {
+        Process p = new Process();
+        p.StartInfo = new ProcessStartInfo(@"python.exe", makemigrationsCMD)
+        {
+            RedirectStandardOutput = false,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+        };
+        p.Start();
+        p.WaitForExit();
+    }
     public void StopServer()
     {
         if (_process == null)
