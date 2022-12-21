@@ -202,4 +202,12 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     void INavigationAware.OnNavigatedFrom()
     {
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        ProductName.Text = "";
+        ProductPrice.Text = "0.0";
+        ProductCode.Text = "";
+        ToggleAdd.IsChecked = false;
+    }
 }

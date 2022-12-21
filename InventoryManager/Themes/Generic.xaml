@@ -4,6 +4,6 @@
     xmlns:local="clr-namespace:InventoryManager.Views.Controls">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Styles/MessageDialog.xaml"/>
+
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

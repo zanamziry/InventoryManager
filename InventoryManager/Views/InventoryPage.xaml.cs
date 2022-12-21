@@ -21,10 +21,6 @@ namespace InventoryManager.Views;
 
 public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    /*
-     TODO: Things to add to InventoryPage
-        - Next and Previous Product
-     */
 
     public InventoryPage(IDBSetup dBSetup)
     {
@@ -130,6 +126,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         {
             DateTime.TryParse(ProductExpire.Text, out DateTime r);
             AddInventory(new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r });
+            ToggleAdd.IsChecked = false;
         }
     }
 

@@ -53,8 +53,6 @@ namespace InventoryManager.Views.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MessageDialog), new FrameworkPropertyMetadata(typeof(MessageDialog)));
         }
 
-
-
         public object Content
         {
             get { return (object)GetValue(ContentProperty); }
