@@ -50,7 +50,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Padding="0,0" Margin="0,0,2,0" BorderThickness="1"  Command="{Binding GotoPrevious}" >
+                        <Button Grid.Column="0" Padding="5" Margin="0,0,2,0" BorderThickness="1"  Command="{Binding GotoPrevious}" >
                             <DockPanel>
                                 <TextBlock VerticalAlignment="Center" Style="{StaticResource SmallIconStyle}" Text="&#xE892;" Margin="2"/>
                                 <TextBlock VerticalAlignment="Center" Text="Previous"/>
@@ -109,7 +109,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <local:MessageDialog Visibility="{Binding ElementName=ToggleAdd,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="240" DialogWidth="240" Title="Add Inventory">
+        <local:ZMDialog Visibility="{Binding ElementName=ToggleAdd,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="Add Inventory">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 <TextBlock Text="Inventory" Margin="0,3"/>
                 <TextBox x:Name="InventoryAmount"/>
@@ -119,6 +119,6 @@
                 <DatePicker x:Name="ProductExpire"/>
                 <Button Content="Add" VerticalAlignment="Stretch" Padding="20,0" Style="{StaticResource MahApps.Styles.Button}" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Click="OnAddButtonClicked"/>
             </StackPanel>
-        </local:MessageDialog>
+        </local:ZMDialog>
     </Grid>
 </Page>

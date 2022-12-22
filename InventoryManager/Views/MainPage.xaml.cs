@@ -203,7 +203,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     {
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void OnCancelButtonClicked(object sender, RoutedEventArgs e)
     {
         ProductName.Text = "";
         ProductPrice.Text = "0.0";

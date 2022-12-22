@@ -45,6 +45,7 @@ public class ApplicationHostService : IHostedService
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         _persistAndRestoreService.PersistData();
+        _systemService.StopServer();
         await Task.CompletedTask;
     }
 
