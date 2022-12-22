@@ -24,7 +24,7 @@
         <Grid
             Grid.Row="1"
             Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{DynamicResource MahApps.Brushes.Gray10}">
+            Background="{StaticResource MahApps.Brushes.Gray10}">
             <!--
             The Mahapps Gray10 color represents where you should place your content.
             Place your content here.
@@ -55,11 +55,11 @@
                 </DataGrid>
             </Grid>
         </Grid>
-        <local:MessageDialog x:Name="loadingpopup" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
+        <local:ZMDialog x:Name="loadingpopup" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
             <StackPanel VerticalAlignment="Center">
                 <li:LoadingSpinner IsLoading="True" Diameter="45" Thickness="3" Cap="Round" Color="{StaticResource MahApps.Brushes.Accent}" />
-                <TextBlock Text="Loading" HorizontalAlignment="Stretch" TextAlignment="Center" Padding="5" Margin="{StaticResource SmallTopMargin}"/>
+                <TextBlock Text="Fetching Data..." Foreground="#c000" HorizontalAlignment="Stretch" TextAlignment="Center" Padding="5" Margin="{StaticResource SmallTopMargin}"/>
             </StackPanel>
-        </local:MessageDialog>
+        </local:ZMDialog>
     </Grid>
 </Page>

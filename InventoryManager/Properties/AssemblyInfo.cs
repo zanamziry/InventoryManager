@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
+using System.Windows;
 
-[assembly: System.Windows.ThemeInfo(System.Windows.ResourceDictionaryLocation.None, System.Windows.ResourceDictionaryLocation.SourceAssembly)]
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
 // In SDK-style projects such as this one, several assembly attributes that were historically
 // defined in this file are now automatically added during build and populated with

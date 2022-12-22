@@ -3,4 +3,6 @@
 public interface ISystemService
 {
     void OpenInWebBrowser(string url);
+    void StartServer();
+    void StopServer();
 }
