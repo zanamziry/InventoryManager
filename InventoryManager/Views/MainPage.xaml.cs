@@ -101,10 +101,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     }
     private async void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
-        if(GridOfProducts.SelectedItem is Product p)
+        if(GridOfProducts.SelectedItem is MainInventory p)
         {
-            await ProductsORM.Delete(p);
-            var ns = Source.Where(o => o.Product == p);
+            await ProductsORM.Delete(p.Product);
+            var ns = Source.Where(o => o.Product == p.Product);
             if (ns.Count() < 1)
                 return;
             Source.Remove(ns.First());
