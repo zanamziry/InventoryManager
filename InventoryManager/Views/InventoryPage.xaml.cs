@@ -118,25 +118,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         OnPropertyChanged(propertyName);
     }
 
-    private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-    private void OnAddButtonClicked(object sender, RoutedEventArgs e)
-    {
-        if (CanAdd())
-        {
-            DateTime.TryParse(ProductExpire.Text, out DateTime r);
-            AddInventory(new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r });
-            ToggleAdd.IsChecked = false;
-        }
-    }
-
-    private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
-    {
-        if (GridOfInventory.SelectedItem is LocalInventory p)
-        {
-            Remove(p);
-        }
-    }
 
     async void Remove(LocalInventory p)
     {
@@ -219,5 +200,53 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 }
             }
         }
+    }
+    private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
+    {
+        if (GridOfInventory.SelectedItem is LocalInventory p)
+        {
+            Remove(p);
+        }
+    }
+
+    private void OnAddButtonClicked(object sender, RoutedEventArgs e)
+    {
+        if (CanAdd())
+        {
+            DateTime.TryParse(ProductExpire.Text, out DateTime r);
+            AddInventory(new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r });
+            ToggleAdd.IsChecked = false;
+        }
+    }
+    private void OnCancelAddClicked(object sender, RoutedEventArgs e)
+    {
+        BatchIDToSend.Text = "";
+        OpenAmount.Text = "0";
+        ToggleAdd.IsChecked = false;
+    }
+
+    private void OnGiveAwayClicked(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void OnCancelGiveawayClicked(object sender, RoutedEventArgs e)
+    {
+        BatchIDToGive.Text = "";
+        AmountToGive.Text = "0";
+        ToggleGift.IsChecked = false;
+    }
+
+    private void OnSendClicked(object sender, RoutedEventArgs e)
+    {
+
+    }
+    private void OnCancelSendClicked(object sender, RoutedEventArgs e)
+    {
+        BatchIDToSend.Text = "";
+        AmountToSend.Text = "0";
+        ToggleSend.IsChecked = false;
     }
 }

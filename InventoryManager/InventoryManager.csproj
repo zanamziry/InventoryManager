@@ -10,6 +10,13 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <Compile Remove="dxn_api\frontApp\**" />
+    <EmbeddedResource Remove="dxn_api\frontApp\**" />
+    <None Remove="dxn_api\frontApp\**" />
+    <Page Remove="dxn_api\frontApp\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Remove="dxn_api\api\admin.py" />
     <None Remove="dxn_api\api\apps.py" />
     <None Remove="dxn_api\api\DataCollector.py" />
@@ -26,13 +33,6 @@
     <None Remove="dxn_api\dxn_api\urls.py" />
     <None Remove="dxn_api\dxn_api\wsgi.py" />
     <None Remove="dxn_api\dxn_api\__init__.py" />
-    <None Remove="dxn_api\frontApp\admin.py" />
-    <None Remove="dxn_api\frontApp\apps.py" />
-    <None Remove="dxn_api\frontApp\models.py" />
-    <None Remove="dxn_api\frontApp\tests.py" />
-    <None Remove="dxn_api\frontApp\urls.py" />
-    <None Remove="dxn_api\frontApp\views.py" />
-    <None Remove="dxn_api\frontApp\__init__.py" />
     <None Remove="dxn_api\manage.py" />
   </ItemGroup>
   
@@ -51,6 +51,7 @@
   <ItemGroup>
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="MahApps.Metro.IconPacks.MaterialDesign" Version="4.11.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
   </ItemGroup>
   
@@ -96,9 +97,6 @@
     <EmbeddedResource Include="dxn_api\api\apps.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\api\DataCollector.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="dxn_api\api\models.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -128,27 +126,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dxn_api\dxn_api\__init__.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\frontApp\admin.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\frontApp\apps.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\frontApp\models.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\frontApp\tests.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\frontApp\urls.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\frontApp\views.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\frontApp\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="dxn_api\manage.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

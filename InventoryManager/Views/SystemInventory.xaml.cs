@@ -33,6 +33,14 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     readonly string LastUpdatedSettingsKey = "LastUpdate";
     private string agentID;
     private DateTime lastUpdated;
+    private bool _isLoading;
+
+    public bool IsLoading
+    {
+        get { return _isLoading; }
+        set { Set(ref _isLoading ,value); }
+    }
+
     public string AgentID
     {
         get { return agentID; }
@@ -75,7 +83,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     private async void OnGetDataClicked(object sender, System.Windows.RoutedEventArgs e)
     {
-        Loading(true);
+        IsLoading = true;
         DateTime d;
         if (SelectedDate.SelectedDate != null)
             d = SelectedDate.SelectedDate.Value;
@@ -105,30 +113,20 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         }
         finally
         {
-            Loading(false);
+            IsLoading = false;
         }
     }
-    void Loading(bool val)
-    {
-        if(val == true)
-        {
-            loadingpopup.Visibility = Visibility.Visible;
-        }
-        else
-        {
-            loadingpopup.Visibility = Visibility.Collapsed;
-        }
-    }
+
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        Loading(true);
+        IsLoading = true;
         AgentID = GetSavedSetting(AgentSettingsKey);
         DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
         LastUpdated = d;
         SystemProducts.Clear();
         foreach (var item in await SystemORM.SelectAll())
             SystemProducts.Add(item);
-        Loading(false);
+        IsLoading = false;
     }
     private string GetSavedSetting(string key)
     {
