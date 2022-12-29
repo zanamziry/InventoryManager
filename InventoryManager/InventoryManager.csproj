@@ -10,13 +10,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Remove="dxn_api\frontApp\**" />
-    <EmbeddedResource Remove="dxn_api\frontApp\**" />
-    <None Remove="dxn_api\frontApp\**" />
-    <Page Remove="dxn_api\frontApp\**" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <None Remove="dxn_api\api\admin.py" />
     <None Remove="dxn_api\api\apps.py" />
     <None Remove="dxn_api\api\DataCollector.py" />
@@ -51,7 +44,7 @@
   <ItemGroup>
     <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
-    <PackageReference Include="MahApps.Metro.IconPacks.MaterialDesign" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
   </ItemGroup>
   
