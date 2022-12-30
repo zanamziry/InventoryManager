@@ -44,63 +44,42 @@
                 <StackPanel Grid.Column="0" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                     <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <TextBlock Text="{Binding SelectedProduct.Product.ID}" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
-                    <ToggleButton x:Name="ToggleAdd" Content="Add" VerticalAlignment="Stretch" Padding="20,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}"/>
-                    <ToggleButton x:Name="ToggleSend" VerticalAlignment="Stretch" Padding="20,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <mt:PackIcon Kind="SendOutline" Width="20"/>
-                            <TextBlock Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Give Away"/>
-                        </Grid>
-                    </ToggleButton>
-                    <ToggleButton x:Name="ToggleGift" VerticalAlignment="Stretch" Padding="20,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <mt:PackIcon Kind="GiftOutline" Width="20"/>
-                            <TextBlock Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Give Away"/>
-                        </Grid>
-                    </ToggleButton>
-                    <Button VerticalAlignment="Stretch" Padding="20,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightPink" Click="OnRemoveButtonClicked">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <mt:PackIcon Kind="Remove" Width="20"/>
-                            <TextBlock Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Remove"/>
-                        </Grid>
-                    </Button>
                     <Grid HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,0,2,0" BorderThickness="1"  Command="{Binding GotoPrevious}" >
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                </Grid.ColumnDefinitions>
-                                <mt:PackIcon Kind="NavigateBefore" Width="20"/>
-                                <TextBlock  Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Previous"/>
-                            </Grid>
+                        <Button Padding="0" Margin="0,0,2,0" BorderThickness="1"  Command="{Binding GotoPrevious}" >
+                            <mt:PackIcon Opacity="0.7"  Kind="NavigateBefore"/>
                         </Button>
-                        <Button Grid.Column="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="2,0,0,0" BorderThickness="1" Command="{Binding GotoNext}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock TextAlignment="Center" HorizontalAlignment="Stretch" Text="Next"/>
-                                <mt:PackIcon Grid.Column="1" Kind="NavigateNext" Width="20"/>
-                            </Grid>
+                        <Button Grid.Column="1" Padding="0" Margin="2,0,0,0" BorderThickness="1" Command="{Binding GotoNext}">
+                            <mt:PackIcon Opacity="0.7"  Kind="NavigateNext"/>
                         </Button>
                     </Grid>
+                    <ToggleButton x:Name="ToggleAdd" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Add" Opacity="0.7"  UseLayoutRounding="True" Width="20" />
+                            <TextBlock Grid.Column="1" Opacity="0.7"  TextAlignment="Center" VerticalAlignment="Center" Text="Add"/>
+                        </DockPanel>
+                    </ToggleButton>
+                    <ToggleButton x:Name="ToggleSend" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
+                        <DockPanel>
+                            <mt:PackIcon Kind="SendOutline" Opacity="0.7" Width="20"/>
+                            <TextBlock Grid.Column="1" Opacity="0.7"  TextAlignment="Center" Text="Send"/>
+                        </DockPanel>
+                    </ToggleButton>
+                    <ToggleButton x:Name="ToggleGift" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
+                        <DockPanel>
+                            <mt:PackIcon Opacity="0.7"  Kind="GiftOutline" Width="20"/>
+                            <TextBlock Opacity="0.7"  Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Give Away"/>
+                        </DockPanel>
+                    </ToggleButton>
+                    <Button VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightPink" Click="OnRemoveButtonClicked">
+                        <DockPanel>
+                            <mt:PackIcon Foreground="IndianRed" Kind="Remove" Width="20"/>
+                            <TextBlock Foreground="IndianRed"  Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Remove"/>
+                        </DockPanel>
+                    </Button>
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
@@ -123,7 +102,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <DockPanel Grid.Column="0" >
+                        <DockPanel Grid.Column="0">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="System"/>
                             <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.System.CloseBalance,Mode=OneWay}"/>
                         </DockPanel>
