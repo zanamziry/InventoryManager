@@ -14,17 +14,15 @@ public class ApplicationHostService : IHostedService
     private readonly IDBSetup _dBSetup;
     private readonly INavigationService _navigationService;
     private readonly IPersistAndRestoreService _persistAndRestoreService;
-    private readonly IThemeSelectorService _themeSelectorService;
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
     private IShellWindow _shellWindow;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IThemeSelectorService themeSelectorService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemService systemService)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemService systemService)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
         _navigationService = navigationService;
-        _themeSelectorService = themeSelectorService;
         _persistAndRestoreService = persistAndRestoreService;
         _dBSetup = dBSetup;
         _systemService = systemService;
@@ -54,7 +52,6 @@ public class ApplicationHostService : IHostedService
         if (!_isInitialized)
         {
             _persistAndRestoreService.RestoreData();
-            _themeSelectorService.InitializeTheme();
             _dBSetup.InitializeDatabase();
             _systemService.StartServer();
             await Task.CompletedTask;

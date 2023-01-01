@@ -1,6 +1,6 @@
 ﻿<Page
     x:Class="InventoryManager.Views.InventoryPage"
-    Style="{DynamicResource MahApps.Styles.Page}"
+    Style="{StaticResource MahApps.Styles.Page}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:InventoryManager.Views.Controls"
@@ -9,6 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
+    d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
+    d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     d:DesignHeight="450" d:DesignWidth="800">
@@ -38,46 +40,46 @@
             -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="220"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
-                    <TextBlock Text="{Binding SelectedProduct.Product.ID}" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextAlignment="Left" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock Text="{Binding SelectedProduct.Product.ID}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <Grid HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Padding="0" Margin="0,0,2,0" BorderThickness="1"  Command="{Binding GotoPrevious}" >
-                            <mt:PackIcon Opacity="0.7"  Kind="NavigateBefore"/>
+                        <Button Padding="0" HorizontalContentAlignment="Center" Margin="0,0,2,0" Command="{Binding GotoPrevious}" >
+                            <mt:PackIcon Kind="NavigateBefore"/>
                         </Button>
-                        <Button Grid.Column="1" Padding="0" Margin="2,0,0,0" BorderThickness="1" Command="{Binding GotoNext}">
-                            <mt:PackIcon Opacity="0.7"  Kind="NavigateNext"/>
+                        <Button Grid.Column="1" HorizontalContentAlignment="Center" Padding="0" Margin="2,0,0,0" Command="{Binding GotoNext}">
+                            <mt:PackIcon Kind="NavigateNext"/>
                         </Button>
                     </Grid>
-                    <ToggleButton x:Name="ToggleAdd" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
+                    <ToggleButton x:Name="ToggleAdd" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
-                            <mt:PackIcon Kind="Add" Opacity="0.7"  UseLayoutRounding="True" Width="20" />
-                            <TextBlock Grid.Column="1" Opacity="0.7"  TextAlignment="Center" VerticalAlignment="Center" Text="Add"/>
+                            <mt:PackIcon Kind="Add" UseLayoutRounding="True"/>
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="Add"/>
                         </DockPanel>
                     </ToggleButton>
-                    <ToggleButton x:Name="ToggleSend" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
+                    <ToggleButton x:Name="ToggleSend" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
-                            <mt:PackIcon Kind="SendOutline" Opacity="0.7" Width="20"/>
-                            <TextBlock Grid.Column="1" Opacity="0.7"  TextAlignment="Center" Text="Send"/>
+                            <mt:PackIcon Kind="SendOutline"/>
+                            <TextBlock TextAlignment="Center" Text="Send"/>
                         </DockPanel>
                     </ToggleButton>
-                    <ToggleButton x:Name="ToggleGift" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}">
+                    <ToggleButton x:Name="ToggleGift" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
-                            <mt:PackIcon Opacity="0.7"  Kind="GiftOutline" Width="20"/>
-                            <TextBlock Opacity="0.7"  Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Give Away"/>
+                            <mt:PackIcon Kind="GiftOutline"/>
+                            <TextBlock TextAlignment="Center" Text="Give Away"/>
                         </DockPanel>
                     </ToggleButton>
-                    <Button VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="40,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightPink" Click="OnRemoveButtonClicked">
+                    <Button Padding="40,0" Margin="{StaticResource SmallTopMargin}" Click="OnRemoveButtonClicked">
                         <DockPanel>
-                            <mt:PackIcon Foreground="IndianRed" Kind="Remove" Width="20"/>
-                            <TextBlock Foreground="IndianRed"  Grid.Column="1" TextAlignment="Center" HorizontalAlignment="Stretch" Text="Remove"/>
+                            <mt:PackIcon Kind="Remove"/>
+                            <TextBlock TextAlignment="Center" Text="Remove"/>
                         </DockPanel>
                     </Button>
                 </StackPanel>
@@ -86,7 +88,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="70"/>
                     </Grid.RowDefinitions>
-                    <DataGrid x:Name="GridOfInventory" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}">
+                    <DataGrid x:Name="GridOfInventory" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="100"/>
                             <DataGridTextColumn Header="Open" Binding="{Binding Open}" Width="100"/>
@@ -140,8 +142,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Add" Padding="20,0" Margin="0 0 2 0" BorderThickness="1" Click="OnAddButtonClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Padding="20,0" Margin="2 0 0 0" BorderThickness="1" Click="OnCancelAddClicked"/>
+                    <Button Content="Add" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnAddButtonClicked"/>
+                    <Button Content="Cancel" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelAddClicked"/>
                 </Grid>
             </StackPanel>
         </local:ZMDialog>
@@ -160,8 +162,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Send" Padding="20,0" Margin="0 0 2 0" BorderThickness="1" Click="OnSendClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Padding="20,0" Margin="2 0 0 0" BorderThickness="1" Click="OnCancelSendClicked"/>
+                    <Button Content="Send" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnSendClicked"/>
+                    <Button Content="Cancel" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelSendClicked"/>
                 </Grid>
             </StackPanel>
         </local:ZMDialog>
@@ -180,8 +182,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Gift" Padding="20,0" Margin="0 0 2 0" BorderThickness="1" Click="OnGiveAwayClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Padding="20,0" Margin="2 0 0 0" BorderThickness="1" Click="OnCancelGiveawayClicked"/>
+                    <Button Content="Gift" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnGiveAwayClicked"/>
+                    <Button Content="Cancel" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelGiveawayClicked"/>
                 </Grid>
             </StackPanel>
         </local:ZMDialog>

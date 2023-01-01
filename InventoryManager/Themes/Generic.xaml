@@ -25,16 +25,4 @@
         </Setter>
     </Style>
     <!--#endregion-->
-    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}" x:Key="PrimaryButton">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Badged.Background}"/>
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Badged.Foreground}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-    </Style>
-
-    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}" x:Key="SecondaryButton">
-        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Badged.Foreground}"/>
-        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Badged.Background}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Badged.Background}"/>
-    </Style>
 </ResourceDictionary>

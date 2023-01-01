@@ -88,7 +88,7 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings page placeholder text.  Your app description goes here..
+        ///   Looks up a localized string similar to This application is made by Zana Masoud to help make managing inventories easier.
         /// </summary>
         public static string SettingsPageAboutText {
             get {
@@ -97,7 +97,7 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This application is made by Zana Masoud to help make managing inventories easier.
+        ///   Looks up a localized string similar to About This Application.
         /// </summary>
         public static string SettingsPageAboutTitle {
             get {

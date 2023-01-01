@@ -1,15 +1,17 @@
 ﻿<Page
     x:Class="InventoryManager.Views.MainPage"
-    Style="{DynamicResource MahApps.Styles.Page}"
+    Style="{StaticResource MahApps.Styles.Page}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:local="clr-namespace:InventoryManager.Views.Controls"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-    d:DesignHeight="450" d:DesignWidth="800">
+    d:DesignHeight="450" d:DesignWidth="800" d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
+    d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -29,23 +31,48 @@
             -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="220"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <ToggleButton x:Name="ToggleAdd" Content="Add" VerticalAlignment="Stretch" Padding="20,0" Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="{StaticResource MahApps.Brushes.Badged.Foreground}"/>
-                    <Button Content="Remove" Padding="20,0"  Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightPink" Click="OnRemoveButtonClicked"/>
-                    <Button Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" Padding="20,0"  Margin="{StaticResource SmallTopMargin}" BorderThickness="1" Background="LightPink" Click="OnRemoveAllButtonClicked"/>
+                    <ToggleButton x:Name="ToggleAdd" Margin="{StaticResource SmallTopMargin}">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Add"/>
+                            <TextBlock TextAlignment="Center" Text="Add Product"/>
+                        </DockPanel>
+                    </ToggleButton>
+                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnRemoveButtonClicked">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Remove"/>
+                            <TextBlock TextAlignment="Center" Text="Remove Product"/>
+                        </DockPanel>
+                    </Button>
+                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnRemoveAllButtonClicked">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Trash"/>
+                            <TextBlock TextAlignment="Center" Text="Delete All"/>
+                        </DockPanel>
+                    </Button>
                     <Grid HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="Import" Padding="15,0" Margin="0,0,2,0" BorderThickness="1" Background="LightGray" Click="OnImportClicked"/>
-                        <Button Grid.Column="1" Content="Export" Padding="15,0" Margin="2,0,0,0" BorderThickness="1" Background="LightGray" Click="OnExportClicked"/>
+                        <Button Padding="15,0" Margin="0,0,2,0" Click="OnImportClicked">
+                            <DockPanel>
+                                <mt:PackIcon Kind="Import"/>
+                                <TextBlock TextAlignment="Center" Text="Import"/>
+                            </DockPanel>
+                        </Button>
+                        <Button Grid.Column="1" Padding="15,0" Margin="2,0,0,0" Click="OnExportClicked">
+                            <DockPanel>
+                                <mt:PackIcon Kind="Export"/>
+                                <TextBlock TextAlignment="Center" Text="Export"/>
+                            </DockPanel>
+                        </Button>
                     </Grid>
                 </StackPanel>
-                <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" BorderThickness="1" BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
+                <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Product Name" Binding="{Binding Product.Name}" Width="150"/>
                         <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}"/>
@@ -71,8 +98,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                    <Button Content="Add" Padding="20,0" Margin="0 0 2 0" BorderThickness="1" Click="OnAddButtonClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Padding="20,0" Margin="2 0 0 0" BorderThickness="1" Click="OnCancelButtonClicked"/>
+                    <Button Content="Add" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnAddButtonClicked"/>
+                    <Button Content="Cancel" Grid.Column="1" Style="{StaticResource SecondaryButton}" Margin="2 0 0 0" Click="OnCancelButtonClicked"/>
                     </Grid>
                 </StackPanel>
             </local:ZMDialog>

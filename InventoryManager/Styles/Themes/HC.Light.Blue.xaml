@@ -14,8 +14,8 @@
     <system:String x:Key="Theme.BaseColorScheme">Light</system:String>
     <system:String x:Key="Theme.ColorScheme">Blue</system:String>
     <system:Boolean x:Key="Theme.IsHighContrast">true</system:Boolean>
-    <Color x:Key="Theme.PrimaryAccentColor">#FF0078D7</Color>
-    <SolidColorBrush x:Key="Theme.ShowcaseBrush" Color="#FF0078D7" options:Freeze="True" />
+    <Color x:Key="Theme.PrimaryAccentColor">#5fb2c7</Color>
+    <SolidColorBrush x:Key="Theme.ShowcaseBrush" Color="#5fb2c7" options:Freeze="True" />
 
     <!--
     We've defined the most basic colors and brushes.
@@ -29,11 +29,14 @@
     <Color x:Key="MahApps.Colors.ThemeForeground">#FF000000</Color>
     <Color x:Key="MahApps.Colors.ThemeBackground">#FFFFFFFF</Color>
     <Color x:Key="MahApps.Colors.IdealForeground">#FF000000</Color>
-
+    <Color x:Key="MahApps.Colors.ThemePrimary">#5fb2c7</Color>
+    <Color x:Key="MahApps.Colors.Delete">#ed5151</Color>
     <!--  *************BRUSHES START*************  -->
 
     <SolidColorBrush x:Key="MahApps.Brushes.ThemeBackground" Color="{StaticResource MahApps.Colors.ThemeBackground}" options:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Brushes.ThemeForeground" Color="{StaticResource MahApps.Colors.ThemeForeground}" options:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Brushes.ThemePrimary" Color="{StaticResource MahApps.Colors.ThemePrimary}" options:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Brushes.Delete" Color="{StaticResource MahApps.Colors.Delete}" options:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Brushes.Text" Color="{StaticResource MahApps.Colors.ThemeForeground}" options:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Brushes.IdealForeground" Color="{StaticResource MahApps.Colors.IdealForeground}" options:Freeze="True" />
 

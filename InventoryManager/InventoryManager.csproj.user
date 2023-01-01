@@ -2,15 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="Views\AddProductsDialog.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Themes\Generic.xaml">
+    <Page Update="Styles\Button.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AddProductsDialog.xaml">
+    <Page Update="Themes\Generic.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\InventoryPage.xaml">

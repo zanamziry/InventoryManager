@@ -124,10 +124,10 @@
     <value>Settings</value>
   </data>
   <data name="SettingsPageAboutText" xml:space="preserve">
-    <value>Settings page placeholder text.  Your app description goes here.</value>
+    <value>This application is made by Zana Masoud to help make managing inventories easier</value>
   </data>
   <data name="SettingsPageAboutTitle" xml:space="preserve">
-    <value>This application is made by Zana Masoud to help make managing inventories easier</value>
+    <value>About This Application</value>
   </data>
   <data name="SettingsPageChooseThemeText" xml:space="preserve">
     <value>Choose Theme</value>
