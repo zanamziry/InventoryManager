@@ -22,7 +22,7 @@
                 <ResourceDictionary Source="/Styles/MetroWindow.xaml" />
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
                 <ResourceDictionary Source="/Styles/Button.xaml" />
-                <ResourceDictionary Source="/Themes/Generic.xaml" />
+                <ResourceDictionary Source="/Styles/ZMDialog.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         

@@ -5,7 +5,7 @@
     <Page Update="Styles\Button.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Themes\Generic.xaml">
+    <Page Update="Styles\ZMDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\InventoryPage.xaml">

@@ -17,11 +17,9 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
 {
     Regex v = new Regex("^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$");
     private readonly AppConfig _appConfig;
-    private readonly IThemeSelectorService _themeSelectorService;
     private readonly ISystemService _systemService;
     private readonly IApplicationInfoService _applicationInfoService;
     private readonly ISystemDataGather _dataGather;
-    private bool _isInitialized;
     private AppTheme _theme;
     private string _serverAddress;
     private string _versionDescription;
@@ -52,10 +50,9 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         }
     }
 
-    public SettingsPage(IOptions<AppConfig> appConfig, IThemeSelectorService themeSelectorService, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather)
+    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather)
     {
         _appConfig = appConfig.Value;
-        _themeSelectorService = themeSelectorService;
         _systemService = systemService;
         _applicationInfoService = applicationInfoService;
         _dataGather = dataGather;
@@ -66,8 +63,6 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     public void OnNavigatedTo(object parameter)
     {
         VersionDescription = $"{Properties.Resources.AppDisplayName} - {_applicationInfoService.GetVersion()}";
-        Theme = _themeSelectorService.GetCurrentTheme();
-        _isInitialized = true;
         ServerAddress = GetSavedSetting(_dataGather.SettingsKey);
     }
 
@@ -75,29 +70,6 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     {
     }
 
-    private void OnLightChecked(object sender, RoutedEventArgs e)
-    {
-        if (_isInitialized)
-        {
-            _themeSelectorService.SetTheme(AppTheme.Light);
-        }
-    }
-
-    private void OnDarkChecked(object sender, RoutedEventArgs e)
-    {
-        if (_isInitialized)
-        {
-            _themeSelectorService.SetTheme(AppTheme.Dark);
-        }
-    }
-
-    private void OnDefaultChecked(object sender, RoutedEventArgs e)
-    {
-        if (_isInitialized)
-        {
-            _themeSelectorService.SetTheme(AppTheme.Default);
-        }
-    }
     private string GetSavedSetting(string key)
     {
         if (App.Current.Properties.Contains(key))
