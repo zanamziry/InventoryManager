@@ -40,7 +40,7 @@
             -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
@@ -93,7 +93,8 @@
                             <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="100"/>
                             <DataGridTextColumn Header="Open" Binding="{Binding Open}" Width="100"/>
                             <DataGridTextColumn Header="Total" IsReadOnly="True" Binding="{Binding Total}" Width="100"/>
-                            <DataGridTextColumn Header="Expire Date" Binding="{Binding ExpireDate, StringFormat='{}{0:M/yyyy}'}" Width="*" />
+                            <DataGridTextColumn Header="Expire Date" Binding="{Binding ExpireDate, StringFormat='{}{0:M/yyyy}'}" Width="120" />
+                            <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
                     <Grid Grid.Row="1" Margin="0,10">
@@ -132,9 +133,9 @@
         <local:ZMDialog Visibility="{Binding ElementName=ToggleAdd,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="Add Batch">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 <TextBlock Text="Inventory" Margin="0,3"/>
-                <TextBox x:Name="InventoryAmount"/>
+                <TextBox x:Name="InventoryAmount" Text="0" PreviewTextInput="InventoryAmount_PreviewTextInput"/>
                 <TextBlock Text="Open" Margin="0,3"/>
-                <TextBox x:Name="OpenAmount"/>
+                <TextBox x:Name="OpenAmount" Text="0" PreviewTextInput="OpenAmount_PreviewTextInput"/>
                 <TextBlock Text="ExpireDate" Margin="0,3"/>
                 <DatePicker x:Name="ProductExpire" SelectedDateFormat="Short" />
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
@@ -152,11 +153,11 @@
         <local:ZMDialog Visibility="{Binding ElementName=ToggleSend,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="Send Product">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 <TextBlock Text="BatchID" Margin="0,3"/>
-                <TextBlock x:Name="BatchIDToSend"/>
+                <TextBlock x:Name="BatchIDToSend" Text="{Binding SelectedInv.ID, Mode=OneWay}"/>
                 <TextBlock Text="Amount" Margin="0,3"/>
-                <TextBox x:Name="AmountToSend"/>
+                <TextBox x:Name="AmountToSend" Text="0" PreviewTextInput="AmountToSend_PreviewTextInput"/>
                 <TextBlock Text="Location" Margin="0,3"/>
-                <CheckBox x:Name="PlaceToSend"/>
+                <ComboBox ItemsSource="{Binding Agents}" SelectedIndex="0" x:Name="PlaceToSend"/>
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -172,11 +173,11 @@
         <local:ZMDialog Visibility="{Binding ElementName=ToggleGift,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="GiveAway Product">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 <TextBlock Text="BatchID" Margin="0,3"/>
-                <TextBlock x:Name="BatchIDToGive"/>
+                <TextBlock x:Name="BatchIDToGive" Text="{Binding SelectedInv.ID, Mode=OneWay}"/>
                 <TextBlock Text="Amount" Margin="0,3"/>
-                <TextBox x:Name="AmountToGive" Text="1"/>
+                <TextBox x:Name="AmountToGive" PreviewTextInput="AmountToGive_PreviewTextInput" Text="1"/>
                 <TextBlock Text="GiveAway Name" Margin="0,3"/>
-                <ComboBox x:Name="GiveAwayName"/>
+                <TextBox x:Name="GiveAwayName"/>
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

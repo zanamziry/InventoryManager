@@ -28,9 +28,12 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         DataContext = this;
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
+        outsideORM = _dBSetup.GetTable<SentOutsideORM>();
     }
+
     private IList<MainInventory> Inventories = new List<MainInventory>();
     private readonly LocalInventoryORM InventoryORM;
+    private readonly SentOutsideORM outsideORM;
     private readonly IDBSetup _dBSetup;
     private RelayCommand gotoNext;
     private RelayCommand gotoPrevious;
@@ -47,7 +50,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     }
     bool CanNext()
     {
-        if (Inventories.Count() > 1 && Inventories.Last() != SelectedProduct)
+        if (Inventories.Count > 1 && Inventories.Last() != SelectedProduct)
             return true;
         return false;
     }
@@ -220,6 +223,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             ToggleAdd.IsChecked = false;
         }
     }
+
     private void OnCancelAddClicked(object sender, RoutedEventArgs e)
     {
         BatchIDToSend.Text = "";
@@ -238,15 +242,73 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         AmountToGive.Text = "0";
         ToggleGift.IsChecked = false;
     }
-
-    private void OnSendClicked(object sender, RoutedEventArgs e)
+    LocalInventory SelectedInv { get {
+            if(GridOfInventory.SelectedItem is LocalInventory l)
+                return l;
+            return null;
+        }
+    }
+    private bool NumsOnly(string Text) => !int.TryParse(Text, out int r);       
+    private async void OnSendClicked(object sender, RoutedEventArgs e)
     {
-
+        if (PlaceToSend.SelectedItem is string p && !string.IsNullOrEmpty(p))
+        {
+            var outside = new SentOutside
+            {
+                AmountSent = int.Parse(AmountToSend.Text),
+                AmountSold = 0,
+                InventoryID = SelectedInv.Inventory,
+                Location = p
+            };
+            await outsideORM.Insert(outside);
+        }
     }
     private void OnCancelSendClicked(object sender, RoutedEventArgs e)
     {
         BatchIDToSend.Text = "";
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
+    }
+
+    public string[] Agents { get; } =
+        {
+        "Duhok",
+        "Arbil",
+        "Sulaimania",
+        "Kirkuk",
+        "Mosul",
+        "Al-Adhamiya",
+        "Mammon",
+        "Dora",
+        "Maysan",
+        "Najaf",
+        "Basra",
+        "Salah Al-Din",
+        "Karbala",
+        "Diyala",
+        "Babl",
+        "Fallujah",
+        "Diqar",
+        "Al-Ramadi",
+        };
+
+    private void AmountToSend_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = NumsOnly(e.Text);
+    }
+
+    private void OpenAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = NumsOnly(e.Text);
+    }
+
+    private void InventoryAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = NumsOnly(e.Text);
+    }
+
+    private void AmountToGive_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = NumsOnly(e.Text);
     }
 }
