@@ -16,6 +16,7 @@ using InventoryManager.Helpers;
 using InventoryManager.Models;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace InventoryManager.Views;
 
@@ -247,11 +248,10 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 return l;
             return null;
         }
-    }
-    private bool NumsOnly(string Text) => !int.TryParse(Text, out int r);       
+    }  
     private async void OnSendClicked(object sender, RoutedEventArgs e)
     {
-        if (PlaceToSend.SelectedItem is string p && !string.IsNullOrEmpty(p))
+        if (PlaceToSend.SelectedItem is string p)
         {
             var outside = new SentOutside
             {
@@ -294,21 +294,21 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     private void AmountToSend_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        e.Handled = NumsOnly(e.Text);
+        e.Handled = !int.TryParse(e.Text, out int r);
     }
 
     private void OpenAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        e.Handled = NumsOnly(e.Text);
+        e.Handled = !int.TryParse(e.Text, out int r);
     }
 
     private void InventoryAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        e.Handled = NumsOnly(e.Text);
+        e.Handled = !int.TryParse(e.Text, out int r);
     }
 
     private void AmountToGive_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        e.Handled = NumsOnly(e.Text);
+        e.Handled = !int.TryParse(e.Text, out int r);
     }
 }
