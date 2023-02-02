@@ -10,5 +10,6 @@ namespace InventoryManager.Core.Models
         public int InventoryID { get; set; }
         public int Amount { get; set; }
         public string Event { get; set; }
+        public DateTime Date { get; set; }
     }
 }

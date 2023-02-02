@@ -30,11 +30,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        givenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
     }
 
     private IList<MainInventory> Inventories = new List<MainInventory>();
     private readonly LocalInventoryORM InventoryORM;
     private readonly SentOutsideORM outsideORM;
+    private readonly GivenAwayORM givenAwayORM;
     private readonly IDBSetup _dBSetup;
     private RelayCommand gotoNext;
     private RelayCommand gotoPrevious;
@@ -111,7 +113,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     bool CanAdd() =>
         Regex.IsMatch(InventoryAmount.Text, "^[0-9]") && Regex.IsMatch(OpenAmount.Text, "^[0-9]");
 
-    private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+    void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
     {
         if (Equals(storage, value))
         {
@@ -148,7 +150,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
     }
 
-    private void OnKeyUp(object sender, KeyEventArgs e)
+    void OnKeyUp(object sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
@@ -160,7 +162,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 break;
         }
     }
-    private async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
+    async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
@@ -205,9 +207,9 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             }
         }
     }
-    private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
+    void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
         if (GridOfInventory.SelectedItem is LocalInventory p)
         {
@@ -215,7 +217,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         }
     }
 
-    private void OnAddButtonClicked(object sender, RoutedEventArgs e)
+    void OnAddButtonClicked(object sender, RoutedEventArgs e)
     {
         if (CanAdd())
         {
@@ -225,22 +227,30 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         }
     }
 
-    private void OnCancelAddClicked(object sender, RoutedEventArgs e)
+    void OnCancelAddClicked(object sender, RoutedEventArgs e)
     {
         BatchIDToSend.Text = "";
         OpenAmount.Text = "0";
         ToggleAdd.IsChecked = false;
     }
 
-    private void OnGiveAwayClicked(object sender, RoutedEventArgs e)
+    async void OnGiveAwayClicked(object sender, RoutedEventArgs e)
     {
-
+        var giveaway = new GivenAway
+        {
+            Amount = int.Parse(AmountToSend.Text),
+            InventoryID = SelectedInv.ID,
+            Event = GiveAwayName.Text,
+            Date = DateTime.Now,
+        };
+        await givenAwayORM.Insert(giveaway);
     }
 
-    private void OnCancelGiveawayClicked(object sender, RoutedEventArgs e)
+    void OnCancelGiveawayClicked(object sender, RoutedEventArgs e)
     {
         BatchIDToGive.Text = "";
         AmountToGive.Text = "0";
+        GiveAwayName.Text = "";
         ToggleGift.IsChecked = false;
     }
     LocalInventory SelectedInv { get {
@@ -248,22 +258,19 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 return l;
             return null;
         }
-    }  
-    private async void OnSendClicked(object sender, RoutedEventArgs e)
-    {
-        if (PlaceToSend.SelectedItem is string p)
-        {
-            var outside = new SentOutside
-            {
-                AmountSent = int.Parse(AmountToSend.Text),
-                AmountSold = 0,
-                InventoryID = SelectedInv.Inventory,
-                Location = p
-            };
-            await outsideORM.Insert(outside);
-        }
     }
-    private void OnCancelSendClicked(object sender, RoutedEventArgs e)
+    async void OnSendClicked(object sender, RoutedEventArgs e)
+    {
+        var outside = new SentOutside
+        {
+            AmountSent = int.Parse(AmountToSend.Text),
+            AmountSold = 0,
+            InventoryID = SelectedInv.Inventory,
+            Location = PlaceToSend.Text,
+        };
+        await outsideORM.Insert(outside);
+    }
+    void OnCancelSendClicked(object sender, RoutedEventArgs e)
     {
         BatchIDToSend.Text = "";
         AmountToSend.Text = "0";
@@ -292,22 +299,22 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         "Al-Ramadi",
         };
 
-    private void AmountToSend_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    void AmountToSend_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out int r);
     }
 
-    private void OpenAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    void OpenAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out int r);
     }
 
-    private void InventoryAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    void InventoryAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out int r);
     }
 
-    private void AmountToGive_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    void AmountToGive_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out int r);
     }
