@@ -43,15 +43,18 @@ public class SystemService : ISystemService
 
     public void migrate()
     {
-        Process p = new Process();
-        p.StartInfo = new ProcessStartInfo(@"python.exe", migrateCMD)
+        using (Process p = new Process())
         {
-            RedirectStandardOutput = false,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-        };
+
+            p.StartInfo = new ProcessStartInfo(@"python.exe", migrateCMD)
+            {
+                RedirectStandardOutput = false,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
         p.Start();
         p.WaitForExit();
+        }
     }
     public void makemigrations()
     {
@@ -64,6 +67,7 @@ public class SystemService : ISystemService
         };
         p.Start();
         p.WaitForExit();
+        p.Kill();
     }
     public void StopServer()
     {

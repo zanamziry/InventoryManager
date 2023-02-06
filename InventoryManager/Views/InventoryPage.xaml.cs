@@ -41,6 +41,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private RelayCommand gotoNext;
     private RelayCommand gotoPrevious;
     private MainInventory _selectedProduct;
+    private bool isButtonEnabled;
+
+    public bool IsButtonEnabled
+    {
+        get { return isButtonEnabled; }
+        set { Set(ref isButtonEnabled, value); }
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
     public RelayCommand GotoNext => gotoNext ??= new RelayCommand(Next, CanNext);
@@ -81,6 +88,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         GotoNext.OnCanExecuteChanged();
         GotoPrevious.OnCanExecuteChanged();
         SelectedProduct.OnPropertyChanged();
+        IsButtonEnabled = SelectedProduct.Locals.Count > 0 && SelectedInv != null;
     }
     async void Previous()
     {
@@ -253,8 +261,11 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         GiveAwayName.Text = "";
         ToggleGift.IsChecked = false;
     }
-    LocalInventory SelectedInv { get {
-            if(GridOfInventory.SelectedItem is LocalInventory l)
+    public LocalInventory SelectedInv
+    {
+        get
+        {
+            if (GridOfInventory.SelectedItem is LocalInventory l)
                 return l;
             return null;
         }
@@ -317,5 +328,10 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     void AmountToGive_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out int r);
+    }
+
+    private void GridOfInventory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        UpdateUI();
     }
 }
