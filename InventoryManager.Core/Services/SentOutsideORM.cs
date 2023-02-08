@@ -16,7 +16,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(SentOutside.AmountSent)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.AmountSold)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.Location)} TEXT NOT NULL," +
-            $"FOREIGN KEY({nameof(SentOutside.InventoryID)}) REFERENCES {nameof(LocalInventory)}({nameof(LocalInventory.ID)}) ON DELETE RESTRICT," +
+            $"FOREIGN KEY({nameof(SentOutside.InventoryID)}) REFERENCES {nameof(LocalInventory)}({nameof(LocalInventory.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(SentOutside.ID)} AUTOINCREMENT));";
             _dataAccess.Execute(cmd);
         }
