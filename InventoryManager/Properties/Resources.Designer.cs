@@ -88,6 +88,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sent Outside.
+        /// </summary>
+        public static string SentOutsidePageTitle {
+            get {
+                return ResourceManager.GetString("SentOutsidePageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This application is made by Zana Masoud to help make managing inventories easier.
         /// </summary>
         public static string SettingsPageAboutText {

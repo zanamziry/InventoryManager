@@ -14,9 +14,6 @@
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     d:DesignHeight="450" d:DesignWidth="800">
-    <Page.Resources>
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -25,7 +22,7 @@
         <TextBlock
             Style="{StaticResource PageTitleStyle}"
             Margin="{StaticResource MediumLeftMargin}"
-            Text="{x:Static properties:Resources.InventoryPageTitle}" />
+            Text="{x:Static properties:Resources.SentOutsidePageTitle}" />
         <Grid
             Grid.Row="1"
             Margin="{StaticResource MediumLeftRightMargin}"
@@ -39,25 +36,8 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ListView Grid.Column="0" ItemsSource="{Binding Source}" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    
+                <ListView Grid.Column="0" ItemsSource="{Binding Locations,Mode=OneWay}" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 </ListView>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="70"/>
-                    </Grid.RowDefinitions>
-                    <DataGrid x:Name="GridOfSentProducts" IsReadOnly="True" ItemsSource="{Binding Source}" AutoGenerateColumns="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="100"/>
-                            <DataGridTextColumn Header="InventoryID" Binding="{Binding InventoryID}" Width="100"/>
-                            <DataGridTextColumn Header="Sent" Binding="{Binding AmountSent}" Width="100"/>
-                            <DataGridTextColumn Header="Sold"  Binding="{Binding AmountSold}" Width="100"/>
-                            <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="*" />
-                            <DataGridTextColumn Header="Remaining" Binding="{Binding Remaining}" Width="*" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
             </Grid>
         </Grid>
     </Grid>

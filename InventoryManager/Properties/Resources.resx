@@ -171,4 +171,7 @@
   <data name="ShellSystemInventoryPage" xml:space="preserve">
     <value>System Inventory</value>
   </data>
+  <data name="SentOutsidePageTitle" xml:space="preserve">
+    <value>Sent Outside</value>
+  </data>
 </root>

@@ -39,10 +39,10 @@ namespace InventoryManager.Core.Services {
             var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, inventory);
             return sentOutsides;
         }
-        public async Task<IEnumerable<SentOutside>> SelectAllLocations()
+        public async Task<IEnumerable<string>> SelectAllLocations()
         {
-            string cmd = $"SELECT {nameof(SentOutside.Location)} FROM {nameof(SentOutside)} GROUP BY {nameof(SentOutside.Location)} = @{nameof(LocalInventory.ID)};";
-            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd);
+            string cmd = $"SELECT {nameof(SentOutside.Location)} FROM {nameof(SentOutside)} GROUP BY {nameof(SentOutside.Location)};";
+            var sentOutsides = await _dataAccess.ReadDataAsync<string>(cmd);
             return sentOutsides;
         }
         public async Task<int> SelectTotalAmountSent(LocalInventory inventory)

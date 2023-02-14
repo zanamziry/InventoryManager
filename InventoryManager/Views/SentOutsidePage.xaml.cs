@@ -46,9 +46,13 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         storage = value;
         OnPropertyChanged(propertyName);
     }
-    void INavigationAware.OnNavigatedTo(object parameter)
+    async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        outsideORM.
+        Locations.Clear();
+        foreach (var item in await outsideORM.SelectAllLocations())
+        {
+            Locations.Add(item);
+        }
     }
 
 
