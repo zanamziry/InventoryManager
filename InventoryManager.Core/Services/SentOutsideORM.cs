@@ -55,6 +55,12 @@ namespace InventoryManager.Core.Services {
                 total += i.AmountSent;
             }
             return total;
-        } 
+        }
+        public async Task<IEnumerable<SentOutside>> SelectByLocation(string location)
+        {
+            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.Location)} = '{location}';";
+            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd);
+            return sentOutsides;
+        }
     }
 }

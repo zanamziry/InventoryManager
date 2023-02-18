@@ -31,7 +31,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
-    public ObservableCollection<SentOutside> Source = new ObservableCollection<SentOutside>();
+    public ObservableCollection<SentOutside> Source { get; } = new ObservableCollection<SentOutside>();
     private readonly SentOutsideORM outsideORM;
     private readonly IDBSetup _dBSetup;
 
@@ -63,9 +63,15 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        //if (sender is ListView listView && listView.SelectedItem is string s)
-            //outsideORM.BasedOnLocation();
+        if (sender is ListView listView && listView.SelectedItem is string s)
+        {
+            Source.Clear();
+            foreach (var i in await outsideORM.SelectByLocation(s))
+            {
+                Source.Add(i);
+            }
+        }
     }
 }

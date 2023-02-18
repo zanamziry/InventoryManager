@@ -43,6 +43,15 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <DataGrid Grid.Column="1" x:Name="GridOfSent" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                        <DataGridTextColumn Header="InventoryID" Binding="{Binding InventoryID}" />
+                        <DataGridTextColumn Header="Sent" Binding="{Binding AmountSent}" />
+                        <DataGridTextColumn Header="Sold" Binding="{Binding AmountSold}" />
+                        <DataGridTextColumn Header="Remaining" Binding="{Binding Remaining}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Grid>
     </Grid>
