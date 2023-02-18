@@ -28,8 +28,9 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         DataContext = this;
         _dBSetup = dBSetup;
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        InitializeComponent();
     }
-    public ObservableCollection<string> Locations = new ObservableCollection<string>();
+    public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
     public ObservableCollection<SentOutside> Source = new ObservableCollection<SentOutside>();
     private readonly SentOutsideORM outsideORM;
     private readonly IDBSetup _dBSetup;
@@ -61,4 +62,10 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
     }
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        //if (sender is ListView listView && listView.SelectedItem is string s)
+            //outsideORM.BasedOnLocation();
+    }
 }

@@ -36,7 +36,12 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ListView Grid.Column="0" ItemsSource="{Binding Locations,Mode=OneWay}" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+                <ListView Grid.Column="0" BorderThickness="0 0 1 0" BorderBrush="{StaticResource MahApps.Brushes.Accent}" ItemsSource="{Binding Locations,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Style="{StaticResource MahApps.Styles.ListView}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </Grid>
         </Grid>
