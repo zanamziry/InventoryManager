@@ -49,7 +49,7 @@
                     </Button>
                     <Button Margin="{StaticResource SmallTopMargin}" Click="OnRemoveAllButtonClicked">
                         <DockPanel>
-                            <mt:PackIcon Kind="Trash"/>
+                            <mt:PackIcon Kind="TrashCanOutline"/>
                             <TextBlock TextAlignment="Center" Text="Delete All"/>
                         </DockPanel>
                     </Button>
@@ -71,6 +71,12 @@
                             </DockPanel>
                         </Button>
                     </Grid>
+                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnExportAsExcelClicked">
+                        <DockPanel>
+                            <mt:PackIcon Kind="MicrosoftExcel"/>
+                            <TextBlock TextAlignment="Center" Text="Export As Excel"/>
+                        </DockPanel>
+                    </Button>
                 </StackPanel>
                 <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>

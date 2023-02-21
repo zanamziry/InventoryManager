@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -12,10 +13,13 @@ using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using InventoryManager.Models;
+using InventoryManager.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
+using static System.Net.Mime.MediaTypeNames;
 
 namespace InventoryManager.Views;
 
@@ -209,5 +213,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         ProductPrice.Text = "0.0";
         ProductCode.Text = "";
         ToggleAdd.IsChecked = false;
+    }
+
+    private void OnExportAsExcelClicked(object sender, RoutedEventArgs e)
+    {
+        ExcelService.MakeJard($"{DateTime.Now.ToString("(dd-MM)جرد")}");
     }
 }
