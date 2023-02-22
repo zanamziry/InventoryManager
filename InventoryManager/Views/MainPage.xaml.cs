@@ -217,6 +217,13 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private void OnExportAsExcelClicked(object sender, RoutedEventArgs e)
     {
-        ExcelService.MakeJard($"{DateTime.Now.ToString("(dd-MM)جرد")}");
+        string path = DateTime.Now.ToString("(dd-MM)جرد");
+        using Excel ex = new Excel(@$"{path}.xlsx");
+        for (int i = 0; i < Source.Count; i++)
+        {
+            ex.WriteToCell(1, i, Source[i].Product.ID);
+            ex.WriteToCell(2, i, Source[i].Product.Name);
+            ex.WriteToCell(3, i, Source[i].Product.Price.ToString());
+        }
     }
 }
