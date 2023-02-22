@@ -14,8 +14,8 @@ namespace InventoryManager.Services
     {
 
         readonly string filePath;
-        Workbook workBook;
-        Worksheet worksheet;
+        public Workbook workBook;
+        public Worksheet worksheet;
         Ex.Application xlApp;
         public Excel(string FilePath)
         {
@@ -37,6 +37,10 @@ namespace InventoryManager.Services
         }
         public void WriteToCell(int r, int c, string value)
         {
+            if(r == 0 || c == 0)
+            {
+                throw new Exception("Row and Columns cant be 0");
+            }
             OpenIfNot();
             (worksheet.Cells[r, c] as Ex.Range).Value = value;
         }
@@ -49,6 +53,7 @@ namespace InventoryManager.Services
             else
                 workBook = xlApp.Workbooks.Open(filePath);
             worksheet = (Worksheet)workBook.Worksheets.get_Item(1);
+            workBook.SaveCopyAs(filePath);
         }
         public string ReadCell(int r,int c)
         {
@@ -62,6 +67,7 @@ namespace InventoryManager.Services
                 return;
             workBook.SaveCopyAs(filePath);
             workBook.Close();
+            xlApp.Quit();
             worksheet = null;
             workBook = null;
         }

@@ -15,11 +15,14 @@ using InventoryManager.Core.Services;
 using InventoryManager.Models;
 using InventoryManager.Services;
 using Microsoft.Data.Sqlite;
+using ex = Microsoft.Office.Interop.Excel;
+using GemBox.Spreadsheet;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using static System.Net.Mime.MediaTypeNames;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace InventoryManager.Views;
 
@@ -217,13 +220,68 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private void OnExportAsExcelClicked(object sender, RoutedEventArgs e)
     {
-        string path = DateTime.Now.ToString("(dd-MM)جرد");
-        using Excel ex = new Excel(@$"{path}.xlsx");
-        for (int i = 0; i < Source.Count; i++)
+        string date = DateTime.Now.ToString("(dd-MM)");
+        SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+        SaveFileDialog sd = new SaveFileDialog();
+        sd.DefaultExt = ".xlsx";
+        sd.FileName = @date+"جرد";
+        if (sd.ShowDialog() != true || string.IsNullOrWhiteSpace(sd.FileName))
+            return;
+        ExcelFile xl = new ExcelFile();
+        var ws = xl.Worksheets.Add("جرد");
+
+        CellStyle headerStyle = new CellStyle();
+        headerStyle.VerticalAlignment = VerticalAlignmentStyle.Center;
+        headerStyle.HorizontalAlignment = HorizontalAlignmentStyle.Center;
+        headerStyle.Borders.SetBorders(MultipleBorders.All, SpreadsheetColor.FromArgb(-11645362), LineStyle.Thin);
+        headerStyle.FillPattern.SetSolid(SpreadsheetColor.FromArgb(-8420218));
+        // Write the name of headers
+        var i = 0;
+        ws.Cells[i, 0].Value = "ID";
+        ws.Cells[i, 1].Value = "Name";
+        ws.Cells[i, 2].Value = "Real";
+        ws.Cells[i, 3].Value = "System";
+        ws.Cells[i, 4].Value = "Gifts";
+        ws.Cells[i, 5].Value = "Outside";
+        ws.Cells[i, 6].Value = "Result";
+        ws.Cells[i, 7].Value = "Inv";
+        ws.Cells[i, 8].Value = "Open";
+        ws.Cells[i, 9].Value = "Price";
+        for (int c = 0; c <= 9; c++)
+            ws.Cells[i, c].Style = headerStyle;
+
+        // Write the values to the cells
+        foreach (var item in Source)
         {
-            ex.WriteToCell(1, i, Source[i].Product.ID);
-            ex.WriteToCell(2, i, Source[i].Product.Name);
-            ex.WriteToCell(3, i, Source[i].Product.Price.ToString());
+            i++;
+            ws.Cells[i, 0].Value = item.Product.ID;
+            ws.Cells[i, 1].Value = item.Product.Name;
+            ws.Cells[i, 2].Value = item.TotalReal.ToString();
+            ws.Cells[i, 3].Value = item.System.CloseBalance.ToString();
+            ws.Cells[i, 4].Value = item.TotalGivenAway.ToString();
+            ws.Cells[i, 5].Value = item.TotalOutside.ToString();
+            ws.Cells[i, 6].Value = item.Result.ToString();
+            ws.Cells[i, 7].Value = item.TotalInv.ToString();
+            ws.Cells[i, 8].Value = item.TotalOpen.ToString();
+            ws.Cells[i, 9].Value = item.Product.Price.ToString();
         }
+
+        // Set Width of Columns to fit the text
+        ws.Columns[0].SetWidth(75, LengthUnit.Pixel);
+        ws.Columns[1].SetWidth(200, LengthUnit.Pixel);
+        ws.Columns[2].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[3].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[4].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[5].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[6].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[7].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[8].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[9].SetWidth(70, LengthUnit.Pixel);
+        ws.Columns[10].SetWidth(70, LengthUnit.Pixel);
+
+        // Create table and enable totals row.
+        var table = ws.Tables.Add("Jard", "A1:J50", true);
+        table.HasTotalsRow = false;
+        xl.Save(sd.FileName);
     }
 }
