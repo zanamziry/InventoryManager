@@ -22,12 +22,20 @@ namespace InventoryManager.Core.Services {
             string cmd = $"DELETE FROM {nameof(Product)} WHERE {nameof(Product.ID)} = @{nameof(Product.ID)};";
             await _dataAccess.ExecuteAsync(cmd, param);
         }
+        public async Task<Product> GetByID(string ProductID)
+        {
+            string cmd = $"SELECT * FROM {nameof(Product)} WHERE {nameof(Product.ID)} = '{ProductID}';";
+            var products = await _dataAccess.ReadDataAsync<Product>(cmd);
+            if (products.Count() > 0)
+                return products.First();
+            return null;
+        }
         public async Task DeleteAll()
         {
             string cmd = $"DELETE FROM {nameof(Product)} WHERE 1 = 1;";
             await _dataAccess.ExecuteAsync(cmd);
         }
-
+        
         public override async Task<Product> Insert(Product param) {
             string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Price)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Price)});";
             await _dataAccess.ExecuteAsync(cmd, param);

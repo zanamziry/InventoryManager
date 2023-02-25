@@ -34,6 +34,12 @@ namespace InventoryManager.Core.Services {
             return param;
         }
 
+        public async Task Update(SentOutside param)
+        {
+            string cmd = $"UPDATE {nameof(SentOutside)} SET {nameof(SentOutside.AmountSent)} = @{nameof(SentOutside.AmountSent)}, {nameof(SentOutside.AmountSold)} = @{nameof(SentOutside.AmountSold)} WHERE {nameof(SentOutside.ID)} = @{nameof(SentOutside.ID)};";
+            await _dataAccess.ExecuteAsync(cmd, param);
+        }
+
         public async Task<IEnumerable<SentOutside>> SelectByInventoryID(LocalInventory inventory) {
             string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.InventoryID)} = @{nameof(LocalInventory.ID)};";
             var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, inventory);

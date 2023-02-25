@@ -28,11 +28,15 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         DataContext = this;
         _dBSetup = dBSetup;
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        productsORM = _dBSetup.GetTable<ProductsORM>();
+        localORM = _dBSetup.GetTable<LocalInventoryORM>();
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
-    public ObservableCollection<SentOutside> Source { get; } = new ObservableCollection<SentOutside>();
+    public ObservableCollection<SentOutDisplay> Source { get; } = new ObservableCollection<SentOutDisplay>();
     private readonly SentOutsideORM outsideORM;
+    private readonly ProductsORM productsORM;
+    private readonly LocalInventoryORM localORM;
     private readonly IDBSetup _dBSetup;
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -70,7 +74,67 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
             Source.Clear();
             foreach (var i in await outsideORM.SelectByLocation(s))
             {
-                Source.Add(i);
+                SentOutDisplay OutDisplay = new SentOutDisplay();
+                OutDisplay.Inventory =  await localORM.GetByID(i.InventoryID);
+                OutDisplay.Product =  await productsORM.GetByID(OutDisplay.Inventory.ProductID);
+                OutDisplay.Outside =  i;
+                Source.Add(OutDisplay);
+            }
+        }
+    }
+    async void Remove(SentOutDisplay p)
+    {
+        await outsideORM.Delete(p.Outside);
+        Source.Remove(p);
+    }
+
+    void OnKeyUp(object sender, KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Delete:
+                if ((e.OriginalSource as FrameworkElement).DataContext is SentOutDisplay p)
+                {
+                    Remove(p);
+                }
+                break;
+        }
+    }
+    async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
+    {
+        if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
+        {
+            Remove(e.Row.DataContext as SentOutDisplay);
+        }
+        if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
+        {
+            if (e.Row.DataContext is SentOutDisplay l && e.EditingElement is TextBox tb && e.Column.Header is string header)
+            {
+                switch (header)
+                {
+                    case nameof(SentOutDisplay.Outside.AmountSold):
+                        {
+                            int.TryParse(tb.Text, out int a);
+                            l.Outside.AmountSold = a;
+                            break;
+                        }
+                    case nameof(SentOutDisplay.Outside.AmountSent):
+                        {
+                            int.TryParse(tb.Text, out int b);
+                            l.Outside.AmountSent = b;
+                            break;
+                        }
+                }
+                try
+                {
+                    await outsideORM.Update(l.Outside);
+                    l.OnPropertyChanged();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Database Error");
+                }
             }
         }
     }

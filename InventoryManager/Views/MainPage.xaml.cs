@@ -19,9 +19,7 @@ using ex = Microsoft.Office.Interop.Excel;
 using GemBox.Spreadsheet;
 using Microsoft.Win32;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-using static System.Net.Mime.MediaTypeNames;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace InventoryManager.Views;
