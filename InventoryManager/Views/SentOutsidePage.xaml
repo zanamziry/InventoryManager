@@ -48,8 +48,8 @@
                         <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding Outside.ID,Mode=OneWay}"/>
                         <DataGridTextColumn Header="Product Code" IsReadOnly="True" Binding="{Binding Product.ID,Mode=TwoWay}" />
                         <DataGridTextColumn Header="Product Name" IsReadOnly="True" Binding="{Binding Product.Name,Mode=TwoWay}" />
-                        <DataGridTextColumn Header="Sent" Binding="{Binding Outside.AmountSent,Mode=TwoWay}" />
-                        <DataGridTextColumn Header="Sold" Binding="{Binding Outside.AmountSold,Mode=TwoWay}" />
+                        <DataGridTextColumn Header="AmountSent" IsReadOnly="True" Binding="{Binding Outside.AmountSent,Mode=TwoWay}" />
+                        <DataGridTextColumn Header="AmountSold" Binding="{Binding Outside.AmountSold,Mode=TwoWay}" />
                         <DataGridTextColumn Header="Remaining" IsReadOnly="True" Binding="{Binding Outside.Remaining,Mode=OneWay}" />
                     </DataGrid.Columns>
                 </DataGrid>

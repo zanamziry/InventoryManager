@@ -14,6 +14,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(Product.ID)} TEXT NOT NULL UNIQUE," +
             $"{nameof(Product.Name)} TEXT NOT NULL," +
             $"{nameof(Product.Price)} REAL NOT NULL," +
+            $"{nameof(Product.PV)} REAL NOT NULL," +
             $"PRIMARY KEY({nameof(Product.ID)}));";
             _dataAccess.Execute(cmd);
         }
@@ -37,7 +38,7 @@ namespace InventoryManager.Core.Services {
         }
         
         public override async Task<Product> Insert(Product param) {
-            string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Price)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Price)});";
+            string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Price)}, {nameof(Product.PV)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Price)}, @{nameof(Product.PV)});";
             await _dataAccess.ExecuteAsync(cmd, param);
             return param;
         }

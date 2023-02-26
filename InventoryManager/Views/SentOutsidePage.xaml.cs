@@ -112,16 +112,11 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
             {
                 switch (header)
                 {
+                    // Just in Case There are other columns other than this to edit
                     case nameof(SentOutDisplay.Outside.AmountSold):
                         {
                             int.TryParse(tb.Text, out int a);
                             l.Outside.AmountSold = a;
-                            break;
-                        }
-                    case nameof(SentOutDisplay.Outside.AmountSent):
-                        {
-                            int.TryParse(tb.Text, out int b);
-                            l.Outside.AmountSent = b;
                             break;
                         }
                 }
@@ -129,7 +124,6 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                 {
                     await outsideORM.Update(l.Outside);
                     l.OnPropertyChanged();
-
                 }
                 catch (Exception ex)
                 {
