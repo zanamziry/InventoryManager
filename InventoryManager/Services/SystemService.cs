@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-
+using System.Text;
+using System.Windows.Forms;
 using InventoryManager.Contracts.Services;
 
 namespace InventoryManager.Services;
@@ -35,10 +36,11 @@ public class SystemService : ISystemService
         _process.StartInfo = new ProcessStartInfo(@"python.exe", runserverCMD)
         {
             RedirectStandardOutput = false,
-            UseShellExecute = false,
+            RedirectStandardInput = true,
             CreateNoWindow = true,
         };
         _process.Start();
+        _process.StandardInput.Close();
     }
 
     public void migrate()
@@ -52,8 +54,9 @@ public class SystemService : ISystemService
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
-        p.Start();
-        p.WaitForExit();
+            p.Start();
+            p.WaitForExit();
+            p.Dispose();
         }
     }
     public void makemigrations()
@@ -67,12 +70,14 @@ public class SystemService : ISystemService
         };
         p.Start();
         p.WaitForExit();
-        p.Kill();
+        p.Dispose();
     }
     public void StopServer()
     {
         if (_process == null)
-            return;
-        _process.Kill();
+            return; 
+        _process.StandardInput.Dispose();
+        SendKeys.SendWait("^{BREAK}");
+        _process.Dispose();
     }
 }
