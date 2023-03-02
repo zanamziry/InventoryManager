@@ -12,11 +12,11 @@ namespace InventoryManager.Core.Services {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(SentOutside)}(" +
             $"{nameof(SentOutside.ID)} INTEGER NOT NULL UNIQUE," +
-            $"{nameof(SentOutside.InventoryID)} INTEGER NOT NULL," +
+            $"{nameof(SentOutside.ProductID)} INTEGER NOT NULL," +
             $"{nameof(SentOutside.AmountSent)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.AmountSold)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.Location)} TEXT NOT NULL," +
-            $"FOREIGN KEY({nameof(SentOutside.InventoryID)}) REFERENCES {nameof(LocalInventory)}({nameof(LocalInventory.ID)}) ON DELETE CASCADE," +
+            $"FOREIGN KEY({nameof(SentOutside.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(SentOutside.ID)} AUTOINCREMENT));";
             _dataAccess.Execute(cmd);
         }
@@ -27,7 +27,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public override async Task<SentOutside> Insert(SentOutside param) {
-            string cmd = $"INSERT INTO {nameof(SentOutside)} ({nameof(SentOutside.InventoryID)}, {nameof(SentOutside.AmountSent)},{nameof(SentOutside.AmountSold)}, {nameof(SentOutside.Location)}) values(@{nameof(SentOutside.InventoryID)}, @{nameof(SentOutside.AmountSent)}, @{nameof(SentOutside.AmountSold)}, @{nameof(SentOutside.Location)});";
+            string cmd = $"INSERT INTO {nameof(SentOutside)} ({nameof(SentOutside.ProductID)}, {nameof(SentOutside.AmountSent)},{nameof(SentOutside.AmountSold)}, {nameof(SentOutside.Location)}) values(@{nameof(SentOutside.ProductID)}, @{nameof(SentOutside.AmountSent)}, @{nameof(SentOutside.AmountSold)}, @{nameof(SentOutside.Location)});";
             await _dataAccess.ExecuteAsync(cmd, param);
             int id = await LastInput();
             param.ID = id;
@@ -41,7 +41,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public async Task<IEnumerable<SentOutside>> SelectByInventoryID(LocalInventory inventory) {
-            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.InventoryID)} = @{nameof(LocalInventory.ID)};";
+            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(LocalInventory.ID)};";
             var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, inventory);
             return sentOutsides;
         }
@@ -53,7 +53,7 @@ namespace InventoryManager.Core.Services {
         }
         public async Task<int> SelectTotalAmountSent(LocalInventory inventory)
         {
-            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.InventoryID)} = @{nameof(LocalInventory.ID)};";
+            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(LocalInventory.ID)};";
             var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, inventory);
             int total = 0;
             foreach(var i in sentOutsides)
@@ -66,6 +66,12 @@ namespace InventoryManager.Core.Services {
         {
             string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.Location)} = '{location}';";
             var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd);
+            return sentOutsides;
+        }
+        public async Task<IEnumerable<SentOutside>> SelectByProduct(Product p)
+        {
+            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.Location)} = @{nameof(Product.ID)};";
+            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, p);
             return sentOutsides;
         }
     }
