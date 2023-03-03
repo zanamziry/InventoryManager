@@ -64,13 +64,13 @@
                             <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="Add"/>
                         </DockPanel>
                     </ToggleButton>
-                    <ToggleButton x:Name="ToggleSend" IsEnabled="{Binding IsButtonEnabled,Mode=OneWay}" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
+                    <ToggleButton x:Name="ToggleSend" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="SendOutline"/>
                             <TextBlock TextAlignment="Center" Text="Send"/>
                         </DockPanel>
                     </ToggleButton>
-                    <ToggleButton x:Name="ToggleGift" IsEnabled="{Binding IsButtonEnabled,Mode=OneWay}" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
+                    <ToggleButton x:Name="ToggleGift" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="GiftOutline"/>
                             <TextBlock TextAlignment="Center" Text="Give Away"/>
@@ -153,8 +153,6 @@
         <!--#region Send-->
         <local:ZMDialog Visibility="{Binding ElementName=ToggleSend,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="Send Product">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                <TextBlock Text="BatchID" Margin="0,3"/>
-                <TextBlock x:Name="BatchIDToSend" Text="{Binding SelectedInv.ID, Mode=OneWay}"/>
                 <TextBlock Text="Amount" Margin="0,3"/>
                 <TextBox x:Name="AmountToSend" Text="0" PreviewTextInput="AmountToSend_PreviewTextInput"/>
                 <TextBlock Text="Location" Margin="0,3"/>
@@ -173,8 +171,6 @@
         <!--#region GiveAway-->
         <local:ZMDialog Visibility="{Binding ElementName=ToggleGift,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="GiveAway Product">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                <TextBlock Text="BatchID" Margin="0,3"/>
-                <TextBlock x:Name="BatchIDToGive" Text="{Binding SelectedInv.ID, Mode=OneWay}"/>
                 <TextBlock Text="Amount" Margin="0,3"/>
                 <TextBox x:Name="AmountToGive" PreviewTextInput="AmountToGive_PreviewTextInput" Text="1"/>
                 <TextBlock Text="GiveAway Name" Margin="0,3"/>

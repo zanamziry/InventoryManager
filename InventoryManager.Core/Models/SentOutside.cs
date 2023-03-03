@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Models
     public class SentOutside : INotifyPropertyChanged
     {
         public int ID { get; set; }    
-        public int ProductID { get; set; }
+        public string ProductID { get; set; }
         public int AmountSent { get; set; }
         public int AmountSold { get; set; }
         public string Location { get; set; }

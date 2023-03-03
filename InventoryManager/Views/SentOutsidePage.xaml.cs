@@ -29,14 +29,12 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         _dBSetup = dBSetup;
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
-        localORM = _dBSetup.GetTable<LocalInventoryORM>();
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
     public ObservableCollection<SentOutDisplay> Source { get; } = new ObservableCollection<SentOutDisplay>();
     private readonly SentOutsideORM outsideORM;
     private readonly ProductsORM productsORM;
-    private readonly LocalInventoryORM localORM;
     private readonly IDBSetup _dBSetup;
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -75,8 +73,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
             foreach (var i in await outsideORM.SelectByLocation(s))
             {
                 SentOutDisplay OutDisplay = new SentOutDisplay();
-                OutDisplay.Inventory =  await localORM.GetByID(i.InventoryID);
-                OutDisplay.Product =  await productsORM.GetByID(OutDisplay.Inventory.ProductID);
+                OutDisplay.Product =  await productsORM.GetByID(i.ProductID);
                 OutDisplay.Outside =  i;
                 Source.Add(OutDisplay);
             }

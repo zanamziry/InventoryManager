@@ -13,13 +13,11 @@ namespace InventoryManager.Models
     {
 
         public Product Product { get; set; }
-        public LocalInventory Inventory { get; set; }
         public SentOutside Outside { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged()
         {
-            Inventory.OnRealChanged();
             Outside.OnPropertyChanged();
         }
     }

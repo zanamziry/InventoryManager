@@ -183,11 +183,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         var totalOut = 0;
         ObservableCollection<LocalInventory> locals = new ObservableCollection<LocalInventory>();
         foreach (var item in localDB)
-        {
-            totalGiven += await GivenORM.SelectTotalAmount(item);
-            totalOut += await OutsideORM.SelectTotalAmountSent(item);
             locals.Add(item);
-        }
+        totalGiven = await GivenORM.SelectTotalAmount(p);
+        totalOut = await OutsideORM.SelectTotalAmountSent(p);
+
         Source.Add(new MainInventory
         {
             Product = p,

@@ -12,7 +12,7 @@ namespace InventoryManager.Core.Services {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(SentOutside)}(" +
             $"{nameof(SentOutside.ID)} INTEGER NOT NULL UNIQUE," +
-            $"{nameof(SentOutside.ProductID)} INTEGER NOT NULL," +
+            $"{nameof(SentOutside.ProductID)} TEXT NOT NULL," +
             $"{nameof(SentOutside.AmountSent)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.AmountSold)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.Location)} TEXT NOT NULL," +
@@ -51,10 +51,10 @@ namespace InventoryManager.Core.Services {
             var sentOutsides = await _dataAccess.ReadDataAsync<string>(cmd);
             return sentOutsides;
         }
-        public async Task<int> SelectTotalAmountSent(LocalInventory inventory)
+        public async Task<int> SelectTotalAmountSent(Product p)
         {
-            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(LocalInventory.ID)};";
-            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, inventory);
+            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(Product.ID)};";
+            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, p);
             int total = 0;
             foreach(var i in sentOutsides)
             {

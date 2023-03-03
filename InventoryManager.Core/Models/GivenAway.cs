@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Models
     public class GivenAway : INotifyPropertyChanged
     {
         public int ID { get; set; }    
-        public int ProductID { get; set; }
+        public string ProductID { get; set; }
         public int Amount { get; set; }
         public string Event { get; set; }
         public DateTime Date { get; set; }

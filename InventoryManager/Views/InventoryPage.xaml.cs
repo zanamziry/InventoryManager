@@ -237,7 +237,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     void OnCancelAddClicked(object sender, RoutedEventArgs e)
     {
-        BatchIDToSend.Text = "";
         OpenAmount.Text = "0";
         ToggleAdd.IsChecked = false;
     }
@@ -247,13 +246,12 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         var giveaway = new GivenAway
         {
             Amount = int.Parse(AmountToGive.Text),
-            InventoryID = SelectedInv.ID,
+            ProductID = SelectedProduct.Product.ID,
             Event = GiveAwayName.Text,
             Date = DateTime.Now,
         };
         await givenAwayORM.Insert(giveaway);
         SelectedProduct.TotalGivenAway += giveaway.Amount;
-        BatchIDToGive.Text = "";
         AmountToGive.Text = "1";
         GiveAwayName.Text = "";
         ToggleGift.IsChecked = false;
@@ -262,7 +260,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     void OnCancelGiveawayClicked(object sender, RoutedEventArgs e)
     {
-        BatchIDToGive.Text = "";
         AmountToGive.Text = "1";
         GiveAwayName.Text = "";
         ToggleGift.IsChecked = false;
@@ -282,19 +279,17 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         {
             AmountSent = int.Parse(AmountToSend.Text),
             AmountSold = 0,
-            InventoryID = SelectedInv.ID,
+            ProductID = SelectedProduct.Product.ID,
             Location = PlaceToSend.Text,
         };
         await outsideORM.Insert(outside);
         SelectedProduct.TotalOutside += outside.AmountSent;
-        BatchIDToSend.Text = "";
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
         UpdateUI();
     }
     void OnCancelSendClicked(object sender, RoutedEventArgs e)
     {
-        BatchIDToSend.Text = "";
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
     }

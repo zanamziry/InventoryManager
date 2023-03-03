@@ -12,7 +12,7 @@ namespace InventoryManager.Core.Services {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(GivenAway)}(" +
             $"{nameof(GivenAway.ID)} INTEGER NOT NULL UNIQUE," +
-            $"{nameof(GivenAway.ProductID)} INTEGER NOT NULL," +
+            $"{nameof(GivenAway.ProductID)} TEXT NOT NULL," +
             $"{nameof(GivenAway.Amount)} INTEGER NOT NULL DEFAULT 1," +
             $"{nameof(GivenAway.Event)} TEXT NOT NULL," +
             $"FOREIGN KEY({nameof(GivenAway.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
