@@ -46,6 +46,7 @@
                 <StackPanel Grid.Column="0" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                     <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextAlignment="Left" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <TextBlock Text="{Binding SelectedProduct.Product.ID}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock Text="{Binding SelectedProduct.Product.Price}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <Grid HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

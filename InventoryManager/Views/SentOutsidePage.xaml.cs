@@ -14,9 +14,6 @@ using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using InventoryManager.Helpers;
 using InventoryManager.Models;
-using Microsoft.Data.Sqlite;
-using Newtonsoft.Json;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace InventoryManager.Views;
 
@@ -37,6 +34,10 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
     private readonly ProductsORM productsORM;
     private readonly IDBSetup _dBSetup;
 
+    public decimal TotalPrice
+    {
+        get => Source.Sum(d => d.Outside.AmountSold * d.Product.Price); 
+    }
     public event PropertyChangedEventHandler PropertyChanged;
 
     void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
@@ -56,11 +57,17 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         {
             Locations.Add(item);
         }
+        Source.CollectionChanged += Source_CollectionChanged;
     }
 
+    private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(TotalPrice));
+    }
 
     void INavigationAware.OnNavigatedFrom()
     {
+        Source.CollectionChanged -= Source_CollectionChanged;
     }
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -121,6 +128,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                 {
                     await outsideORM.Update(l.Outside);
                     l.OnPropertyChanged();
+                    OnPropertyChanged(nameof(TotalPrice));
                 }
                 catch (Exception ex)
                 {

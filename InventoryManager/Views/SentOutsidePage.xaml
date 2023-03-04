@@ -43,7 +43,12 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <DataGrid Grid.Column="1" x:Name="GridOfSent" ItemsSource="{Binding Source}" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="0" x:Name="GridOfSent" ItemsSource="{Binding Source}" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding Outside.ID,Mode=OneWay}"/>
                         <DataGridTextColumn Header="Product Code" IsReadOnly="True" Binding="{Binding Product.ID,Mode=TwoWay}" />
@@ -53,6 +58,11 @@
                         <DataGridTextColumn Header="Remaining" IsReadOnly="True" Binding="{Binding Outside.Remaining,Mode=OneWay}" />
                     </DataGrid.Columns>
                 </DataGrid>
+                    <DockPanel Grid.Row="1">
+                        <TextBlock Text="Total Price" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                        <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat={}{0:C2}}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                    </DockPanel>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
