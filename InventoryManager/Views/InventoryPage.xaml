@@ -95,7 +95,7 @@
                             <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" Width="100"/>
                             <DataGridTextColumn Header="Open" Binding="{Binding Open}" Width="100"/>
                             <DataGridTextColumn Header="Total" IsReadOnly="True" Binding="{Binding Total}" Width="100"/>
-                            <DataGridTextColumn Header="Expire Date" Binding="{Binding ExpireDate, StringFormat='{}{0:M/yyyy}'}" Width="120" />
+                            <DataGridTextColumn Header="ExpireDate" Binding="{Binding ExpireDate, StringFormat='{}{0:M/yyyy}'}" Width="120" />
                             <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
