@@ -70,6 +70,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GiveAways.
+        /// </summary>
+        public static string GiveAwayPageTitle {
+            get {
+                return ResourceManager.GetString("GiveAwayPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
         public static string InventoryPageTitle {

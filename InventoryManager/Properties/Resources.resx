@@ -174,4 +174,7 @@
   <data name="SentOutsidePageTitle" xml:space="preserve">
     <value>Sent Outside</value>
   </data>
+  <data name="GiveAwayPageTitle" xml:space="preserve">
+    <value>GiveAways</value>
+  </data>
 </root>

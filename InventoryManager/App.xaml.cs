@@ -77,6 +77,7 @@ public partial class App : Application
         services.AddTransient<InventoryPage>();
         services.AddTransient<SystemInventory>();
         services.AddTransient<SentOutsidePage>();
+        services.AddTransient<GiveAwayPage>();
         services.AddTransient<SettingsPage>();
 
 

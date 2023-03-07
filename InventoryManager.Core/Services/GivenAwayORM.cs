@@ -15,6 +15,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(GivenAway.ProductID)} TEXT NOT NULL," +
             $"{nameof(GivenAway.Amount)} INTEGER NOT NULL DEFAULT 1," +
             $"{nameof(GivenAway.Event)} TEXT NOT NULL," +
+            $"{nameof(GivenAway.Date)} TEXT NOT NULL," +
             $"FOREIGN KEY({nameof(GivenAway.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(GivenAway.ID)} AUTOINCREMENT));";
             _dataAccess.Execute(cmd);
@@ -26,7 +27,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public override async Task<GivenAway> Insert(GivenAway param) {
-            string cmd = $"INSERT INTO {nameof(GivenAway)} ({nameof(GivenAway.ProductID)}, {nameof(GivenAway.Amount)}, {nameof(GivenAway.Event)}) values(@{nameof(GivenAway.ProductID)}, @{nameof(GivenAway.Amount)}, @{nameof(GivenAway.Event)});";
+            string cmd = $"INSERT INTO {nameof(GivenAway)} ({nameof(GivenAway.ProductID)}, {nameof(GivenAway.Amount)}, {nameof(GivenAway.Event)}, {nameof(GivenAway.Date)}) values(@{nameof(GivenAway.ProductID)}, @{nameof(GivenAway.Amount)}, @{nameof(GivenAway.Event)}, @{nameof(GivenAway.Date)});";
             await _dataAccess.ExecuteAsync(cmd, param);
             int id = await LastInput();
             param.ID = id;
@@ -36,6 +37,20 @@ namespace InventoryManager.Core.Services {
         public async Task<IEnumerable<GivenAway>> SelectByProduct(Product p) {
             string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.ProductID)} = @{nameof(Product.ID)};";
             var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd, p);
+            return products;
+        }
+
+        public async Task<IEnumerable<GivenAway>> SelectAllEvents()
+        {
+            string cmd = $"SELECT * FROM {nameof(GivenAway)} GROUP BY {nameof(GivenAway.Event)}, {nameof(GivenAway.Date)};";
+            var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd);
+            return products;
+        }
+
+        public async Task<IEnumerable<GivenAway>> SelectByEvent(GivenAway giveaway)
+        {
+            string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.Event)} = @{nameof(giveaway.Event)} AND {nameof(GivenAway.Date)} = @{nameof(GivenAway.Date)};";
+            var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd, giveaway);
             return products;
         }
 

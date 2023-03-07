@@ -248,7 +248,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Amount = int.Parse(AmountToGive.Text),
             ProductID = SelectedProduct.Product.ID,
             Event = GiveAwayName.Text,
-            Date = DateTime.Now,
+            Date = ,
         };
         await givenAwayORM.Insert(giveaway);
         SelectedProduct.TotalGivenAway += giveaway.Amount;
