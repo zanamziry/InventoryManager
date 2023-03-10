@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.Office.Interop.Excel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
 
@@ -40,9 +40,9 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
     public ObservableCollection<HamburgerMenuItem> MenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()
     {
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellMainPage, Glyph = "\uE77F", TargetPageType = typeof(MainPage) },
-        new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellSystemInventoryPage, Glyph = "\uE753", TargetPageType = typeof(SystemInventory) },
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.SentOutsidePageTitle, Glyph = "\uE724", TargetPageType = typeof(SentOutsidePage) },
-        new HamburgerMenuGlyphItem() { Label = Properties.Resources.GiveAwayPageTitle, Glyph = "\uE724", TargetPageType = typeof(GiveAwayPage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.GiveAwayPageTitle, Icon = new MahApps.Metro.IconPacks.FontAwesomeExtension() {Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.GiftSolid} , TargetPageType = typeof(GiveAwayPage) },
+        new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellSystemInventoryPage, Glyph = "\uE753", TargetPageType = typeof(SystemInventory) },
     };
 
     public ObservableCollection<HamburgerMenuItem> OptionMenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()

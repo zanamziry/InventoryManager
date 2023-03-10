@@ -277,7 +277,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         ws.Columns[10].SetWidth(70, LengthUnit.Pixel);
 
         // Create table and enable totals row.
-        var table = ws.Tables.Add("Jard", "A1:J50", true);
+        var table = ws.Tables.Add("Jard", $"A1:J{Source.Count+1}", true);
         table.HasTotalsRow = false;
         xl.Save(sd.FileName);
     }

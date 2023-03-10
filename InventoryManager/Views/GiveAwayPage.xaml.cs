@@ -8,6 +8,7 @@ using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
+using InventoryManager.Models;
 
 namespace InventoryManager.Views;
 
@@ -23,7 +24,8 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         InitializeComponent();
     }
     public ObservableCollection<GivenAway> Events { get; } = new ObservableCollection<GivenAway>();
-    public ObservableCollection<GivenAway> SelectedGiveAways { get; } = new ObservableCollection<GivenAway>();
+    public ObservableCollection<GiftDisplay> SelectedGiveAways { get; } = new ObservableCollection<GiftDisplay>();
+    public List<Product> Products { get; private set; } = new List<Product>();
 
     private readonly GivenAwayORM giveawayORM;
     private readonly ProductsORM productsORM;
@@ -48,6 +50,11 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         {
             Events.Add(item);
         }
+        Products.Clear();
+        foreach(var i in await productsORM.SelectAll())
+        {
+            Products.Add(i);
+        }
     }
 
     void INavigationAware.OnNavigatedFrom()
@@ -64,13 +71,18 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
             SelectedGiveAways.Clear();
             foreach (var i in await giveawayORM.SelectByEvent(s))
             {
-                SelectedGiveAways.Add(i);
+                var giftDisplay = new GiftDisplay
+                {
+                    GivenAway = i,
+                    Product = Products.Find(o => o.ID == i.ProductID),
+                };
+                SelectedGiveAways.Add(giftDisplay);
             }
         }
     }
-    async void Remove(GivenAway p)
+    async void Remove(GiftDisplay p)
     {
-        await giveawayORM.Delete(p);
+        await giveawayORM.Delete(p.GivenAway);
         SelectedGiveAways.Remove(p);
     }
 
@@ -79,7 +91,7 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         switch (e.Key)
         {
             case Key.Delete:
-                if ((e.OriginalSource as FrameworkElement).DataContext is GivenAway p)
+                if ((e.OriginalSource as FrameworkElement).DataContext is GiftDisplay p)
                 {
                     Remove(p);
                 }

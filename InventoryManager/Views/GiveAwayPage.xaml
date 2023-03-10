@@ -41,7 +41,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding Event}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding Date, StringFormat='{}{0:M/yyyy}'}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="Regular"/>
+                                <TextBlock Text="{Binding Date, StringFormat='{}{0:dd/M/yyyy}'}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="Regular"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -53,9 +53,10 @@
                     </Grid.RowDefinitions>
                     <DataGrid Grid.Row="0" x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding ID,Mode=OneWay}"/>
-                            <DataGridTextColumn Header="Product ID" IsReadOnly="True" Binding="{Binding ProductID,Mode=TwoWay}" />
-                            <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding Amount,Mode=TwoWay}" />
+                            <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID,Mode=OneWay}"/>
+                            <DataGridTextColumn Header="ProductID" IsReadOnly="True" Binding="{Binding Product.ID,Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Product.Name,Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding GivenAway.Amount,Mode=TwoWay}" />
                         </DataGrid.Columns>
                     </DataGrid>
                     <DockPanel Grid.Row="1">

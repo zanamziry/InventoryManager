@@ -243,12 +243,14 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     async void OnGiveAwayClicked(object sender, RoutedEventArgs e)
     {
+        if (!GiveAwayDate.SelectedDate.HasValue)
+            GiveAwayDate.SelectedDate = DateTime.Now;
         var giveaway = new GivenAway
         {
             Amount = int.Parse(AmountToGive.Text),
             ProductID = SelectedProduct.Product.ID,
             Event = GiveAwayName.Text,
-            Date = ,
+            Date = GiveAwayDate.SelectedDate.Value,
         };
         await givenAwayORM.Insert(giveaway);
         SelectedProduct.TotalGivenAway += giveaway.Amount;
