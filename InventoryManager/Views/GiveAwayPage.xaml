@@ -47,11 +47,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="50"/>
-                    </Grid.RowDefinitions>
-                    <DataGrid Grid.Row="0" x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
+                    <DataGrid x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID,Mode=OneWay}"/>
                             <DataGridTextColumn Header="ProductID" IsReadOnly="True" Binding="{Binding Product.ID,Mode=OneWay}"/>
@@ -59,10 +55,6 @@
                             <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding GivenAway.Amount,Mode=TwoWay}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DockPanel Grid.Row="1">
-                        <TextBlock Text="Total Price" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
-                        <TextBlock Text="NOT SET YET" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
-                    </DockPanel>
                 </Grid>
             </Grid>
         </Grid>

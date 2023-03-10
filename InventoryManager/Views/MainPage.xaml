@@ -77,6 +77,18 @@
                             <TextBlock TextAlignment="Center" Text="Export As Excel"/>
                         </DockPanel>
                     </Button>
+                    <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Padding="10,15">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Send"/>
+                            <TextBlock TextAlignment="Center" Text="{Binding SentMoney,StringFormat={}{0:C2}, Mode=OneWay}"/>
+                        </DockPanel>
+                    </Border>
+                    <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Padding="10,15">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Gift"/>
+                            <TextBlock TextAlignment="Center" Text="{Binding GiftPoints, Mode=OneWay}"/>
+                        </DockPanel>
+                    </Border>
                 </StackPanel>
                 <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>

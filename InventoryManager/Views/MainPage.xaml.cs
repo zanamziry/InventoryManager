@@ -46,7 +46,27 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     private readonly GivenAwayORM GivenORM;
     private readonly LocalInventoryORM LocalORM;
     private readonly SentOutsideORM OutsideORM;
-
+    public decimal SentMoney
+    {
+        get
+        {
+            return Source.Sum(o => o.TotalOutside * o.Product.Price);
+        }
+    }
+    public decimal GiftPoints
+    {
+        get
+        {
+            return Source.Sum(o => o.TotalGivenAway * o.Product.PV);
+        }
+    }
+    public decimal GiftMoney
+    {
+        get
+        {
+            return Source.Sum(o => o.TotalGivenAway * o.Product.Price);
+        }
+    }
     public ObservableCollection<MainInventory> Source { get; } = new ObservableCollection<MainInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
 
