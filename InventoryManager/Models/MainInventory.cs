@@ -13,6 +13,7 @@ namespace InventoryManager.Models
 
         public int TotalGivenAway { get; set; }
         public int TotalOutside { get; set; }
+        public int TotalSoldOutside { get; set; }
         public int TotalReal => Locals.Sum(o => o.Total);
         public int TotalOpen => Locals.Sum(o => o.Open);
         public int TotalInv => Locals.Sum(o => o.Inventory);

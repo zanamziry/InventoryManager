@@ -50,7 +50,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     {
         get
         {
-            return Source.Sum(o => o.TotalOutside * o.Product.Price);
+            return Source.Sum(o => o.TotalSoldOutside * o.Product.Price);
         }
     }
     public decimal GiftPoints
@@ -201,12 +201,13 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         var sys = await SystemORM.SelectProduct(p);
         var totalGiven = 0;
         var totalOut = 0;
+        var totalOutSold = 0;
         ObservableCollection<LocalInventory> locals = new ObservableCollection<LocalInventory>();
         foreach (var item in localDB)
             locals.Add(item);
         totalGiven = await GivenORM.SelectTotalAmount(p);
         totalOut = await OutsideORM.SelectTotalAmountSent(p);
-
+        totalOutSold = await OutsideORM.SelectTotalAmountSold(p);
         Source.Add(new MainInventory
         {
             Product = p,
@@ -214,17 +215,27 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             Locals = locals,
             TotalGivenAway = totalGiven,
             TotalOutside = totalOut,
+            TotalSoldOutside = totalOutSold,
         });
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
+        Source.CollectionChanged += Source_CollectionChanged; 
         Source.Clear();
         foreach (var p in await ProductsORM.SelectAll())
             AddToView(p);
     }
 
+    private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(SentMoney));
+        OnPropertyChanged(nameof(GiftMoney));
+        OnPropertyChanged(nameof(GiftPoints));
+    }
+
     void INavigationAware.OnNavigatedFrom()
     {
+        Source.CollectionChanged -= Source_CollectionChanged;
     }
 
     private void OnCancelButtonClicked(object sender, RoutedEventArgs e)

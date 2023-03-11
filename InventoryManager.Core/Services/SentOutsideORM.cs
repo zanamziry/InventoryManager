@@ -62,6 +62,17 @@ namespace InventoryManager.Core.Services {
             }
             return total;
         }
+        public async Task<int> SelectTotalAmountSold(Product p)
+        {
+            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(Product.ID)};";
+            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, p);
+            int total = 0;
+            foreach (var i in sentOutsides)
+            {
+                total += i.AmountSold;
+            }
+            return total;
+        }
         public async Task<IEnumerable<SentOutside>> SelectByLocation(string location)
         {
             string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.Location)} = '{location}';";
