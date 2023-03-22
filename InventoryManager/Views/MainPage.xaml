@@ -90,7 +90,7 @@
                         </DockPanel>
                     </Border>
                 </StackPanel>
-                <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
+                <DataGrid ScrollViewer.CanContentScroll="False"  Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Product Name" Binding="{Binding Product.Name}" Width="150"/>
                         <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}"/>

@@ -41,7 +41,7 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
     {
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellMainPage, Glyph = "\uE77F", TargetPageType = typeof(MainPage) },
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.SentOutsidePageTitle, Glyph = "\uE724", TargetPageType = typeof(SentOutsidePage) },
-        new HamburgerMenuIconItem() { Label = Properties.Resources.GiveAwayPageTitle, Icon = new MahApps.Metro.IconPacks.FontAwesomeExtension() {Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.GiftSolid} , TargetPageType = typeof(GiveAwayPage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.GiveAwayPageTitle, Icon = new MahApps.Metro.IconPacks.PackIconFontAwesome(){ Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.GiftSolid} , TargetPageType = typeof(GiveAwayPage) },
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellSystemInventoryPage, Glyph = "\uE753", TargetPageType = typeof(SystemInventory) },
     };
 

@@ -17,7 +17,7 @@ namespace InventoryManager.Models
         public int TotalReal => Locals.Sum(o => o.Total);
         public int TotalOpen => Locals.Sum(o => o.Open);
         public int TotalInv => Locals.Sum(o => o.Inventory);
-        public int Result => (TotalReal + TotalGivenAway + TotalOutside) - System.CloseBalance;
+        public int Result => (TotalReal + TotalGivenAway + (TotalOutside - TotalSoldOutside)) - System.CloseBalance;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged()

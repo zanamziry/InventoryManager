@@ -284,14 +284,14 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             i++;
             ws.Cells[i, 0].Value = item.Product.ID;
             ws.Cells[i, 1].Value = item.Product.Name;
-            ws.Cells[i, 2].Value = item.TotalReal.ToString();
-            ws.Cells[i, 3].Value = item.System.CloseBalance.ToString();
-            ws.Cells[i, 4].Value = item.TotalGivenAway.ToString();
-            ws.Cells[i, 5].Value = item.TotalOutside.ToString();
-            ws.Cells[i, 6].Value = item.Result.ToString();
-            ws.Cells[i, 7].Value = item.TotalInv.ToString();
-            ws.Cells[i, 8].Value = item.TotalOpen.ToString();
-            ws.Cells[i, 9].Value = item.Product.Price.ToString();
+            ws.Cells[i, 2].Value = item.TotalReal;
+            ws.Cells[i, 3].Value = item.System.CloseBalance;
+            ws.Cells[i, 4].Value = item.TotalGivenAway;
+            ws.Cells[i, 5].Value = item.TotalOutside;
+            ws.Cells[i, 6].Value = item.Result;
+            ws.Cells[i, 7].Value = item.TotalInv;
+            ws.Cells[i, 8].Value = item.TotalOpen;
+            ws.Cells[i, 9].Value = item.Product.Price;
         }
 
         // Set Width of Columns to fit the text
@@ -309,6 +309,15 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
         // Create table and enable totals row.
         var table = ws.Tables.Add("Jard", $"A1:J{Source.Count+1}", true);
+        ws.Protected = true;
+        ws.ProtectionSettings.SetPassword("ZANA99");
+        ws.ProtectionSettings.AllowSelectingLockedCells = true;
+        ws.ProtectionSettings.AllowSelectingUnlockedCells = true;
+        ws.ProtectionSettings.AllowSorting = true;
+        ws.ProtectionSettings.AllowDeletingColumns = false;
+        ws.ProtectionSettings.AllowDeletingRows = false;
+        ws.ProtectionSettings.AllowInsertingRows = false;
+        ws.ProtectionSettings.AllowFormattingRows = false;
         table.HasTotalsRow = false;
         xl.Save(sd.FileName);
     }
