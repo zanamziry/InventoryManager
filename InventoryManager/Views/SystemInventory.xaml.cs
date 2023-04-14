@@ -127,6 +127,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         foreach (var item in await SystemORM.SelectAll())
             SystemProducts.Add(item);
         IsLoading = false;
+
     }
     private string GetSavedSetting(string key)
     {

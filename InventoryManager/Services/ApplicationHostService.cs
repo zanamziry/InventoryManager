@@ -1,6 +1,8 @@
 ﻿using InventoryManager.Contracts.Activation;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
+using InventoryManager.Core.Contracts.Services;
+using InventoryManager.Core.Services;
 using InventoryManager.Views;
 
 using Microsoft.Extensions.Hosting;
@@ -10,7 +12,7 @@ namespace InventoryManager.Services;
 public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ISystemService _systemService;
+    private readonly ISystemDataGather _systemDataGather;
     private readonly IDBSetup _dBSetup;
     private readonly INavigationService _navigationService;
     private readonly IPersistAndRestoreService _persistAndRestoreService;
@@ -18,14 +20,14 @@ public class ApplicationHostService : IHostedService
     private IShellWindow _shellWindow;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemService systemService)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
         _navigationService = navigationService;
         _persistAndRestoreService = persistAndRestoreService;
         _dBSetup = dBSetup;
-        _systemService = systemService;
+        _systemDataGather = systemDataGather;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -43,7 +45,6 @@ public class ApplicationHostService : IHostedService
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         _persistAndRestoreService.PersistData();
-        _systemService.StopServer();
         await Task.CompletedTask;
     }
 
@@ -53,7 +54,7 @@ public class ApplicationHostService : IHostedService
         {
             _persistAndRestoreService.RestoreData();
             _dBSetup.InitializeDatabase();
-            _systemService.StartServer();
+            _systemDataGather.LoadSettings();
             await Task.CompletedTask;
         }
     }

@@ -140,52 +140,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         await ProductsORM.DeleteAll();
         Source.Clear();
     }
-    private async void OnImportClicked(object sender, RoutedEventArgs e)
+
+    private async void OnGetLatestListClicked(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFileDialog();
-        dialog.DefaultExt = ".json"; // Default file extension
-        dialog.Filter = "Json files (*.json)|*.json"; // Filter files by extension
-        var result = dialog.ShowDialog();
-        if(result == true)
-        {
-            string filename = dialog.FileName;
-            string json = await File.ReadAllTextAsync(filename);
-            var obj = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);
-            foreach(Product product in obj)
-            {
-                if (Source.Where(o => o.Product == product).Count() == 0)
-                {
-                    try
-                    {
-                        await ProductsORM.Insert(product);
-                        AddToView(product);
-                    }
-                    catch (SqliteException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Database Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
-        }
-    }
-    private async void OnExportClicked(object sender, RoutedEventArgs e)
-    {
-        var dialog = new SaveFileDialog();
-        dialog.FileName = "InventoryProducts";
-        dialog.DefaultExt = ".json"; // Default file extension
-        dialog.Filter = "Json files (*.json)|*.json"; // Filter files by extension
-        var result = dialog.ShowDialog();
-        if (result == true)
-        {
-            List<Product> products = new List<Product>();
-            string filename = dialog.FileName;
-            foreach (var item in Source)
-            {
-                products.Add(item.Product);
-            }
-            string stringJson = JsonConvert.SerializeObject(products);
-            await File.WriteAllTextAsync(filename, stringJson);
-        }
+
     }
 
     private void OnGridDoubleClick(object sender, MouseButtonEventArgs e)
@@ -199,24 +157,18 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     {
         var localDB = await LocalORM.SelectProduct(p);
         var sys = await SystemORM.SelectProduct(p);
-        var totalGiven = 0;
-        var totalOut = 0;
-        var totalOutSold = 0;
         ObservableCollection<LocalInventory> locals = new ObservableCollection<LocalInventory>();
         foreach (var item in localDB)
             locals.Add(item);
-        totalGiven = await GivenORM.SelectTotalAmount(p);
-        totalOut = await OutsideORM.SelectTotalAmountSent(p);
-        totalOutSold = await OutsideORM.SelectTotalAmountSold(p);
         Source.Add(new MainInventory
         {
             Product = p,
             System = sys,
             Locals = locals,
-            TotalGivenAway = totalGiven,
-            TotalOutside = totalOut,
-            TotalSoldOutside = totalOutSold,
-        });
+            TotalGivenAway = await GivenORM.SelectTotalAmount(p),
+            TotalOutside = await OutsideORM.SelectTotalAmountSent(p),
+            TotalSoldOutside = await OutsideORM.SelectTotalAmountSold(p)
+    });
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
