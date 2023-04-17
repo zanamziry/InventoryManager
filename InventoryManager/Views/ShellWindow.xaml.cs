@@ -39,10 +39,10 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
     // TODO: Change the icons and titles for all HamburgerMenuItems here.
     public ObservableCollection<HamburgerMenuItem> MenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()
     {
-        new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellMainPage, Glyph = "\uE77F", TargetPageType = typeof(MainPage) },
-        new HamburgerMenuGlyphItem() { Label = Properties.Resources.SentOutsidePageTitle, Glyph = "\uE724", TargetPageType = typeof(SentOutsidePage) },
-        new HamburgerMenuIconItem() { Label = Properties.Resources.GiveAwayPageTitle, Icon = new MahApps.Metro.IconPacks.PackIconFontAwesome(){ Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.GiftSolid} , TargetPageType = typeof(GiveAwayPage) },
-        new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellSystemInventoryPage, Glyph = "\uE753", TargetPageType = typeof(SystemInventory) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.ShellMainPage, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Home}, TargetPageType = typeof(MainPage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.SentOutsidePageTitle, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Box}, TargetPageType = typeof(SentOutsidePage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.GiveAwayPageTitle, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Gift} , TargetPageType = typeof(GiveAwayPage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.ShellSystemInventoryPage, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Cloud}, TargetPageType = typeof(SystemInventory) },
     };
 
     public ObservableCollection<HamburgerMenuItem> OptionMenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()

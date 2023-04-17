@@ -43,7 +43,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock
                             Grid.Column="0"
-                            FontSize="16"
+                            FontSize="20"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             FontFamily="Segoe MDL2 Assets"
@@ -51,6 +51,7 @@
                             ToolTip="{Binding Label}" />
                         <TextBlock
                             Grid.Column="1"
+                            FontWeight="Light"
                             VerticalAlignment="Center"
                             FontSize="16"
                             Text="{Binding Label}" />
@@ -99,6 +100,28 @@
             OptionsItemClick="OnOptionsItemClick"
             OptionsItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"
             ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}">
+            <controls:HamburgerMenu.ItemTemplate>
+                <DataTemplate DataType="{x:Type controls:HamburgerMenuIconItem}">
+                    <Grid Height="48">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Viewbox ToolTip="{Binding Label}" Height="20" >
+                                <Viewbox.Child>
+                                    <ContentControl Content="{Binding Path=Icon}"></ContentControl>
+                                </Viewbox.Child>
+                            </Viewbox>
+                        </Grid>
+                        <TextBlock Grid.Column="1"
+               VerticalAlignment="Center"
+               FontSize="16"
+               Foreground="{StaticResource MahApps.Brushes.Badged.Foreground}"
+               Text="{Binding Label}" FontWeight="Light"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:HamburgerMenu.ItemTemplate>
             <controls:HamburgerMenu.Content>
                 <Frame
                     x:Name="shellFrame"
@@ -108,4 +131,5 @@
             </controls:HamburgerMenu.Content>
         </controls:HamburgerMenu>
     </controls:MetroWindow.Content>
+    
 </controls:MetroWindow>
