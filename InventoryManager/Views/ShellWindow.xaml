@@ -34,6 +34,28 @@
     <controls:MetroWindow.Resources>
         <templateSelectors:MenuItemTemplateSelector
             x:Key="MenuItemTemplateSelector">
+            <templateSelectors:MenuItemTemplateSelector.IconDataTemplate>
+                <DataTemplate DataType="{x:Type controls:HamburgerMenuIconItem}">
+                    <Grid Height="48">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Viewbox ToolTip="{Binding Label}" Height="20" >
+                                <Viewbox.Child>
+                                    <ContentControl Content="{Binding Path=Icon}"></ContentControl>
+                                </Viewbox.Child>
+                            </Viewbox>
+                        </Grid>
+                        <TextBlock Grid.Column="1"
+               VerticalAlignment="Center"
+               FontSize="16"
+               Foreground="{StaticResource MahApps.Brushes.Badged.Foreground}"
+               Text="{Binding Label}" FontWeight="Light"/>
+                    </Grid>
+                </DataTemplate>
+            </templateSelectors:MenuItemTemplateSelector.IconDataTemplate>
             <templateSelectors:MenuItemTemplateSelector.GlyphDataTemplate>
                 <DataTemplate DataType="{x:Type controls:HamburgerMenuGlyphItem}">
                     <Grid Height="48">
@@ -100,28 +122,6 @@
             OptionsItemClick="OnOptionsItemClick"
             OptionsItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"
             ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}">
-            <controls:HamburgerMenu.ItemTemplate>
-                <DataTemplate DataType="{x:Type controls:HamburgerMenuIconItem}">
-                    <Grid Height="48">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="48"/>
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <Viewbox ToolTip="{Binding Label}" Height="20" >
-                                <Viewbox.Child>
-                                    <ContentControl Content="{Binding Path=Icon}"></ContentControl>
-                                </Viewbox.Child>
-                            </Viewbox>
-                        </Grid>
-                        <TextBlock Grid.Column="1"
-               VerticalAlignment="Center"
-               FontSize="16"
-               Foreground="{StaticResource MahApps.Brushes.Badged.Foreground}"
-               Text="{Binding Label}" FontWeight="Light"/>
-                    </Grid>
-                </DataTemplate>
-            </controls:HamburgerMenu.ItemTemplate>
             <controls:HamburgerMenu.Content>
                 <Frame
                     x:Name="shellFrame"

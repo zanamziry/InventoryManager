@@ -39,10 +39,10 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
     // TODO: Change the icons and titles for all HamburgerMenuItems here.
     public ObservableCollection<HamburgerMenuItem> MenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()
     {
-        new HamburgerMenuIconItem() { Label = Properties.Resources.ShellMainPage, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Home}, TargetPageType = typeof(MainPage) },
-        new HamburgerMenuIconItem() { Label = Properties.Resources.SentOutsidePageTitle, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Box}, TargetPageType = typeof(SentOutsidePage) },
-        new HamburgerMenuIconItem() { Label = Properties.Resources.GiveAwayPageTitle, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Gift} , TargetPageType = typeof(GiveAwayPage) },
-        new HamburgerMenuIconItem() { Label = Properties.Resources.ShellSystemInventoryPage, Icon = new MahApps.Metro.IconPacks.PackIconModern(){ Kind = MahApps.Metro.IconPacks.PackIconModernKind.Cloud}, TargetPageType = typeof(SystemInventory) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.ShellMainPage, Icon = new MahApps.Metro.IconPacks.PackIconVaadinIcons(){ Kind = MahApps.Metro.IconPacks.PackIconVaadinIconsKind.Storage}, TargetPageType = typeof(MainPage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.SentOutsidePageTitle, Icon = new MahApps.Metro.IconPacks.PackIconVaadinIcons(){ Kind = MahApps.Metro.IconPacks.PackIconVaadinIconsKind.Package}, TargetPageType = typeof(SentOutsidePage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.GiveAwayPageTitle, Icon = new MahApps.Metro.IconPacks.PackIconVaadinIcons(){ Kind = MahApps.Metro.IconPacks.PackIconVaadinIconsKind.Gift} , TargetPageType = typeof(GiveAwayPage) },
+        new HamburgerMenuIconItem() { Label = Properties.Resources.ShellSystemInventoryPage, Icon = new MahApps.Metro.IconPacks.PackIconVaadinIcons(){ Kind = MahApps.Metro.IconPacks.PackIconVaadinIconsKind.Cloud}, TargetPageType = typeof(SystemInventory) },
     };
 
     public ObservableCollection<HamburgerMenuItem> OptionMenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()

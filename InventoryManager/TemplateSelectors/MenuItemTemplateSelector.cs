@@ -10,6 +10,7 @@ public class MenuItemTemplateSelector : DataTemplateSelector
     public DataTemplate GlyphDataTemplate { get; set; }
 
     public DataTemplate ImageDataTemplate { get; set; }
+    public DataTemplate IconDataTemplate { get; set; }
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
@@ -17,7 +18,10 @@ public class MenuItemTemplateSelector : DataTemplateSelector
         {
             return GlyphDataTemplate;
         }
-
+        if(item is HamburgerMenuIconItem)
+        {
+            return IconDataTemplate;
+        }
         if (item is HamburgerMenuImageItem)
         {
             return ImageDataTemplate;
