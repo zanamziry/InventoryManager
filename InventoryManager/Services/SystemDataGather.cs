@@ -34,14 +34,13 @@ namespace InventoryManager.Services
             return await client.GetStringAsync(url);
         }
 
-        public async void LoadSettings()
+        public void LoadSettings()
         {
             if (App.Current.Properties.Contains(SettingsKey))
             {
                 base_url = App.Current.Properties[SettingsKey].ToString();
             }
             else base_url = "http://127.0.0.1";
-            await GetProductsAsync();
         }
 
         public void SaveSettings(string newUrl)

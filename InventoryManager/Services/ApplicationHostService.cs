@@ -58,7 +58,7 @@ public class ApplicationHostService : IHostedService
             _persistAndRestoreService.RestoreData();
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
-            _systemService.StopServer();
+            _systemService.StartServer();
             await Task.CompletedTask;
         }
     }
