@@ -55,7 +55,6 @@
                     </Button>
                     <Button HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
-
                             <mt:PackIcon Kind="Download"/>
                             <TextBlock TextAlignment="Center" Text="Update List"/>
                         </DockPanel>
@@ -66,24 +65,30 @@
                             <TextBlock TextAlignment="Center" Text="Export As Excel"/>
                         </DockPanel>
                     </Button>
-                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnExportAsExcelClicked">
-                        <DockPanel>
-                            <mt:PackIcon Kind="Upload"/>
-                            <TextBlock TextAlignment="Center" Text="Upload To Server"/>
-                        </DockPanel>
-                    </Button>
-                    <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Padding="10,15">
-                        <DockPanel>
-                            <mt:PackIcon Kind="Send"/>
-                            <TextBlock TextAlignment="Center" Text="{Binding SentMoney,StringFormat={}{0:C2}, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Border>
-                    <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Padding="10,15">
-                        <DockPanel>
-                            <mt:PackIcon Kind="Gift"/>
-                            <TextBlock TextAlignment="Center" Text="{Binding GiftPoints, Mode=OneWay}"/>
-                        </DockPanel>
-                    </Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="95" Height="70">
+                            <StackPanel>
+                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4">
+                                    <mt:PackIcon Width="12" Kind="PackageVariant"/>
+                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="OutSide"/>
+                                </DockPanel>
+                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SentMoney,StringFormat={}{0:C}, Mode=OneWay}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="90" Height="70">
+                            <StackPanel>
+                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4">
+                                    <mt:PackIcon Width="12" Kind="GiftOutline"/>
+                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="Gifts"/>
+                                </DockPanel>
+                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding GiftPoints,StringFormat={}{0:G}, Mode=OneWay}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </StackPanel>
                 <DataGrid ScrollViewer.CanContentScroll="False"  Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
