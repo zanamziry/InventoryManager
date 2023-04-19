@@ -1,6 +1,8 @@
 ﻿using InventoryManager.Contracts.Activation;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
+using InventoryManager.Core.Contracts.Services;
+using InventoryManager.Core.Services;
 using InventoryManager.Views;
 
 using Microsoft.Extensions.Hosting;
@@ -10,6 +12,7 @@ namespace InventoryManager.Services;
 public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly ISystemDataGather _systemDataGather;
     private readonly ISystemService _systemService;
     private readonly IDBSetup _dBSetup;
     private readonly INavigationService _navigationService;
@@ -18,13 +21,14 @@ public class ApplicationHostService : IHostedService
     private IShellWindow _shellWindow;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemService systemService)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ISystemService systemService)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
         _navigationService = navigationService;
         _persistAndRestoreService = persistAndRestoreService;
         _dBSetup = dBSetup;
+        _systemDataGather = systemDataGather;
         _systemService = systemService;
     }
 
@@ -53,6 +57,7 @@ public class ApplicationHostService : IHostedService
         {
             _persistAndRestoreService.RestoreData();
             _dBSetup.InitializeDatabase();
+            _systemDataGather.LoadSettings();
             _systemService.StartServer();
             await Task.CompletedTask;
         }

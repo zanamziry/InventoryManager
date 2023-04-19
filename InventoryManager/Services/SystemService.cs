@@ -7,10 +7,6 @@ namespace InventoryManager.Services;
 
 public class SystemService : ISystemService
 {
-    public SystemService()
-    {
-    }
-
     readonly string migrateCMD = "./dxn_api/manage.py migrate";
     readonly string makemigrationsCMD = "./dxn_api/manage.py makemigrations";
     readonly string runserverCMD = "./dxn_api/manage.py runserver 127.0.0.1:80";
@@ -75,7 +71,7 @@ public class SystemService : ISystemService
     public void StopServer()
     {
         if (_process == null)
-            return; 
+            return;
         _process.StandardInput.Dispose();
         SendKeys.SendWait("^{BREAK}");
         _process.Dispose();

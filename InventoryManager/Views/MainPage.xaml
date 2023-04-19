@@ -53,28 +53,23 @@
                             <TextBlock TextAlignment="Center" Text="Delete All"/>
                         </DockPanel>
                     </Button>
-                    <Grid HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Padding="15,0" Margin="0,0,2,0" Click="OnImportClicked">
-                            <DockPanel>
-                                <mt:PackIcon Kind="Import"/>
-                                <TextBlock TextAlignment="Center" Text="Import"/>
-                            </DockPanel>
-                        </Button>
-                        <Button Grid.Column="1" Padding="15,0" Margin="2,0,0,0" Click="OnExportClicked">
-                            <DockPanel>
-                                <mt:PackIcon Kind="Export"/>
-                                <TextBlock TextAlignment="Center" Text="Export"/>
-                            </DockPanel>
-                        </Button>
-                    </Grid>
+                    <Button HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
+                        <DockPanel>
+
+                            <mt:PackIcon Kind="Download"/>
+                            <TextBlock TextAlignment="Center" Text="Update List"/>
+                        </DockPanel>
+                    </Button>
                     <Button Margin="{StaticResource SmallTopMargin}" Click="OnExportAsExcelClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="MicrosoftExcel"/>
                             <TextBlock TextAlignment="Center" Text="Export As Excel"/>
+                        </DockPanel>
+                    </Button>
+                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnExportAsExcelClicked">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Upload"/>
+                            <TextBlock TextAlignment="Center" Text="Upload To Server"/>
                         </DockPanel>
                     </Button>
                     <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Padding="10,15">

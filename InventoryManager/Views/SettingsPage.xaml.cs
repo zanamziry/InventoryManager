@@ -41,12 +41,10 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         get { return _serverAddress; }
         set 
         {
-            
             if (string.IsNullOrEmpty(value) || !v.IsMatch(value))
                 value = "http://127.0.0.1";
             Set(ref _serverAddress, value);
-            SaveSetting(_serverAddress, _dataGather.SettingsKey);
-            _dataGather.ServerAddress = value;
+            _dataGather.SaveSettings(value);
         }
     }
 
