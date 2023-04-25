@@ -11,26 +11,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="dxn_api\api\admin.py" />
-    <None Remove="dxn_api\api\apps.py" />
-    <None Remove="dxn_api\api\DataCollector.py" />
-    <None Remove="dxn_api\api\models.py" />
-    <None Remove="dxn_api\api\tests.py" />
-    <None Remove="dxn_api\api\urls.py" />
-    <None Remove="dxn_api\api\views.py" />
-    <None Remove="dxn_api\api\__init__.py" />
-    <None Remove="dxn_api\db.sqlite3" />
-    <None Remove="dxn_api\DXNAutopilot\DataCollector.py" />
-    <None Remove="dxn_api\DXNAutopilot\__init__.py" />
-    <None Remove="dxn_api\dxn_api\asgi.py" />
-    <None Remove="dxn_api\dxn_api\settings.py" />
-    <None Remove="dxn_api\dxn_api\urls.py" />
-    <None Remove="dxn_api\dxn_api\wsgi.py" />
-    <None Remove="dxn_api\dxn_api\__init__.py" />
-    <None Remove="dxn_api\manage.py" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <COMReference Include="Microsoft.Office.Interop.Excel">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>9</VersionMinor>
@@ -40,18 +20,6 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="dxn_api\db.sqlite3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\DXNAutopilot\DataCollector.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\DXNAutopilot\__init__.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   
   <ItemGroup>
@@ -105,47 +73,5 @@
     <Page Update="Views\SystemInventory.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="dxn_api\api\admin.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\api\apps.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\api\models.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\api\tests.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\api\urls.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\api\views.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\api\__init__.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\dxn_api\asgi.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\dxn_api\settings.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\dxn_api\urls.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\dxn_api\wsgi.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\dxn_api\__init__.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dxn_api\manage.py">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>
