@@ -13,7 +13,6 @@ public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ISystemDataGather _systemDataGather;
-    private readonly ISystemService _systemService;
     private readonly IDBSetup _dBSetup;
     private readonly INavigationService _navigationService;
     private readonly IPersistAndRestoreService _persistAndRestoreService;
@@ -21,7 +20,7 @@ public class ApplicationHostService : IHostedService
     private IShellWindow _shellWindow;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ISystemService systemService)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
@@ -29,7 +28,6 @@ public class ApplicationHostService : IHostedService
         _persistAndRestoreService = persistAndRestoreService;
         _dBSetup = dBSetup;
         _systemDataGather = systemDataGather;
-        _systemService = systemService;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -47,7 +45,6 @@ public class ApplicationHostService : IHostedService
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         _persistAndRestoreService.PersistData();
-        _systemService.StopServer();
         await Task.CompletedTask;
     }
 
@@ -58,7 +55,6 @@ public class ApplicationHostService : IHostedService
             _persistAndRestoreService.RestoreData();
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
-            _systemService.StartServer();
             await Task.CompletedTask;
         }
     }
