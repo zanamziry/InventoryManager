@@ -26,7 +26,7 @@ namespace InventoryManager.Views;
 
 public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    public MainPage(IDBSetup dBSetup,INavigationService navigationService)
+    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather)
     {
         InitializeComponent();
         DataContext = this;
@@ -37,9 +37,11 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
         GivenORM = _dBSetup.GetTable<GivenAwayORM>();
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
+        _dataGather = dataGather;
     }
     
     private readonly INavigationService _navigationService;
+    private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
     private readonly SystemProductsORM SystemORM;
     private readonly ProductsORM ProductsORM;
@@ -143,7 +145,26 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private async void OnGetLatestListClicked(object sender, RoutedEventArgs e)
     {
-
+        string json = await _dataGather.GetProductsAsync();
+        if(json != null)
+        {
+            try
+            {
+                var products = JsonConvert.DeserializeObject<List<Product>>(json);
+                await ProductsORM.DeleteAll();
+                Source.Clear();
+                foreach (var item in products)
+                {
+                    await ProductsORM.Insert(item);
+                    AddToView(item);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Didnt Find Any Products!");
+                return;
+            }
+        }
     }
 
     private void OnGridDoubleClick(object sender, MouseButtonEventArgs e)

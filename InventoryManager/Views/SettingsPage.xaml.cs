@@ -42,7 +42,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         set 
         {
             if (string.IsNullOrEmpty(value) || !v.IsMatch(value))
-                value = "http://127.0.0.1";
+                value = _dataGather.DEFAULT;
             Set(ref _serverAddress, value);
             _dataGather.SaveSettings(value);
         }
@@ -77,11 +77,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         }
         return "";
     }
-    private void SaveSetting(string val, string key)
-    {
-        if (!string.IsNullOrWhiteSpace(val))
-            App.Current.Properties[key] = val;
-    }
+
     private void OnPrivacyStatementClick(object sender, RoutedEventArgs e)
         => _systemService.OpenInWebBrowser(_appConfig.PrivacyStatement);
 

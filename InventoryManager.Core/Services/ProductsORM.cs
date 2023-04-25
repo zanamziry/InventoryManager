@@ -13,7 +13,9 @@ namespace InventoryManager.Core.Services {
             $"CREATE TABLE IF NOT EXISTS {nameof(Product)}(" +
             $"{nameof(Product.ID)} TEXT NOT NULL UNIQUE," +
             $"{nameof(Product.Name)} TEXT NOT NULL," +
+            $"{nameof(Product.Name_AR)} TEXT," +
             $"{nameof(Product.Price)} REAL NOT NULL," +
+            $"{nameof(Product.Old_Price)} REAL," +
             $"{nameof(Product.PV)} REAL NOT NULL," +
             $"PRIMARY KEY({nameof(Product.ID)}));";
             _dataAccess.Execute(cmd);
@@ -38,7 +40,7 @@ namespace InventoryManager.Core.Services {
         }
         
         public override async Task<Product> Insert(Product param) {
-            string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Price)}, {nameof(Product.PV)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Price)}, @{nameof(Product.PV)});";
+            string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Name_AR)}, {nameof(Product.Price)}, {nameof(Product.Old_Price)}, {nameof(Product.PV)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Name_AR)}, @{nameof(Product.Price)},@{nameof(Product.Old_Price)}, @{nameof(Product.PV)});";
             await _dataAccess.ExecuteAsync(cmd, param);
             return param;
         }

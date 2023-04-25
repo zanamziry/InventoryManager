@@ -43,8 +43,18 @@
                     <TextBlock Text="Last Update" FontWeight="SemiBold" Margin="0,3"/>
                     <TextBlock Text="{Binding LastUpdated,Mode=TwoWay, StringFormat='{}{0:ddddd dd/M/yyyy H:mm tt}'}" TextWrapping="Wrap" FontWeight="Light" FontSize="12"/>
                     <Line Stroke="Black" Margin="0,12" StrokeThickness="1" X1="0" X2="1000"/>
-                    <TextBlock Text="Agent ID" Margin="0,3"/>
-                    <TextBox Text="{Binding AgentID,Mode=TwoWay}"/>
+                    <TextBlock Text="Agent" Margin="0,3"/>
+                    <ComboBox SelectedItem="{Binding SelectedAgent,Mode=TwoWay}" ItemsSource="{Binding Agents,Mode=OneWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0">
+                                    <TextBlock Text="{Binding ID}"/>
+                                    <TextBlock Text=" - "/>
+                                    <TextBlock Text="{Binding Username}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <TextBlock Text="Date" Margin="0,3"/>
                     <DatePicker x:Name="SelectedDate"/>
                     <Button Padding="20,0" Margin="{StaticResource SmallTopMargin}" Click="OnGetDataClicked">

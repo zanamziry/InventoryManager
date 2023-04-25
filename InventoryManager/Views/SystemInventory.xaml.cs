@@ -1,19 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
-using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
-using InventoryManager.Models;
-using Microsoft.Data.Sqlite;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 
 namespace InventoryManager.Views;
@@ -31,7 +24,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
-    private string agentID;
+    private Agent _selectedAgent;
     private DateTime lastUpdated;
     private bool _isLoading;
 
@@ -41,13 +34,13 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         set { Set(ref _isLoading ,value); }
     }
 
-    public string AgentID
+    public Agent SelectedAgent
     {
-        get { return agentID; }
+        get { return _selectedAgent; }
         set 
         { 
-            Set(ref agentID, value);
-            SaveSetting(agentID, AgentSettingsKey);
+            Set(ref _selectedAgent, value);
+            SaveSetting(_selectedAgent.ID, AgentSettingsKey);
         }
     }
 
@@ -66,6 +59,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     private readonly SystemProductsORM SystemORM;
 
     public ObservableCollection<SystemProduct> SystemProducts { get; } = new ObservableCollection<SystemProduct>();
+    public ObservableCollection<Agent> Agents { get; } = new ObservableCollection<Agent>();
     public event PropertyChangedEventHandler PropertyChanged;
 
     private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
@@ -81,7 +75,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void OnGetDataClicked(object sender, System.Windows.RoutedEventArgs e)
+    private async void OnGetDataClicked(object sender, RoutedEventArgs e)
     {
         IsLoading = true;
         DateTime d;
@@ -90,7 +84,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         else d = DateTime.Now;
         try
         {
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(AgentID, d));
+            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(SelectedAgent.ID, d));
             if (s != null && s.list != null && s.list.Any())
             {
                 await SystemORM.DeleteAll();
@@ -116,11 +110,35 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
             IsLoading = false;
         }
     }
-
+    async void getAgents()
+    {
+        string savedID = GetSavedSetting(AgentSettingsKey);
+        IEnumerable<Agent> listOfAgents = Enumerable.Empty<Agent>();
+        string json = await _dataGather.GetAgentsAsync();
+        if (json != null)
+        {
+            try
+            {
+                listOfAgents = JsonConvert.DeserializeObject<IEnumerable<Agent>>(json);
+            }
+            catch
+            {
+                MessageBox.Show("No Agents Found!");
+                return;
+            }
+        }
+        Agents.Clear();
+        foreach (var agent in listOfAgents)
+        {
+            Agents.Add(agent);
+            if (agent.ID == savedID)
+                SelectedAgent = agent;
+        }
+    }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
         IsLoading = true;
-        AgentID = GetSavedSetting(AgentSettingsKey);
+        getAgents();
         DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
         LastUpdated = d;
         SystemProducts.Clear();

@@ -9,6 +9,7 @@ namespace InventoryManager.Services
 {
     public class SystemDataGather : ISystemDataGather
     {
+        public string DEFAULT { get => "https://zanamziry.pythonanywhere.com"; }
         public string base_url { get; set; }
         
         public string SettingsKey => "ServerAddress";
@@ -34,13 +35,19 @@ namespace InventoryManager.Services
             return await client.GetStringAsync(url);
         }
 
+        public async Task<string> GetAgentsAsync()
+        {
+            string url = $"{base_url}/api/agent/?format=json";
+            return await client.GetStringAsync(url);
+        }
+
         public void LoadSettings()
         {
             if (App.Current.Properties.Contains(SettingsKey))
             {
                 base_url = App.Current.Properties[SettingsKey].ToString();
             }
-            else base_url = "http://127.0.0.1";
+            else base_url = DEFAULT;
         }
 
         public void SaveSettings(string newUrl)

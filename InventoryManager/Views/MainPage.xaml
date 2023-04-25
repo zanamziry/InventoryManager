@@ -53,7 +53,7 @@
                             <TextBlock TextAlignment="Center" Text="Delete All"/>
                         </DockPanel>
                     </Button>
-                    <Button HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
+                    <Button HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}" Click="OnGetLatestListClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="Download"/>
                             <TextBlock TextAlignment="Center" Text="Update List"/>

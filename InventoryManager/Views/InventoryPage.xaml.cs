@@ -158,18 +158,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
     }
 
-    void OnKeyUp(object sender, KeyEventArgs e)
-    {
-        switch (e.Key)
-        {
-            case Key.Delete:
-                if ((e.OriginalSource as FrameworkElement).DataContext is LocalInventory p)
-                {
-                    Remove(p);
-                }
-                break;
-        }
-    }
     async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)

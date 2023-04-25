@@ -16,7 +16,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(GivenAway.Amount)} INTEGER NOT NULL DEFAULT 1," +
             $"{nameof(GivenAway.Event)} TEXT NOT NULL," +
             $"{nameof(GivenAway.Date)} TEXT NOT NULL," +
-            $"FOREIGN KEY({nameof(GivenAway.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
+            //$"FOREIGN KEY({nameof(GivenAway.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(GivenAway.ID)} AUTOINCREMENT));";
             _dataAccess.Execute(cmd);
         }
