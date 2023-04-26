@@ -36,16 +36,20 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ListView Grid.Column="0" BorderThickness="0 0 1 0" BorderBrush="{StaticResource MahApps.Brushes.Accent}" ItemsSource="{Binding Events,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Style="{StaticResource MahApps.Styles.ListView}">
-                    <ListView.ItemTemplate>
+                <DockPanel Grid.Column="0" >
+                    <ListView VerticalAlignment="Top" Background="{StaticResource MahApps.Brushes.Gray9}" ItemsSource="{Binding Events,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Style="{StaticResource MahApps.Styles.ListView}">
+                        <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Event}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding Date, StringFormat='{}{0:dd/M/yyyy}'}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="Regular"/>
-                            </StackPanel>
-                        </DataTemplate>
+                                <Border Background="{StaticResource MahApps.Brushes.Gray9}" Padding="5" BorderBrush="{StaticResource MahApps.Brushes.Gray8}" BorderThickness="1">
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Event}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Date, StringFormat='{}{0:dd/M/yyyy}'}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="Regular"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                </DockPanel>
                 <Grid Grid.Column="1">
                     <DataGrid x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>

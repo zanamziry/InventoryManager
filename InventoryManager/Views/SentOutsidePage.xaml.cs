@@ -36,7 +36,17 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
 
     public decimal TotalPrice
     {
-        get => Source.Sum(d => d.Outside.AmountSold * d.Product.Price); 
+        get
+        {
+            decimal res = 0;
+            foreach (var item in Source)
+            {
+                if (item.Outside.Old == true)
+                    res += item.Product.Old_Price * item.Outside.AmountSold;
+                else res += item.Product.Price * item.Outside.AmountSold;
+            }
+            return res;
+        }
     }
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -112,15 +122,26 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         }
         if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
         {
-            if (e.Row.DataContext is SentOutDisplay l && e.EditingElement is TextBox tb && e.Column.Header is string header)
+            if (e.Row.DataContext is SentOutDisplay l && e.Column.Header is string header)
             {
                 switch (header)
                 {
                     // Just in Case There are other columns other than this to edit
                     case nameof(SentOutDisplay.Outside.AmountSold):
                         {
-                            int.TryParse(tb.Text, out int a);
-                            l.Outside.AmountSold = a;
+                            if (e.EditingElement is TextBox tb)
+                            {
+                                int.TryParse(tb.Text, out int a);
+                                l.Outside.AmountSold = a;
+                            }
+                            break;
+                        }
+                    case nameof(SentOutDisplay.Outside.Old):
+                        {
+                            if (e.EditingElement is CheckBox cb)
+                            {
+                                l.Outside.Old = cb.IsChecked.Value;
+                            }
                             break;
                         }
                 }

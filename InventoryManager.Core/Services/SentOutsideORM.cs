@@ -16,6 +16,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(SentOutside.AmountSent)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.AmountSold)} INTEGER NOT NULL DEFAULT 0," +
             $"{nameof(SentOutside.Location)} TEXT NOT NULL," +
+            $"{nameof(SentOutside.Old)} INTEGER NOT NULL DEFAULT 0," +
             //$"FOREIGN KEY({nameof(SentOutside.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(SentOutside.ID)} AUTOINCREMENT));";
             _dataAccess.Execute(cmd);
@@ -27,7 +28,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public override async Task<SentOutside> Insert(SentOutside param) {
-            string cmd = $"INSERT INTO {nameof(SentOutside)} ({nameof(SentOutside.ProductID)}, {nameof(SentOutside.AmountSent)},{nameof(SentOutside.AmountSold)}, {nameof(SentOutside.Location)}) values(@{nameof(SentOutside.ProductID)}, @{nameof(SentOutside.AmountSent)}, @{nameof(SentOutside.AmountSold)}, @{nameof(SentOutside.Location)});";
+            string cmd = $"INSERT INTO {nameof(SentOutside)} ({nameof(SentOutside.ProductID)}, {nameof(SentOutside.AmountSent)},{nameof(SentOutside.AmountSold)}, {nameof(SentOutside.Location)}, {nameof(SentOutside.Old)}) values(@{nameof(SentOutside.ProductID)}, @{nameof(SentOutside.AmountSent)}, @{nameof(SentOutside.AmountSold)}, @{nameof(SentOutside.Location)}, @{nameof(SentOutside.Old)});";
             await _dataAccess.ExecuteAsync(cmd, param);
             int id = await LastInput();
             param.ID = id;
@@ -36,7 +37,7 @@ namespace InventoryManager.Core.Services {
 
         public async Task Update(SentOutside param)
         {
-            string cmd = $"UPDATE {nameof(SentOutside)} SET {nameof(SentOutside.AmountSent)} = @{nameof(SentOutside.AmountSent)}, {nameof(SentOutside.AmountSold)} = @{nameof(SentOutside.AmountSold)} WHERE {nameof(SentOutside.ID)} = @{nameof(SentOutside.ID)};";
+            string cmd = $"UPDATE {nameof(SentOutside)} SET {nameof(SentOutside.AmountSent)} = @{nameof(SentOutside.AmountSent)}, {nameof(SentOutside.AmountSold)} = @{nameof(SentOutside.AmountSold)},{nameof(SentOutside.Old)} = @{nameof(SentOutside.Old)}  WHERE {nameof(SentOutside.ID)} = @{nameof(SentOutside.ID)};";
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 

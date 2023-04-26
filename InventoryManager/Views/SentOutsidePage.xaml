@@ -56,10 +56,11 @@
                         <DataGridTextColumn Header="AmountSent" IsReadOnly="True" Binding="{Binding Outside.AmountSent,Mode=TwoWay}" />
                         <DataGridTextColumn Header="AmountSold" Binding="{Binding Outside.AmountSold,Mode=TwoWay}" />
                         <DataGridTextColumn Header="Remaining" IsReadOnly="True" Binding="{Binding Outside.Remaining,Mode=OneWay}" />
+                        <DataGridCheckBoxColumn Header="Old" Binding="{Binding Outside.Old,Mode=TwoWay}" />
                     </DataGrid.Columns>
                 </DataGrid>
                     <DockPanel Grid.Row="1">
-                        <TextBlock Text="Total Price" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                        <TextBlock Text="Total Sold" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
                         <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat={}{0:C2}}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
                     </DockPanel>
                 </Grid>

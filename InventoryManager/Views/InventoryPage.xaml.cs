@@ -271,6 +271,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             AmountSold = 0,
             ProductID = SelectedProduct.Product.ID,
             Location = PlaceToSend.Text,
+            Old = IsOld.IsChecked.Value
         };
         await outsideORM.Insert(outside);
         SelectedProduct.TotalOutside += outside.AmountSent;

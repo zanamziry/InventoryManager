@@ -125,7 +125,22 @@
                         </DockPanel>
                         <DockPanel Grid.Column="4" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="Result"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}"/>
+                            <TextBox IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Foreground" Value="{StaticResource MahApps.Brushes.Badged.Foreground}"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="Background" Value="OrangeRed"/>
+                                        <Setter Property="Padding" Value="3"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="0">
+                                                <Setter Property="Background" Value="{StaticResource MahApps.Brushes.Accent}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
                         </DockPanel>
                     </Grid>
                 </Grid>
@@ -158,6 +173,8 @@
                 <TextBox x:Name="AmountToSend" Text="0" PreviewTextInput="AmountToSend_PreviewTextInput"/>
                 <TextBlock Text="Location" Margin="0,3"/>
                 <ComboBox ItemsSource="{Binding Agents}" SelectedIndex="0" x:Name="PlaceToSend"/>
+                <TextBlock Text="Old" Margin="0,3"/>
+                <CheckBox x:Name="IsOld"/>
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

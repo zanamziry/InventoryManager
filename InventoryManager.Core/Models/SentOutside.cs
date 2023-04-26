@@ -12,6 +12,7 @@ namespace InventoryManager.Core.Models
         public int AmountSent { get; set; }
         public int AmountSold { get; set; }
         public string Location { get; set; }
+        public bool Old { get; set; }
         public int Remaining => AmountSent - AmountSold;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -23,6 +24,7 @@ namespace InventoryManager.Core.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AmountSold)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Location)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Remaining)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Old)));
         }
     }
 }
