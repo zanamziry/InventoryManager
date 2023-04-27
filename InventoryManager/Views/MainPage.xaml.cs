@@ -62,7 +62,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
                     else
                         result += outside.AmountSold * mainInventory.Product.Price;
             }
-            return Source.Sum(o => o.TotalSoldOutside * o.Product.Price);
+            return result;
         }
     }
 
@@ -136,6 +136,9 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
             SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p)),
         });
+        OnPropertyChanged(nameof(SoldMoney));
+        OnPropertyChanged(nameof(GiftMoney));
+        OnPropertyChanged(nameof(GiftPoints));
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {

@@ -140,15 +140,12 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         UpdateUI();
     }
 
-    async void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
         if ((parameter as dynamic).SelectedProduct is MainInventory p && (parameter as dynamic).Source is ObservableCollection<MainInventory> s)
         {
             Inventories = s.ToList();
             SelectedProduct = p;
-            SelectedProduct.Locals.Clear();
-            foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
-                SelectedProduct.Locals.Add(item);
             UpdateUI();
         }
     }

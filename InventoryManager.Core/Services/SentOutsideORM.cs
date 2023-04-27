@@ -63,7 +63,7 @@ namespace InventoryManager.Core.Services {
 
         public async Task<IEnumerable<SentOutside>> SelectByProduct(Product p)
         {
-            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.Location)} = @{nameof(Product.ID)};";
+            string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(Product.ID)};";
             var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, p);
             return sentOutsides;
         }
