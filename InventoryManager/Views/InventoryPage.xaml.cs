@@ -241,7 +241,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Date = GiveAwayDate.SelectedDate.Value,
         };
         await givenAwayORM.Insert(giveaway);
-        SelectedProduct.TotalGivenAway += giveaway.Amount;
+        SelectedProduct.GivenAways.Add(giveaway);
         AmountToGive.Text = "1";
         GiveAwayName.Text = "";
         ToggleGift.IsChecked = false;
@@ -274,7 +274,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Old = IsOld.IsChecked.Value
         };
         await outsideORM.Insert(outside);
-        SelectedProduct.TotalOutside += outside.AmountSent;
+        SelectedProduct.SentOutsides.Add(outside);
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
         UpdateUI();

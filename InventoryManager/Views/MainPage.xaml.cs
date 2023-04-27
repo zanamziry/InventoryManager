@@ -48,36 +48,31 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     private readonly GivenAwayORM GivenORM;
     private readonly LocalInventoryORM LocalORM;
     private readonly SentOutsideORM OutsideORM;
-    public decimal SentMoney
+    
+    public decimal SoldMoney
     {
         get
         {
+            decimal result = 0;
+            foreach(var mainInventory in Source)
+            {
+                foreach (var outside in mainInventory.SentOutsides)
+                    if (outside.Old)
+                        result += outside.AmountSold * mainInventory.Product.Old_Price;
+                    else
+                        result += outside.AmountSold * mainInventory.Product.Price;
+            }
             return Source.Sum(o => o.TotalSoldOutside * o.Product.Price);
         }
     }
-    public decimal GiftPoints
-    {
-        get
-        {
-            return Source.Sum(o => o.TotalGivenAway * o.Product.PV);
-        }
-    }
-    public decimal GiftMoney
-    {
-        get
-        {
-            return Source.Sum(o => o.TotalGivenAway * o.Product.Price);
-        }
-    }
+
+    public decimal GiftPoints => Source.Sum(o => o.TotalGivenAway * o.Product.PV);
+
+    public decimal GiftMoney => Source.Sum(o => o.TotalGivenAway * o.Product.Price);
+
     public ObservableCollection<MainInventory> Source { get; } = new ObservableCollection<MainInventory>();
     public event PropertyChangedEventHandler PropertyChanged;
 
-    bool canAdd()
-    {
-        if (string.IsNullOrEmpty(ProductName.Text) || string.IsNullOrEmpty(ProductCode.Text) || string.IsNullOrEmpty(ProductPrice.Text))
-            return false;
-        return true;
-    }
     private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
     {
         if (Equals(storage, value))
@@ -91,52 +86,6 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void OnAddButtonClicked(object sender, RoutedEventArgs e)
-    {
-        if (canAdd())
-        {
-            if (decimal.TryParse(ProductPrice.Text, out decimal price))
-            {
-                var p = new Product { ID = ProductCode.Text, Name = ProductName.Text, Price = price };
-                try
-                {
-                    await ProductsORM.Insert(p);
-                    AddToView(p);
-                }
-                catch (SqliteException ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
-            }
-        }
-    }
-    private async void OnKeyUp(object sender, KeyEventArgs e)
-    {
-        switch (e.Key)
-        {
-            case Key.Delete:
-                if ((e.OriginalSource as FrameworkElement).DataContext is Product p)
-                {
-                    await ProductsORM.Delete(p);
-                    var ns = Source.Where(o => o.Product == p);
-                    if (ns.Count() < 1)
-                        return;
-                    Source.Remove(ns.First());
-                }
-                break;
-        }
-    }
-    private async void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
-    {
-        if(GridOfProducts.SelectedItem is MainInventory p)
-        {
-            await ProductsORM.Delete(p.Product);
-            var ns = Source.Where(o => o.Product == p.Product);
-            if (ns.Count() < 1)
-                return;
-            Source.Remove(ns.First());
-        }
-    }
     private async void OnRemoveAllButtonClicked(object sender, RoutedEventArgs e)
     {
         await ProductsORM.DeleteAll();
@@ -174,22 +123,19 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             _navigationService.NavigateTo(typeof(InventoryPage), new { SelectedProduct , Source });
         }
     }
+
     async void AddToView(Product p)
     {
         var localDB = await LocalORM.SelectProduct(p);
         var sys = await SystemORM.SelectProduct(p);
-        ObservableCollection<LocalInventory> locals = new ObservableCollection<LocalInventory>();
-        foreach (var item in localDB)
-            locals.Add(item);
         Source.Add(new MainInventory
         {
             Product = p,
             System = sys,
-            Locals = locals,
-            TotalGivenAway = await GivenORM.SelectTotalAmount(p),
-            TotalOutside = await OutsideORM.SelectTotalAmountSent(p),
-            TotalSoldOutside = await OutsideORM.SelectTotalAmountSold(p)
-    });
+            Locals = new ObservableCollection<LocalInventory>(localDB),
+            GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
+            SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p)),
+        });
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
@@ -201,7 +147,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        OnPropertyChanged(nameof(SentMoney));
+        OnPropertyChanged(nameof(SoldMoney));
         OnPropertyChanged(nameof(GiftMoney));
         OnPropertyChanged(nameof(GiftPoints));
     }
@@ -211,21 +157,13 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         Source.CollectionChanged -= Source_CollectionChanged;
     }
 
-    private void OnCancelButtonClicked(object sender, RoutedEventArgs e)
-    {
-        ProductName.Text = "";
-        ProductPrice.Text = "0.0";
-        ProductCode.Text = "";
-        ToggleAdd.IsChecked = false;
-    }
-
     private void OnExportAsExcelClicked(object sender, RoutedEventArgs e)
     {
         string date = DateTime.Now.ToString("(dd-MM)");
         SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
         SaveFileDialog sd = new SaveFileDialog();
         sd.DefaultExt = ".xlsx";
-        sd.FileName = @date+"جرد";
+        sd.FileName = $"INV-AUTO-{@date}";
         if (sd.ShowDialog() != true || string.IsNullOrWhiteSpace(sd.FileName))
             return;
         ExcelFile xl = new ExcelFile();
@@ -245,11 +183,14 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         ws.Cells[i, 4].Value = "Gifts";
         ws.Cells[i, 5].Value = "Outside";
         ws.Cells[i, 6].Value = "Result";
-        ws.Cells[i, 7].Value = "Inv";
-        ws.Cells[i, 8].Value = "Open";
-        ws.Cells[i, 9].Value = "Price";
+        ws.Cells[i, 7].Value = "Open";
+        ws.Cells[i, 8].Value = "Price";
+        ws.Cells[i, 9].Value = "PV";
         for (int c = 0; c <= 9; c++)
+        {
             ws.Cells[i, c].Style = headerStyle;
+            ws.Columns[c].AutoFit();
+        }
 
         // Write the values to the cells
         foreach (var item in Source)
@@ -257,40 +198,27 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             i++;
             ws.Cells[i, 0].Value = item.Product.ID;
             ws.Cells[i, 1].Value = item.Product.Name;
-            ws.Cells[i, 2].Value = item.TotalReal;
-            ws.Cells[i, 3].Value = item.System.CloseBalance;
+            ws.Cells[i, 2].Value = item.System.CloseBalance;
+            ws.Cells[i, 3].Value = item.TotalReal;
             ws.Cells[i, 4].Value = item.TotalGivenAway;
             ws.Cells[i, 5].Value = item.TotalOutside;
             ws.Cells[i, 6].Value = item.Result;
-            ws.Cells[i, 7].Value = item.TotalInv;
-            ws.Cells[i, 8].Value = item.TotalOpen;
-            ws.Cells[i, 9].Value = item.Product.Price;
+            ws.Cells[i, 7].Value = item.TotalOpen;
+            ws.Cells[i, 8].Value = item.Product.Price;
+            ws.Cells[i, 9].Value = item.Product.PV;
         }
-
-        // Set Width of Columns to fit the text
-        ws.Columns[0].SetWidth(75, LengthUnit.Pixel);
-        ws.Columns[1].SetWidth(200, LengthUnit.Pixel);
-        ws.Columns[2].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[3].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[4].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[5].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[6].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[7].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[8].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[9].SetWidth(70, LengthUnit.Pixel);
-        ws.Columns[10].SetWidth(70, LengthUnit.Pixel);
 
         // Create table and enable totals row.
         var table = ws.Tables.Add("Jard", $"A1:J{Source.Count+1}", true);
-        ws.Protected = true;
-        ws.ProtectionSettings.SetPassword("ZANA99");
+        ws.ProtectedRanges.AddNew("SYSTEM", $"A1:C{Source.Count+1}","ZANA99");
+        ws.Protected = false;
         ws.ProtectionSettings.AllowSelectingLockedCells = true;
         ws.ProtectionSettings.AllowSelectingUnlockedCells = true;
-        ws.ProtectionSettings.AllowSorting = true;
+        ws.ProtectionSettings.AllowSorting = false;
         ws.ProtectionSettings.AllowDeletingColumns = false;
         ws.ProtectionSettings.AllowDeletingRows = false;
         ws.ProtectionSettings.AllowInsertingRows = false;
-        ws.ProtectionSettings.AllowFormattingRows = false;
+        ws.ProtectionSettings.AllowFormattingRows = true;
         table.HasTotalsRow = false;
         xl.Save(sd.FileName);
     }

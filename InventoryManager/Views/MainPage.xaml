@@ -35,19 +35,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <ToggleButton x:Name="ToggleAdd" Margin="{StaticResource SmallTopMargin}">
-                        <DockPanel>
-                            <mt:PackIcon Kind="Add"/>
-                            <TextBlock TextAlignment="Center" Text="Add Product"/>
-                        </DockPanel>
-                    </ToggleButton>
-                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnRemoveButtonClicked">
-                        <DockPanel>
-                            <mt:PackIcon Kind="Remove"/>
-                            <TextBlock TextAlignment="Center" Text="Remove Product"/>
-                        </DockPanel>
-                    </Button>
-                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnRemoveAllButtonClicked">
+                    <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding GridOfProducts.HasItems}" Click="OnRemoveAllButtonClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="TrashCanOutline"/>
                             <TextBlock TextAlignment="Center" Text="Delete All"/>
@@ -59,7 +47,7 @@
                             <TextBlock TextAlignment="Center" Text="Update List"/>
                         </DockPanel>
                     </Button>
-                    <Button Margin="{StaticResource SmallTopMargin}" Click="OnExportAsExcelClicked">
+                    <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding GridOfProducts.HasItems,Mode=OneWay}" Click="OnExportAsExcelClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="MicrosoftExcel"/>
                             <TextBlock TextAlignment="Center" Text="Export As Excel"/>
@@ -76,7 +64,7 @@
                                     <mt:PackIcon Width="12" Kind="PackageVariant"/>
                                     <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="OutSide"/>
                                 </DockPanel>
-                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SentMoney,StringFormat={}{0:C}, Mode=OneWay}"/>
+                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat={}{0:C}, Mode=OneWay}"/>
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="1" CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="90" Height="70">
@@ -90,7 +78,7 @@
                         </Border>
                     </Grid>
                 </StackPanel>
-                <DataGrid ScrollViewer.CanContentScroll="False"  Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" KeyUp="OnKeyUp" MouseDoubleClick="OnGridDoubleClick">
+                <DataGrid ScrollViewer.CanContentScroll="False" Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Product Name" Binding="{Binding Product.Name}" Width="150"/>
                         <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}"/>
@@ -103,23 +91,5 @@
                 </DataGrid>
             </Grid>
         </Grid>
-            <local:ZMDialog Visibility="{Binding ElementName=ToggleAdd,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="300" Title="Add Product">
-                <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <TextBlock Text="Name" Margin="0,3"/>
-                    <TextBox x:Name="ProductName"/>
-                    <TextBlock Text="Code" Margin="0,3"/>
-                    <TextBox x:Name="ProductCode"/>
-                    <TextBlock Text="Price" Margin="0,3"/>
-                    <TextBox x:Name="ProductPrice"/>
-                    <Grid Margin="{StaticResource SmallTopBottomMargin}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                    <Button Content="Add" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnAddButtonClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Style="{StaticResource SecondaryButton}" Margin="2 0 0 0" Click="OnCancelButtonClicked"/>
-                    </Grid>
-                </StackPanel>
-            </local:ZMDialog>
     </Grid>
 </Page>

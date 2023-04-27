@@ -10,10 +10,12 @@ namespace InventoryManager.Models
         public Product Product { get; set; }
         public SystemProduct System { get; set; }
         public ObservableCollection<LocalInventory> Locals { get; set; } = new ObservableCollection<LocalInventory>();
+        public ObservableCollection<SentOutside> SentOutsides { get; set; } = new ObservableCollection<SentOutside>();
+        public ObservableCollection<GivenAway> GivenAways { get; set; } = new ObservableCollection<GivenAway>();
 
-        public int TotalGivenAway { get; set; }
-        public int TotalOutside { get; set; }
-        public int TotalSoldOutside { get; set; }
+        public int TotalGivenAway => GivenAways.Sum(s => s.Amount);
+        public int TotalOutside => SentOutsides.Sum(s => s.AmountSent);
+        public int TotalSoldOutside => SentOutsides.Sum(s => s.AmountSold); 
         public int TotalReal => Locals.Sum(o => o.Total);
         public int TotalOpen => Locals.Sum(o => o.Open);
         public int TotalInv => Locals.Sum(o => o.Inventory);
