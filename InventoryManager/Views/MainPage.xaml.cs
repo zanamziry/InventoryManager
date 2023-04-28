@@ -1,23 +1,15 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
-using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using InventoryManager.Models;
-using InventoryManager.Services;
-using Microsoft.Data.Sqlite;
-using ex = Microsoft.Office.Interop.Excel;
 using GemBox.Spreadsheet;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -48,7 +40,9 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     private readonly GivenAwayORM GivenORM;
     private readonly LocalInventoryORM LocalORM;
     private readonly SentOutsideORM OutsideORM;
-    
+
+    public bool SourceHasItems => Source.Count > 0;
+
     public decimal SoldMoney
     {
         get
@@ -136,9 +130,6 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
             SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p)),
         });
-        OnPropertyChanged(nameof(SoldMoney));
-        OnPropertyChanged(nameof(GiftMoney));
-        OnPropertyChanged(nameof(GiftPoints));
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
@@ -153,22 +144,27 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         OnPropertyChanged(nameof(SoldMoney));
         OnPropertyChanged(nameof(GiftMoney));
         OnPropertyChanged(nameof(GiftPoints));
+        OnPropertyChanged(nameof(SourceHasItems));
     }
 
     void INavigationAware.OnNavigatedFrom()
     {
         Source.CollectionChanged -= Source_CollectionChanged;
     }
-
+    
+    #region Excel Exportation
+    /// <summary>
+    /// Export The Data To An Excel File
+    /// </summary>
     private void OnExportAsExcelClicked(object sender, RoutedEventArgs e)
     {
         string date = DateTime.Now.ToString("(dd-MM)");
-        SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
         SaveFileDialog sd = new SaveFileDialog();
         sd.DefaultExt = ".xlsx";
         sd.FileName = $"INV-AUTO-{@date}";
         if (sd.ShowDialog() != true || string.IsNullOrWhiteSpace(sd.FileName))
             return;
+        SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
         ExcelFile xl = new ExcelFile();
         var ws = xl.Worksheets.Add("جرد");
 
@@ -177,6 +173,13 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         headerStyle.HorizontalAlignment = HorizontalAlignmentStyle.Center;
         headerStyle.Borders.SetBorders(MultipleBorders.All, SpreadsheetColor.FromArgb(-11645362), LineStyle.Thin);
         headerStyle.FillPattern.SetSolid(SpreadsheetColor.FromArgb(-8420218));
+        
+        CellStyle cellstyle = new CellStyle();
+        cellstyle.VerticalAlignment = VerticalAlignmentStyle.Center;
+        cellstyle.HorizontalAlignment = HorizontalAlignmentStyle.Center;
+        cellstyle.Borders.SetBorders(MultipleBorders.All, SpreadsheetColor.FromName(ColorName.Accent3Lighter60Pct), LineStyle.Thin);
+        cellstyle.WrapText = true;
+
         // Write the name of headers
         var i = 0;
         ws.Cells[i, 0].Value = "ID";
@@ -188,33 +191,46 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         ws.Cells[i, 6].Value = "Result";
         ws.Cells[i, 7].Value = "Open";
         ws.Cells[i, 8].Value = "Price";
-        ws.Cells[i, 9].Value = "PV";
+        ws.Cells[i, 9].Value = "PV"; 
+
         for (int c = 0; c <= 9; c++)
         {
             ws.Cells[i, c].Style = headerStyle;
-            ws.Columns[c].AutoFit();
+            ws.Columns[c].SetWidth(70, LengthUnit.Pixel);
         }
+        ws.Columns[0].SetWidth(1,LengthUnit.Inch);
+        ws.Columns[1].SetWidth(2.5,LengthUnit.Inch);
 
         // Write the values to the cells
         foreach (var item in Source)
         {
             i++;
             ws.Cells[i, 0].Value = item.Product.ID;
-            ws.Cells[i, 1].Value = item.Product.Name;
+            ws.Cells[i, 0].Style = cellstyle;
+            ws.Cells[i, 1].Value = $"{item.Product.Name}\n{item.Product.Name_AR}";
+            ws.Cells[i, 1].Style = cellstyle;
             ws.Cells[i, 2].Value = item.System.CloseBalance;
+            ws.Cells[i, 2].Style = cellstyle;
             ws.Cells[i, 3].Value = item.TotalReal;
+            ws.Cells[i, 3].Style = cellstyle;
             ws.Cells[i, 4].Value = item.TotalGivenAway;
+            ws.Cells[i, 4].Style = cellstyle;
             ws.Cells[i, 5].Value = item.TotalOutside;
+            ws.Cells[i, 5].Style = cellstyle;
             ws.Cells[i, 6].Value = item.Result;
+            ws.Cells[i, 6].Style = cellstyle;
             ws.Cells[i, 7].Value = item.TotalOpen;
+            ws.Cells[i, 7].Style = cellstyle;
             ws.Cells[i, 8].Value = item.Product.Price;
+            ws.Cells[i, 8].Style = cellstyle;
             ws.Cells[i, 9].Value = item.Product.PV;
+            ws.Cells[i, 9].Style = cellstyle;
         }
 
         // Create table and enable totals row.
         var table = ws.Tables.Add("Jard", $"A1:J{Source.Count+1}", true);
-        ws.ProtectedRanges.AddNew("SYSTEM", $"A1:C{Source.Count+1}","ZANA99");
-        ws.Protected = false;
+        ws.ProtectionSettings.SetPassword("ZANA99");
+        xl.ProtectionSettings.SetPassword("ZANA99");
         ws.ProtectionSettings.AllowSelectingLockedCells = true;
         ws.ProtectionSettings.AllowSelectingUnlockedCells = true;
         ws.ProtectionSettings.AllowSorting = false;
@@ -223,6 +239,9 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         ws.ProtectionSettings.AllowInsertingRows = false;
         ws.ProtectionSettings.AllowFormattingRows = true;
         table.HasTotalsRow = false;
+        ws.Protected = true;
+        xl.Protected = true;
         xl.Save(sd.FileName);
+        #endregion
     }
 }

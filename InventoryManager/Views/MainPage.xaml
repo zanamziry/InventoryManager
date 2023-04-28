@@ -35,19 +35,19 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding GridOfProducts.HasItems}" Click="OnRemoveAllButtonClicked">
+                    <Button HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}" Click="OnGetLatestListClicked">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Update"/>
+                            <TextBlock TextAlignment="Center" Text="Update List"/>
+                        </DockPanel>
+                    </Button>
+                    <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding SourceHasItems,Mode=OneWay}" Click="OnRemoveAllButtonClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="TrashCanOutline"/>
                             <TextBlock TextAlignment="Center" Text="Delete All"/>
                         </DockPanel>
                     </Button>
-                    <Button HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}" Click="OnGetLatestListClicked">
-                        <DockPanel>
-                            <mt:PackIcon Kind="Download"/>
-                            <TextBlock TextAlignment="Center" Text="Update List"/>
-                        </DockPanel>
-                    </Button>
-                    <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding GridOfProducts.HasItems,Mode=OneWay}" Click="OnExportAsExcelClicked">
+                    <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding SourceHasItems,Mode=OneWay}" Click="OnExportAsExcelClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="MicrosoftExcel"/>
                             <TextBlock TextAlignment="Center" Text="Export As Excel"/>
@@ -80,7 +80,16 @@
                 </StackPanel>
                 <DataGrid ScrollViewer.CanContentScroll="False" Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Product Name" Binding="{Binding Product.Name}" Width="150"/>
+                        <DataGridTemplateColumn Header="Product Name" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Margin="1">
+                                        <TextBlock Text="{Binding Product.Name}" FontSize="11" FontWeight="DemiBold"/>
+                                        <TextBlock Text="{Binding Product.Name_AR}" FontSize="10" FontWeight="Light"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}"/>
                         <DataGridTextColumn Header="System" Binding="{Binding System.CloseBalance}" />
                         <DataGridTextColumn Header="Local" Binding="{Binding TotalReal}" />

@@ -35,6 +35,26 @@
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
+                    Text="DataBase (Not available yet)" />
+                <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallTopMargin}" >
+                    <Button
+                        Click="OnDeleteAllClicked"
+                        Content="Delete All" 
+                        Background="IndianRed"
+                        Foreground="White"
+                        FontWeight="DemiBold"/>
+                    <Button
+                        Content="Backup"
+                        Margin="{StaticResource XSmallLeftMargin}"
+                        />
+                    <Button
+                        Content="Restore"
+                        Margin="{StaticResource XSmallLeftMargin}"
+                        />
+                </StackPanel>
+                <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Style="{StaticResource SubtitleTextStyle}"
                     Text="{x:Static properties:Resources.SettingsPageAboutTitle}" />
                 <TextBlock
                     Text="{Binding VersionDescription, Mode=OneWay}"
