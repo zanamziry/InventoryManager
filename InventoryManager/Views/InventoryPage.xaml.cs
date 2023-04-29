@@ -185,6 +185,11 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                             l.ExpireDate = c;
                             break;
                         }
+                    case nameof(LocalInventory.Note):
+                        {
+                            l.Note = tb.Text;
+                            break;
+                        }
                 }
                 try
                 {

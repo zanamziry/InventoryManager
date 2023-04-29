@@ -51,4 +51,12 @@
         <Setter Property="FontSize" Value="48" />
     </Style>
 
+    <Style x:Key="GDCellStyle" TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock.DataGrid}">
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="GDHeaderStyle" TargetType="DataGridColumnHeader" BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
 </ResourceDictionary>

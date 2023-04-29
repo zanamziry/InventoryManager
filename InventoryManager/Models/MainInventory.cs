@@ -23,14 +23,18 @@ namespace InventoryManager.Models
         {
             get
             {
-                long nowTicks = DateTime.Now.Ticks;
-                DateTime nearest = DateTime.MaxValue;
+                DateTime NearestDate = DateTime.MaxValue;
+                var nearestByDays = DateTime.MaxValue.Subtract(DateTime.Now);
                 foreach (var item in Locals)
                 {
-                    if ((item.ExpireDate.Ticks - nowTicks) < nearest.Ticks)
-                        nearest = item.ExpireDate;
+                    var i = item.ExpireDate.Subtract(DateTime.Now);
+                    if (i < nearestByDays)
+                    {
+                        NearestDate = item.ExpireDate;
+                        nearestByDays = i;
+                    }
                 }
-                return nearest;
+                return NearestDate;
             }
         }
         public int Result => (TotalReal + TotalGivenAway + (TotalOutside - TotalSoldOutside)) - System.CloseBalance;

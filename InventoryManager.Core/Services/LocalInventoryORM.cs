@@ -27,7 +27,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public override async Task<LocalInventory> Insert(LocalInventory param) {
-            string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}) values(@{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)});";
+            string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}, {nameof(LocalInventory.Note)}) values(@{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)}, @{nameof(LocalInventory.Note)});";
             await _dataAccess.ExecuteAsync(cmd, param);
             int id = await LastInput();
             param.ID = id;
@@ -35,7 +35,7 @@ namespace InventoryManager.Core.Services {
         }
         public async Task Update(LocalInventory param)
         {
-            string cmd = $"UPDATE {nameof(LocalInventory)} SET {nameof(LocalInventory.Inventory)} = @{nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)} = @{nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)} = @{nameof(LocalInventory.ExpireDate)} WHERE {nameof(LocalInventory.ID)} = @{nameof(LocalInventory.ID)};";
+            string cmd = $"UPDATE {nameof(LocalInventory)} SET {nameof(LocalInventory.Inventory)} = @{nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)} = @{nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)} = @{nameof(LocalInventory.ExpireDate)}, {nameof(LocalInventory.Note)} = @{nameof(LocalInventory.Note)} WHERE {nameof(LocalInventory.ID)} = @{nameof(LocalInventory.ID)};";
             await _dataAccess.ExecuteAsync(cmd, param);
         }
 
