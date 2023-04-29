@@ -15,10 +15,24 @@ namespace InventoryManager.Models
 
         public int TotalGivenAway => GivenAways.Sum(s => s.Amount);
         public int TotalOutside => SentOutsides.Sum(s => s.AmountSent);
-        public int TotalSoldOutside => SentOutsides.Sum(s => s.AmountSold); 
+        public int TotalSoldOutside => SentOutsides.Sum(s => s.AmountSold);
         public int TotalReal => Locals.Sum(o => o.Total);
         public int TotalOpen => Locals.Sum(o => o.Open);
         public int TotalInv => Locals.Sum(o => o.Inventory);
+        public DateTime NearestExp
+        {
+            get
+            {
+                long nowTicks = DateTime.Now.Ticks;
+                DateTime nearest = DateTime.MaxValue;
+                foreach (var item in Locals)
+                {
+                    if ((item.ExpireDate.Ticks - nowTicks) < nearest.Ticks)
+                        nearest = item.ExpireDate;
+                }
+                return nearest;
+            }
+        }
         public int Result => (TotalReal + TotalGivenAway + (TotalOutside - TotalSoldOutside)) - System.CloseBalance;
 
         public event PropertyChangedEventHandler PropertyChanged;

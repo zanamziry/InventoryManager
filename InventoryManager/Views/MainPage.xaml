@@ -7,11 +7,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:local="clr-namespace:InventoryManager.Views.Controls"
+    xmlns:converter="clr-namespace:InventoryManager.Converters"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     d:DesignHeight="450" d:DesignWidth="800" d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
     d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <converter:ExpireToColorConverter x:Key="ExpireToColorConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -87,6 +93,18 @@
                         <DataGridTextColumn Header="Outside" Binding="{Binding TotalOutside}" />
                         <DataGridTextColumn Header="GiveAway" Binding="{Binding TotalGivenAway}" />
                         <DataGridTextColumn Header="Result" Binding="{Binding Result}" />
+                        <DataGridTextColumn Header="Expire" Binding="{Binding NearestExp, StringFormat='{}{0:M/yyyy}'}">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=Self},Path=Content, Converter={StaticResource ExpireToColorConverter}}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="Content" Value="12/9999">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
