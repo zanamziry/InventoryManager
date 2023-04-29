@@ -41,6 +41,8 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
             decimal res = 0;
             foreach (var item in Source)
             {
+                if (item.Product == null || item.Outside == null)
+                    continue;
                 if (item.Outside.Old == true)
                     res += item.Product.Old_Price * item.Outside.AmountSold;
                 else res += item.Product.Price * item.Outside.AmountSold;

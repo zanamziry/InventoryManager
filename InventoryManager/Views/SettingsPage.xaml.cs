@@ -21,6 +21,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private readonly IApplicationInfoService _applicationInfoService;
     private readonly ISystemDataGather _dataGather;
     private AppTheme _theme;
+    private IDBSetup _dBSetup;
     private string _serverAddress;
     private string _versionDescription;
 
@@ -48,12 +49,13 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         }
     }
 
-    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather)
+    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup)
     {
         _appConfig = appConfig.Value;
         _systemService = systemService;
         _applicationInfoService = applicationInfoService;
         _dataGather = dataGather;
+        _dBSetup = dBSetup;
         InitializeComponent();
         DataContext = this;
     }
@@ -95,4 +97,10 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     }
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    private void OnDeleteAllClicked(object sender, RoutedEventArgs e)
+    {
+        _dBSetup.DropTables();
+        _dBSetup.CreateTables();
+    }
 }

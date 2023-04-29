@@ -66,10 +66,19 @@ namespace InventoryManager.Services {
         }
 
         public void DropTables() {
-            foreach (ITable table in _listOfTables.Values) {
-                table.Drop();
+            foreach (var table in _listOfTables) {
+                try
+                {
+                    table.Value.Drop();
+                    _listOfTables.Remove(table.Key);
+                }
+                catch
+                {
+                    throw new SqliteException("Couldn't Drop The Tables", -500);
+                }
             }
         }
+
         private void Configure<T>(T table)
         where T : ITable {
             string key = typeof(T).FullName;
