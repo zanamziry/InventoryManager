@@ -104,12 +104,6 @@
                                         <Setter Property="FontWeight" Value="SemiBold"/>
                                         <Setter Property="TextAlignment" Value="Center"/>
                                         <Setter Property="Padding" Value="6.5"/>
-                                        <!--If ExpireDate is Equal to DateTime.MaxDate it means the product doesnt contain any expire dates so Hide the Date-->
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding NearestExp.Ticks}" Value="3155378975999999999">
-                                                <Setter Property="Visibility" Value="Hidden"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>

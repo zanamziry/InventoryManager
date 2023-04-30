@@ -16,6 +16,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(LocalInventory.Inventory)} INTEGER NOT NULL," +
             $"{nameof(LocalInventory.Open)} INTEGER NOT NULL," +
             $"{nameof(LocalInventory.ExpireDate)} TEXT," +
+            $"{nameof(LocalInventory.Note)} TEXT," +
             $"PRIMARY KEY({nameof(LocalInventory.ID)} AUTOINCREMENT));";
             //$"FOREIGN KEY({nameof(LocalInventory.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE);";
             _dataAccess.Execute(cmd);
