@@ -184,22 +184,22 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         var i = 0;
         ws.Cells[i, 0].Value = "ID";
         ws.Cells[i, 1].Value = "Name";
-        ws.Cells[i, 2].Value = "Real";
-        ws.Cells[i, 3].Value = "System";
+        ws.Cells[i, 2].Value = "System";
+        ws.Cells[i, 3].Value = "Real";
         ws.Cells[i, 4].Value = "Gifts";
         ws.Cells[i, 5].Value = "Outside";
         ws.Cells[i, 6].Value = "Result";
-        ws.Cells[i, 7].Value = "Open";
-        ws.Cells[i, 8].Value = "Price";
-        ws.Cells[i, 9].Value = "PV"; 
+        ws.Cells[i, 7].Value = "Expire";
+        ws.Cells[i, 8].Value = "Notes";
 
-        for (int c = 0; c <= 9; c++)
+        for (int c = 0; c <= 8; c++)
         {
             ws.Cells[i, c].Style = headerStyle;
             ws.Columns[c].SetWidth(70, LengthUnit.Pixel);
         }
         ws.Columns[0].SetWidth(1,LengthUnit.Inch);
         ws.Columns[1].SetWidth(2.5,LengthUnit.Inch);
+        ws.Columns[8].SetWidth(4,LengthUnit.Inch);
 
         // Write the values to the cells
         foreach (var item in Source)
@@ -207,32 +207,40 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             i++;
             ws.Cells[i, 0].Value = item.Product.ID;
             ws.Cells[i, 0].Style = cellstyle;
+
             ws.Cells[i, 1].Value = $"{item.Product.Name}\n{item.Product.Name_AR}";
             ws.Cells[i, 1].Style = cellstyle;
+
             ws.Cells[i, 2].Value = item.System.CloseBalance;
             ws.Cells[i, 2].Style = cellstyle;
+
             ws.Cells[i, 3].Value = item.TotalReal;
             ws.Cells[i, 3].Style = cellstyle;
+
             ws.Cells[i, 4].Value = item.TotalGivenAway;
             ws.Cells[i, 4].Style = cellstyle;
+
             ws.Cells[i, 5].Value = item.TotalOutside;
             ws.Cells[i, 5].Style = cellstyle;
+
             ws.Cells[i, 6].Value = item.Result;
             ws.Cells[i, 6].Style = cellstyle;
-            ws.Cells[i, 7].Value = item.TotalOpen;
+
+            ws.Cells[i, 7].Value = item.NearestExp.ToString("M/yyyy");
             ws.Cells[i, 7].Style = cellstyle;
-            ws.Cells[i, 8].Value = item.Product.Price;
+
+            ws.Cells[i, 8].Value = item.Note;
             ws.Cells[i, 8].Style = cellstyle;
-            ws.Cells[i, 9].Value = item.Product.PV;
-            ws.Cells[i, 9].Style = cellstyle;
+            ws.Cells[i, 8].Style.TextDirection = TextDirection.RightToLeft;
+            ws.Cells[i, 8].Style.WrapText = false;
         }
 
         // Create table and enable totals row.
-        var table = ws.Tables.Add("Jard", $"A1:J{Source.Count+1}", true);
+        var table = ws.Tables.Add("Jard", $"A1:I{Source.Count+1}", true);
         ws.ProtectionSettings.SetPassword("ZANA99");
-        xl.ProtectionSettings.SetPassword("ZANA99");
         ws.ProtectionSettings.AllowSelectingLockedCells = true;
         ws.ProtectionSettings.AllowSelectingUnlockedCells = true;
+        ws.ProtectionSettings.AllowFormattingColumns = true;
         ws.ProtectionSettings.AllowSorting = false;
         ws.ProtectionSettings.AllowDeletingColumns = false;
         ws.ProtectionSettings.AllowDeletingRows = false;

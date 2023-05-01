@@ -19,6 +19,23 @@ namespace InventoryManager.Models
         public int TotalReal => Locals.Sum(o => o.Total);
         public int TotalOpen => Locals.Sum(o => o.Open);
         public int TotalInv => Locals.Sum(o => o.Inventory);
+        public string Note 
+        {
+            get
+            {
+                string outsideNote = "";
+                foreach(var i in SentOutsides)
+                {
+                    outsideNote += $"({i.Remaining} في {i.Location})";
+                }
+                string giftNote = "";
+                foreach (var i in GivenAways)
+                {
+                    giftNote += $"({i.Amount} عرض {i.Event})";
+                }
+                return $"{outsideNote} ### {giftNote}";
+            }
+        }
         public DateTime NearestExp
         {
             get

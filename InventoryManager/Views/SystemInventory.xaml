@@ -57,7 +57,7 @@
                     </ComboBox>
                     <TextBlock Text="Date" Margin="0,3"/>
                     <DatePicker x:Name="SelectedDate"/>
-                    <Button Padding="20,0" Margin="{StaticResource SmallTopMargin}" Click="OnGetDataClicked">
+                    <Button IsEnabled="{Binding IsSelected,Mode=OneWay}" Padding="20,0" Margin="{StaticResource SmallTopMargin}" Click="OnGetDataClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="Update"/>
                             <TextBlock TextAlignment="Center" Text="Update"/>

@@ -33,7 +33,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         get { return _isLoading; }
         set { Set(ref _isLoading ,value); }
     }
-
+    public bool IsSelected => SelectedAgent != null;
     public Agent SelectedAgent
     {
         get { return _selectedAgent; }
@@ -41,6 +41,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         { 
             Set(ref _selectedAgent, value);
             SaveSetting(_selectedAgent.ID, AgentSettingsKey);
+            OnPropertyChanged(nameof(IsSelected));
         }
     }
 
@@ -132,7 +133,9 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         {
             Agents.Add(agent);
             if (agent.ID == savedID)
+            {
                 SelectedAgent = agent;
+            }
         }
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
