@@ -204,7 +204,8 @@
                 <TextBox x:Name="AmountToGive" PreviewTextInput="AmountToGive_PreviewTextInput" Text="1"/>
                 <TextBlock Text="GiveAway Name" Margin="0,3"/>
                 <TextBox x:Name="GiveAwayName"/>
-                <DatePicker x:Name="GiveAwayDate" SelectedDateFormat="Short" />
+                <TextBlock Text="Expire Date" Margin="0,3"/>
+                <DatePicker x:Name="GiveAwayDate" SelectedDateFormat="Short"/>
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

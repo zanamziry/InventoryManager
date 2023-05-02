@@ -23,7 +23,7 @@ namespace InventoryManager.Views;
 public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAware
 {
 
-    public InventoryPage(IDBSetup dBSetup)
+    public InventoryPage(IDBSetup dBSetup,ISystemDataGather dataGather)
     {
         InitializeComponent();
         DataContext = this;
@@ -31,13 +31,16 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         givenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
+        _dataGather = dataGather;
     }
 
     private IList<MainInventory> Inventories = new List<MainInventory>();
+    private IList<Agent> Agents = new List<Agent>();
     private readonly LocalInventoryORM InventoryORM;
     private readonly SentOutsideORM outsideORM;
     private readonly GivenAwayORM givenAwayORM;
     private readonly IDBSetup _dBSetup;
+    private readonly ISystemDataGather _dataGather;
     private RelayCommand gotoNext;
     private RelayCommand gotoPrevious;
     private MainInventory _selectedProduct;
@@ -140,13 +143,22 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         UpdateUI();
     }
 
-    void INavigationAware.OnNavigatedTo(object parameter)
+    async void INavigationAware.OnNavigatedTo(object parameter)
     {
         if ((parameter as dynamic).SelectedProduct is MainInventory p && (parameter as dynamic).Source is ObservableCollection<MainInventory> s)
         {
             Inventories = s.ToList();
             SelectedProduct = p;
             UpdateUI();
+        }
+        try
+        {
+            Agents = new List<Agent>(JsonConvert.DeserializeObject<IEnumerable<Agent>>(await _dataGather.GetAgentsAsync()));
+        }
+        catch
+        {
+            //ADD SOMETHING
+            return;
         }
     }
 
@@ -181,8 +193,9 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                         }
                     case nameof(LocalInventory.ExpireDate):
                         {
-                            DateTime.TryParse(tb.Text, out DateTime c);
-                            l.ExpireDate = c;
+                            if (DateTime.TryParse(tb.Text, out DateTime c))
+                                l.ExpireDate = c;
+                            else l.ExpireDate = DateTime.MaxValue;
                             break;
                         }
                     case nameof(LocalInventory.Note):
@@ -233,7 +246,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     async void OnGiveAwayClicked(object sender, RoutedEventArgs e)
     {
-        if (!GiveAwayDate.SelectedDate.HasValue)
+        if (GiveAwayDate.SelectedDate == DateTime.MinValue)
             GiveAwayDate.SelectedDate = DateTime.Now;
         var giveaway = new GivenAway
         {
@@ -286,28 +299,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
     }
-
-    public string[] Agents { get; } =
-        {
-        "Duhok",
-        "Arbil",
-        "Sulaimania",
-        "Kirkuk",
-        "Mosul",
-        "Al-Adhamiya",
-        "Mammon",
-        "Dora",
-        "Maysan",
-        "Najaf",
-        "Basra",
-        "Salah Al-Din",
-        "Karbala",
-        "Diyala",
-        "Babl",
-        "Fallujah",
-        "Diqar",
-        "Al-Ramadi",
-        };
 
     void AmountToSend_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
