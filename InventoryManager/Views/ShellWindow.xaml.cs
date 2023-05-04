@@ -8,11 +8,13 @@ using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
 
 using MahApps.Metro.Controls;
+using System.Globalization;
 
 namespace InventoryManager.Views;
 
 public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyChanged
 {
+    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     private readonly INavigationService _navigationService;
     private bool _canGoBack;
     private HamburgerMenuItem _selectedMenuItem;

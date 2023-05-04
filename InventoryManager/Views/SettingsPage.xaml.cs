@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -25,6 +26,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private string _serverAddress;
     private string _versionDescription;
 
+    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     public AppTheme Theme
     {
         get { return _theme; }

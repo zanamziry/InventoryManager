@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -32,7 +33,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         givenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
     }
-
+    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     private IList<MainInventory> Inventories = new List<MainInventory>();
     private readonly LocalInventoryORM InventoryORM;
     private readonly SentOutsideORM outsideORM;

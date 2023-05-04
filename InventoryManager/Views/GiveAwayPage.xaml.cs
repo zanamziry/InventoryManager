@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,7 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         productsORM = _dBSetup.GetTable<ProductsORM>();
         InitializeComponent();
     }
+    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     public ObservableCollection<GivenAway> Events { get; } = new ObservableCollection<GivenAway>();
     public ObservableCollection<GiftDisplay> SelectedGiveAways { get; } = new ObservableCollection<GiftDisplay>();
     public List<Product> Products { get; private set; } = new List<Product>();

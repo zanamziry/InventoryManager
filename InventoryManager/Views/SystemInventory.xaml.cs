@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +22,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
     }
-
+    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
     private Agent _selectedAgent;

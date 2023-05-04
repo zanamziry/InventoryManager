@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -28,6 +29,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         productsORM = _dBSetup.GetTable<ProductsORM>();
         InitializeComponent();
     }
+    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
     public ObservableCollection<SentOutDisplay> Source { get; } = new ObservableCollection<SentOutDisplay>();
     private readonly SentOutsideORM outsideORM;

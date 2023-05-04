@@ -13,6 +13,7 @@ using GemBox.Spreadsheet;
 using Newtonsoft.Json;
 
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using System.Globalization;
 
 namespace InventoryManager.Views;
 
@@ -31,7 +32,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
         _dataGather = dataGather;
     }
-    
+    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
