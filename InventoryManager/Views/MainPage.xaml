@@ -44,19 +44,19 @@
                     <Button HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}" Click="OnGetLatestListClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="Update"/>
-                            <TextBlock TextAlignment="Center" Text="Update List"/>
+                            <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.MainPageUpdateList}"/>
                         </DockPanel>
                     </Button>
                     <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding SourceHasItems,Mode=OneWay}" Click="OnRemoveAllButtonClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="TrashCanOutline"/>
-                            <TextBlock TextAlignment="Center" Text="Delete All"/>
+                            <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.MainPageDeleteAll}"/>
                         </DockPanel>
                     </Button>
                     <Button Margin="{StaticResource SmallTopMargin}" IsEnabled="{Binding SourceHasItems,Mode=OneWay}" Click="OnExportAsExcelClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="MicrosoftExcel"/>
-                            <TextBlock TextAlignment="Center" Text="Export As Excel"/>
+                            <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.MainPageExportAsExcel}"/>
                         </DockPanel>
                     </Button>
                     <Grid>
@@ -68,7 +68,7 @@
                             <StackPanel>
                                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4">
                                     <mt:PackIcon Width="12" Kind="PackageVariant"/>
-                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="OutSide"/>
+                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="{x:Static properties:Resources.MainPageOutsideLabel}"/>
                                 </DockPanel>
                                 <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat={}{0:C}, Mode=OneWay}"/>
                             </StackPanel>
@@ -77,7 +77,7 @@
                             <StackPanel>
                                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4">
                                     <mt:PackIcon Width="12" Kind="GiftOutline"/>
-                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="Gifts"/>
+                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="{x:Static properties:Resources.MainPageGiftsLabel}"/>
                                 </DockPanel>
                                 <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding GiftPoints,StringFormat={}{0:G}, Mode=OneWay}"/>
                             </StackPanel>

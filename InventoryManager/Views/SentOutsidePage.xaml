@@ -60,7 +60,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
                     <DockPanel Grid.Row="1">
-                        <TextBlock Text="Total Sold" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                        <TextBlock Text="{x:Static properties:Resources.SentOutsideTotalSold}" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
                         <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat={}{0:C2}}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
                     </DockPanel>
                 </Grid>

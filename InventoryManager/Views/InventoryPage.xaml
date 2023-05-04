@@ -63,25 +63,25 @@
                     <ToggleButton x:Name="ToggleAdd" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="Add" UseLayoutRounding="True"/>
-                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="Add"/>
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static properties:Resources.InventoryPageAddLabel}"/>
                         </DockPanel>
                     </ToggleButton>
                     <ToggleButton x:Name="ToggleSend" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="SendOutline"/>
-                            <TextBlock TextAlignment="Center" Text="Send"/>
+                            <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.InventoryPageSendLabel}"/>
                         </DockPanel>
                     </ToggleButton>
                     <ToggleButton x:Name="ToggleGift" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="GiftOutline"/>
-                            <TextBlock TextAlignment="Center" Text="Give Away"/>
+                            <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.InventoryPageGiftLabel}"/>
                         </DockPanel>
                     </ToggleButton>
                     <Button Padding="40,0" IsEnabled="{Binding IsButtonEnabled,Mode=OneWay}" Margin="{StaticResource SmallTopMargin}" Click="OnRemoveButtonClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="Remove"/>
-                            <TextBlock TextAlignment="Center" Text="Remove"/>
+                            <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.InventoryPageRemoveLabel}"/>
                         </DockPanel>
                     </Button>
                 </StackPanel>
@@ -119,23 +119,23 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <DockPanel Grid.Column="0">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="System"/>
+                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageSystemLabel}"/>
                             <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.System.CloseBalance,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="1" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="Outside"/>
+                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageOutsideLabel}"/>
                             <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalOutside,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="2" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="GiveAway"/>
+                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageGivenAwayLabel}"/>
                             <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalGivenAway,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="3" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="Real"/>
+                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageRealLabel}"/>
                             <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalReal,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="4" Margin="{StaticResource SmallLeftMargin}">
-                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="Result"/>
+                            <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageResultLabel}"/>
                             <TextBox IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
@@ -171,8 +171,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Add" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnAddButtonClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelAddClicked"/>
+                    <Button Content="{x:Static properties:Resources.Add}" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnAddButtonClicked"/>
+                    <Button Content="{x:Static properties:Resources.Cancel}" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelAddClicked"/>
                 </Grid>
             </StackPanel>
         </local:ZMDialog>
@@ -180,19 +180,19 @@
         <!--#region Send-->
         <local:ZMDialog Visibility="{Binding ElementName=ToggleSend,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="Send Product">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                <TextBlock Text="Amount" Margin="0,3"/>
+                <TextBlock Text="{x:Static properties:Resources.Amount}" Margin="0,3"/>
                 <TextBox x:Name="AmountToSend" Text="0" PreviewTextInput="AmountToSend_PreviewTextInput"/>
-                <TextBlock Text="Location" Margin="0,3"/>
+                <TextBlock Text="{x:Static properties:Resources.Location}" Margin="0,3"/>
                 <ComboBox ItemsSource="{Binding Agents}" SelectedIndex="0" x:Name="PlaceToSend"/>
-                <TextBlock Text="Old" Margin="0,3"/>
+                <TextBlock Text="{x:Static properties:Resources.Old}" Margin="0,3"/>
                 <CheckBox x:Name="IsOld"/>
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Send" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnSendClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelSendClicked"/>
+                    <Button Content="{x:Static properties:Resources.Send}" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnSendClicked"/>
+                    <Button Content="{x:Static properties:Resources.Cancel}" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelSendClicked"/>
                 </Grid>
             </StackPanel>
         </local:ZMDialog>
@@ -200,9 +200,9 @@
         <!--#region GiveAway-->
         <local:ZMDialog Visibility="{Binding ElementName=ToggleGift,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="GiveAway Product">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                <TextBlock Text="Amount" Margin="0,3"/>
+                <TextBlock Text="{x:Static properties:Resources.Amount}" Margin="0,3"/>
                 <TextBox x:Name="AmountToGive" PreviewTextInput="AmountToGive_PreviewTextInput" Text="1"/>
-                <TextBlock Text="GiveAway Name" Margin="0,3"/>
+                <TextBlock Text="{x:Static properties:Resources.GiveAwayName}" Margin="0,3"/>
                 <TextBox x:Name="GiveAwayName"/>
                 <DatePicker x:Name="GiveAwayDate" SelectedDateFormat="Short" />
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
@@ -210,8 +210,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Gift" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnGiveAwayClicked"/>
-                    <Button Content="Cancel" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelGiveawayClicked"/>
+                    <Button Content="{x:Static properties:Resources.InventoryPageGiftLabel}" Margin="0 0 2 0" Style="{StaticResource PrimaryButton}" Click="OnGiveAwayClicked"/>
+                    <Button Content="{x:Static properties:Resources.Cancel}" Grid.Column="1" Margin="2 0 0 0" Style="{StaticResource SecondaryButton}" Click="OnCancelGiveawayClicked"/>
                 </Grid>
             </StackPanel>
         </local:ZMDialog>

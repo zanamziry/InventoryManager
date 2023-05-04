@@ -15,7 +15,7 @@
         <Grid Margin="{StaticResource SmallTopBottomMargin}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="48" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="378" />
             </Grid.RowDefinitions>
             <TextBlock
                 Style="{StaticResource PageTitleStyle}"
@@ -35,20 +35,20 @@
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
-                    Text="DataBase (Not available yet)" />
+                    Text="{x:Static properties:Resources.SettingsPageDatabaseTitle}" />
                 <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallTopMargin}" >
                     <Button
                         Click="OnDeleteAllClicked"
-                        Content="Delete All" 
+                        Content="{x:Static properties:Resources.SettingsPageDatabaseDeleteAll}" 
                         Background="IndianRed"
                         Foreground="White"
                         FontWeight="DemiBold"/>
                     <Button
-                        Content="Backup"
+                        Content="{x:Static properties:Resources.SettingsPageDatabaseBackup}"
                         Margin="{StaticResource XSmallLeftMargin}"
                         />
                     <Button
-                        Content="Restore"
+                        Content="{x:Static properties:Resources.SettingsPageDatabaseRestore}"
                         Margin="{StaticResource XSmallLeftMargin}"
                         />
                 </StackPanel>

@@ -182,15 +182,15 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
         // Write the name of headers
         var i = 0;
-        ws.Cells[i, 0].Value = "ID";
-        ws.Cells[i, 1].Value = "Name";
-        ws.Cells[i, 2].Value = "System";
-        ws.Cells[i, 3].Value = "Real";
-        ws.Cells[i, 4].Value = "Gifts";
-        ws.Cells[i, 5].Value = "Outside";
-        ws.Cells[i, 6].Value = "Result";
-        ws.Cells[i, 7].Value = "Expire";
-        ws.Cells[i, 8].Value = "Notes";
+        ws.Cells[i, 0].Value = "كود";
+        ws.Cells[i, 1].Value = "اسم المنتج";
+        ws.Cells[i, 2].Value = "سستم";
+        ws.Cells[i, 3].Value = "حقيقي";
+        ws.Cells[i, 4].Value = "هداية";
+        ws.Cells[i, 5].Value = "خارج المركز";
+        ws.Cells[i, 6].Value = "الناتج";
+        ws.Cells[i, 7].Value = "تاريخ الاكسباير";
+        ws.Cells[i, 8].Value = "ملاحضات";
 
         for (int c = 0; c <= 8; c++)
         {

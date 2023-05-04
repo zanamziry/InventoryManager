@@ -177,4 +177,103 @@
   <data name="GiveAwayPageTitle" xml:space="preserve">
     <value>GiveAways</value>
   </data>
+  <data name="SystemInventoryAgentLabel" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="SystemInventoryFetchData" xml:space="preserve">
+    <value>Fetching Data...</value>
+  </data>
+  <data name="SystemInventoryLastUpdate" xml:space="preserve">
+    <value>Last Update</value>
+  </data>
+  <data name="MainPageUpdateList" xml:space="preserve">
+    <value>Update List</value>
+  </data>
+  <data name="SentOutsideTotalSold" xml:space="preserve">
+    <value>Total Sold</value>
+  </data>
+  <data name="SettingsPageDatabaseBackup" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="SettingsPageDatabaseDeleteAll" xml:space="preserve">
+    <value>Delete All</value>
+  </data>
+  <data name="SettingsPageDatabaseRestore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="SettingsPageDatabaseTitle" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="SystemInventoryDateLabel" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SystemInventoryUpdateLabel" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="GiveAwayName" xml:space="preserve">
+    <value>Event Name</value>
+  </data>
+  <data name="InventoryPageAddLabel" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="InventoryPageGiftLabel" xml:space="preserve">
+    <value>Gift</value>
+  </data>
+  <data name="InventoryPageGivenAwayLabel" xml:space="preserve">
+    <value>Gifts</value>
+  </data>
+  <data name="InventoryPageOutsideLabel" xml:space="preserve">
+    <value>Outside</value>
+  </data>
+  <data name="InventoryPageRealLabel" xml:space="preserve">
+    <value>Real</value>
+  </data>
+  <data name="InventoryPageRemoveLabel" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="InventoryPageResultLabel" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="InventoryPageSendLabel" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="InventoryPageSystemLabel" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="MainPageDeleteAll" xml:space="preserve">
+    <value>Delete All</value>
+  </data>
+  <data name="MainPageExportAsExcel" xml:space="preserve">
+    <value>Export As Excel</value>
+  </data>
+  <data name="MainPageGiftsLabel" xml:space="preserve">
+    <value>Gifts</value>
+  </data>
+  <data name="MainPageOutsideLabel" xml:space="preserve">
+    <value>Outside</value>
+  </data>
+  <data name="Old" xml:space="preserve">
+    <value>Old</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
 </root>
