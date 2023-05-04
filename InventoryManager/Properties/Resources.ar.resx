@@ -166,7 +166,7 @@
     <value>المخزن</value>
   </data>
   <data name="ShellSystemInventoryPage" xml:space="preserve">
-    <value>مخزن السستم</value>
+    <value>بيانات السستم</value>
   </data>
   <data name="SentOutsidePageTitle" xml:space="preserve">
     <value>خارج المركز</value>
@@ -178,7 +178,7 @@
     <value>المركز</value>
   </data>
   <data name="SystemInventoryFetchData" xml:space="preserve">
-    <value>...جاب البيانات</value>
+    <value>...جلب البيانات</value>
   </data>
   <data name="SystemInventoryLastUpdate" xml:space="preserve">
     <value>اخر تحديث</value>
