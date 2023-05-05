@@ -8,7 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
-    FlowDirection="{Binding Direction,Mode=OneWay}"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
     d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
     d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
@@ -49,16 +48,22 @@
                     <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextAlignment="Left" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <TextBlock Text="{Binding SelectedProduct.Product.ID}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <TextBlock Text="{Binding SelectedProduct.Product.Price}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
-                    <Grid HorizontalAlignment="Stretch" Margin="{StaticResource SmallTopMargin}">
+                    <Grid HorizontalAlignment="Stretch" FlowDirection="LeftToRight" Margin="{StaticResource SmallTopMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button Padding="0" HorizontalContentAlignment="Center" Margin="0,0,2,0" Command="{Binding GotoPrevious}" >
-                            <mt:PackIcon Kind="NavigateBefore"/>
+                            <DockPanel>
+                                <mt:PackIcon Kind="NavigateBefore" UseLayoutRounding="True" RenderTransformOrigin="0.571,0.602"/>
+                                <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static properties:Resources.InventoryPagePrevious}"/>
+                            </DockPanel>
                         </Button>
                         <Button Grid.Column="1" HorizontalContentAlignment="Center" Padding="0" Margin="2,0,0,0" Command="{Binding GotoNext}">
-                            <mt:PackIcon Kind="NavigateNext"/>
+                            <DockPanel>
+                                <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static properties:Resources.InventoryPageNext}"/>
+                                <mt:PackIcon Kind="NavigateNext" UseLayoutRounding="True" RenderTransformOrigin="0.5,0.8"/>
+                            </DockPanel>
                         </Button>
                     </Grid>
                     <ToggleButton x:Name="ToggleAdd" Padding="40,0" Margin="{StaticResource SmallTopMargin}">

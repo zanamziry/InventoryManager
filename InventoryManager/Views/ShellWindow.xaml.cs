@@ -14,8 +14,8 @@ namespace InventoryManager.Views;
 
 public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyChanged
 {
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     private readonly INavigationService _navigationService;
+    private readonly ILanguageSelectorService _languageSelector;
     private bool _canGoBack;
     private HamburgerMenuItem _selectedMenuItem;
     private HamburgerMenuItem _selectedOptionsMenuItem;
@@ -52,11 +52,12 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellSettingsPage, Glyph = "\uE713", TargetPageType = typeof(SettingsPage) }
     };
 
-    public ShellWindow(INavigationService navigationService)
+    public ShellWindow(INavigationService navigationService, ILanguageSelectorService languageSelector)
     {
         _navigationService = navigationService;
         InitializeComponent();
         DataContext = this;
+        _languageSelector = languageSelector;
     }
 
     public Frame GetNavigationFrame()
@@ -99,6 +100,7 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
                     .FirstOrDefault(i => pageType == i.TargetPageType);
         if (item != null)
         {
+            FlowDirection = _languageSelector.Flow;
             SelectedMenuItem = item;
         }
         else

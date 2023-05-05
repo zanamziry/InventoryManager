@@ -8,7 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
-    FlowDirection="{Binding Direction,Mode=OneWay}"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
     d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
     d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"

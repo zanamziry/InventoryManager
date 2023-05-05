@@ -19,7 +19,7 @@ namespace InventoryManager.Views;
 
 public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather)
+    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
     {
         InitializeComponent();
         DataContext = this;
@@ -31,8 +31,8 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         GivenORM = _dBSetup.GetTable<GivenAwayORM>();
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
         _dataGather = dataGather;
+        FlowDirection = languageSelector.Flow;
     }
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;

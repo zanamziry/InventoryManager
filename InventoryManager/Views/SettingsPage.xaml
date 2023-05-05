@@ -7,8 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:converters="clr-namespace:InventoryManager.Converters"
     xmlns:models="clr-namespace:InventoryManager.Models"
-    FlowDirection="{Binding Direction,Mode=OneWay}"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800" d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
     d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}">
@@ -25,6 +25,21 @@
                 x:Name="ContentArea"
                 Grid.Row="1"
                 Margin="{StaticResource MediumLeftRightMargin}">
+                <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Style="{StaticResource SubtitleTextStyle}"
+                    Text="{x:Static properties:Resources.Language}" />
+                <ComboBox
+                    ItemsSource="{Binding Languages, Mode=OneWay}"
+                    SelectedItem="{Binding SelectedLang, Mode=TwoWay}"
+                    Margin="{StaticResource XSmallTopMargin}"
+                    Style="{StaticResource MahApps.Styles.ComboBox}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Header}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"

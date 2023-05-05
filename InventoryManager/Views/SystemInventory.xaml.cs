@@ -14,13 +14,14 @@ namespace InventoryManager.Views;
 
 public partial class SystemInventory : Page, INotifyPropertyChanged, INavigationAware
 {
-    public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather)
+    public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
     {
         InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
+        FlowDirection = languageSelector.Flow;
     }
     public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     readonly string AgentSettingsKey = "AgentID";

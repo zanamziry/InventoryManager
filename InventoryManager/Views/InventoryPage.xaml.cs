@@ -24,7 +24,7 @@ namespace InventoryManager.Views;
 public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAware
 {
 
-    public InventoryPage(IDBSetup dBSetup)
+    public InventoryPage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         InitializeComponent();
         DataContext = this;
@@ -32,8 +32,9 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         givenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
+        FlowDirection = languageSelector.Flow;
     }
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
+
     private IList<MainInventory> Inventories = new List<MainInventory>();
     private readonly LocalInventoryORM InventoryORM;
     private readonly SentOutsideORM outsideORM;

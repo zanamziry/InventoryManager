@@ -9,7 +9,6 @@
     xmlns:local="clr-namespace:InventoryManager.Views.Controls"
     xmlns:converter="clr-namespace:InventoryManager.Converters"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
-    FlowDirection="{Binding Direction,Mode=OneWay}"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     d:DesignHeight="450" d:DesignWidth="800" d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"

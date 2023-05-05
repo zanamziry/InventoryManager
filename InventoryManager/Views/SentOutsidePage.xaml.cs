@@ -21,15 +21,15 @@ namespace InventoryManager.Views;
 public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigationAware
 {
 
-    public SentOutsidePage(IDBSetup dBSetup)
+    public SentOutsidePage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         DataContext = this;
         _dBSetup = dBSetup;
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
     public ObservableCollection<SentOutDisplay> Source { get; } = new ObservableCollection<SentOutDisplay>();
     private readonly SentOutsideORM outsideORM;

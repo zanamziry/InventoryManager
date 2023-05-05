@@ -44,9 +44,7 @@ namespace InventoryManager.Services
         public void LoadSettings()
         {
             if (App.Current.Properties.Contains(SettingsKey))
-            {
                 base_url = App.Current.Properties[SettingsKey].ToString();
-            }
             else base_url = DEFAULT;
         }
 

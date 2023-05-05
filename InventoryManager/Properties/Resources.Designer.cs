@@ -142,11 +142,29 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string InventoryPageNext {
+            get {
+                return ResourceManager.GetString("InventoryPageNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outside.
         /// </summary>
         public static string InventoryPageOutsideLabel {
             get {
                 return ResourceManager.GetString("InventoryPageOutsideLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string InventoryPagePrevious {
+            get {
+                return ResourceManager.GetString("InventoryPagePrevious", resourceCulture);
             }
         }
         
@@ -201,6 +219,15 @@ namespace InventoryManager.Properties {
         public static string InventoryPageTitle {
             get {
                 return ResourceManager.GetString("InventoryPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
             }
         }
         
@@ -282,6 +309,15 @@ namespace InventoryManager.Properties {
         public static string Price {
             get {
                 return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application needs a restart to change the language.
+        /// </summary>
+        public static string RestartNeeded {
+            get {
+                return ResourceManager.GetString("RestartNeeded", resourceCulture);
             }
         }
         

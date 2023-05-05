@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -23,10 +24,11 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private readonly ISystemDataGather _dataGather;
     private AppTheme _theme;
     private IDBSetup _dBSetup;
+    private ILanguageSelectorService _languageSelector;
+    private Language _selectedLang;
     private string _serverAddress;
     private string _versionDescription;
 
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     public AppTheme Theme
     {
         get { return _theme; }
@@ -51,13 +53,28 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         }
     }
 
-    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup)
+    public ObservableCollection<Language> Languages { get; set; } = new ObservableCollection<Language>();
+
+    public Language SelectedLang
+    {
+        get { return _selectedLang; }
+        set 
+        { 
+            Set(ref _selectedLang, value); 
+            _languageSelector.SetLanguagePreferences(value);
+        }
+    }
+
+
+    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         _appConfig = appConfig.Value;
         _systemService = systemService;
         _applicationInfoService = applicationInfoService;
         _dataGather = dataGather;
         _dBSetup = dBSetup;
+        _languageSelector = languageSelector;
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
         DataContext = this;
     }
@@ -65,21 +82,14 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     public void OnNavigatedTo(object parameter)
     {
         VersionDescription = $"{Properties.Resources.AppDisplayName} - {_applicationInfoService.GetVersion()}";
-        ServerAddress = GetSavedSetting(_dataGather.SettingsKey);
+        ServerAddress = _dataGather.base_url;
+        SelectedLang = _languageSelector.PreferedLang;
+        Languages = new ObservableCollection<Language>(_languageSelector.Languages);
+        OnPropertyChanged(nameof(Languages));
     }
 
     public void OnNavigatedFrom()
     {
-    }
-
-    private string GetSavedSetting(string key)
-    {
-        if (App.Current.Properties.Contains(key))
-        {
-            string savedString = App.Current.Properties[key].ToString();
-            return savedString;
-        }
-        return "";
     }
 
     private void OnPrivacyStatementClick(object sender, RoutedEventArgs e)

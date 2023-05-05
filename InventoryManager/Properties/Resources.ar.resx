@@ -273,4 +273,22 @@
   <data name="Total" xml:space="preserve">
     <value>المجموع</value>
   </data>
+  <data name="RestartNeeded" xml:space="preserve">
+    <value>البرنامج يحتاج الى اعادة تشغيل لتغير اللغة</value>
+  </data>
+  <data name="Lang" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="InventoryPageNext" xml:space="preserve">
+    <value>بعد</value>
+  </data>
+  <data name="InventoryPagePrevious" xml:space="preserve">
+    <value>قبل</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

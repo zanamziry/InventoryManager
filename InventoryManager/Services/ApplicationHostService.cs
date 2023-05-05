@@ -13,6 +13,7 @@ public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ISystemDataGather _systemDataGather;
+    private readonly ILanguageSelectorService _languageSelector;
     private readonly IDBSetup _dBSetup;
     private readonly INavigationService _navigationService;
     private readonly IPersistAndRestoreService _persistAndRestoreService;
@@ -20,7 +21,7 @@ public class ApplicationHostService : IHostedService
     private IShellWindow _shellWindow;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ILanguageSelectorService languageSelector)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
@@ -28,6 +29,7 @@ public class ApplicationHostService : IHostedService
         _persistAndRestoreService = persistAndRestoreService;
         _dBSetup = dBSetup;
         _systemDataGather = systemDataGather;
+        _languageSelector = languageSelector;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -55,6 +57,7 @@ public class ApplicationHostService : IHostedService
             _persistAndRestoreService.RestoreData();
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
+            _languageSelector.InitializeLanguage();
             await Task.CompletedTask;
         }
     }

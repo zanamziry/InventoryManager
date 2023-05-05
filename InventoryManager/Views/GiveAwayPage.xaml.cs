@@ -16,12 +16,13 @@ namespace InventoryManager.Views;
 public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAware
 {
 
-    public GiveAwayPage(IDBSetup dBSetup)
+    public GiveAwayPage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         DataContext = this;
         _dBSetup = dBSetup;
         giveawayORM = _dBSetup.GetTable<GivenAwayORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
     public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;

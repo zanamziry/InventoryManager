@@ -276,4 +276,16 @@
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
+  <data name="RestartNeeded" xml:space="preserve">
+    <value>Application needs a restart to change the language</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="InventoryPageNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="InventoryPagePrevious" xml:space="preserve">
+    <value>Previous</value>
+  </data>
 </root>
