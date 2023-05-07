@@ -14,16 +14,15 @@ namespace InventoryManager.Views;
 
 public partial class SystemInventory : Page, INotifyPropertyChanged, INavigationAware
 {
-    public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
+    public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather)
     {
         InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
-        FlowDirection = languageSelector.Flow;
     }
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
+
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
     private Agent _selectedAgent;
@@ -35,7 +34,9 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         get { return _isLoading; }
         set { Set(ref _isLoading ,value); }
     }
+
     public bool IsSelected => SelectedAgent != null;
+
     public Agent SelectedAgent
     {
         get { return _selectedAgent; }

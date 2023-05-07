@@ -19,7 +19,7 @@ namespace InventoryManager.Views;
 
 public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
+    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather)
     {
         InitializeComponent();
         DataContext = this;
@@ -31,7 +31,6 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         GivenORM = _dBSetup.GetTable<GivenAwayORM>();
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
         _dataGather = dataGather;
-        FlowDirection = languageSelector.Flow;
     }
     private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;

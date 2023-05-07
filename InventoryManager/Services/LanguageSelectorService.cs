@@ -1,5 +1,7 @@
 ﻿using InventoryManager.Contracts.Services;
 using InventoryManager.Models;
+using MahApps.Metro.Controls;
+using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 
@@ -17,6 +19,8 @@ namespace InventoryManager.Services
         public Language PreferedLang { get; set; }
         public FlowDirection Flow => PreferedLang.Tag == Languages.First().Tag ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnLanguageChanged() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PreferedLang.Tag));
         public void InitializeLanguage()
         {
             PreferedLang = LoadLanguagePreferences();
@@ -25,10 +29,17 @@ namespace InventoryManager.Services
 
         public void SetLanguagePreferences(Language Language)
         {
-            if (Language != PreferedLang)
-                SaveLanguagePreferences(Language);
-            App.Current.Dispatcher.Thread.CurrentCulture = new CultureInfo(Language.Tag);
-            App.Current.Dispatcher.Thread.CurrentUICulture = new CultureInfo(Language.Tag);
+            SaveLanguagePreferences(Language);
+            OnLanguageChanged();
+            var cult = new CultureInfo(Language.Tag);
+            App.Current.Dispatcher.Thread.CurrentCulture = cult;
+            App.Current.Dispatcher.Thread.CurrentUICulture = cult;
+            if (App.Current.MainWindow != null)
+            {
+                App.Current.MainWindow.FlowDirection = Flow;
+                App.Current.MainWindow.Language = System.Windows.Markup.XmlLanguage.GetLanguage(Language.Tag);
+                App.Current.MainWindow.UpdateLayout();
+            }
         }
 
         private Language LoadLanguagePreferences()

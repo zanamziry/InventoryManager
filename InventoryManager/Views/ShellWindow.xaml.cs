@@ -9,6 +9,8 @@ using InventoryManager.Contracts.Views;
 
 using MahApps.Metro.Controls;
 using System.Globalization;
+using MaterialDesignThemes.Wpf;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace InventoryManager.Views;
 
@@ -38,7 +40,6 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
         set { Set(ref _selectedOptionsMenuItem, value); }
     }
 
-    // TODO: Change the icons and titles for all HamburgerMenuItems here.
     public ObservableCollection<HamburgerMenuItem> MenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()
     {
         new HamburgerMenuIconItem() { Label = Properties.Resources.ShellMainPage, Icon = new MahApps.Metro.IconPacks.PackIconVaadinIcons(){ Kind = MahApps.Metro.IconPacks.PackIconVaadinIconsKind.Storage}, TargetPageType = typeof(MainPage) },
@@ -52,12 +53,11 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellSettingsPage, Glyph = "\uE713", TargetPageType = typeof(SettingsPage) }
     };
 
-    public ShellWindow(INavigationService navigationService, ILanguageSelectorService languageSelector)
+    public ShellWindow(INavigationService navigationService)
     {
         _navigationService = navigationService;
         InitializeComponent();
         DataContext = this;
-        _languageSelector = languageSelector;
     }
 
     public Frame GetNavigationFrame()
@@ -99,10 +99,7 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
                     .OfType<HamburgerMenuItem>()
                     .FirstOrDefault(i => pageType == i.TargetPageType);
         if (item != null)
-        {
-            FlowDirection = _languageSelector.Flow;
             SelectedMenuItem = item;
-        }
         else
         {
             SelectedOptionsMenuItem = OptionMenuItems

@@ -21,13 +21,12 @@ namespace InventoryManager.Views;
 public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigationAware
 {
 
-    public SentOutsidePage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
+    public SentOutsidePage(IDBSetup dBSetup)
     {
         DataContext = this;
         _dBSetup = dBSetup;
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
-        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();

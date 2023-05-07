@@ -55,9 +55,9 @@ public class ApplicationHostService : IHostedService
         if (!_isInitialized)
         {
             _persistAndRestoreService.RestoreData();
+            _languageSelector.InitializeLanguage();
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
-            _languageSelector.InitializeLanguage();
             await Task.CompletedTask;
         }
     }
@@ -66,6 +66,7 @@ public class ApplicationHostService : IHostedService
     {
         if (!_isInitialized)
         {
+            _languageSelector.InitializeLanguage();
             await Task.CompletedTask;
         }
     }
