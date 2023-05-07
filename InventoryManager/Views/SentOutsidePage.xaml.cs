@@ -135,8 +135,8 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                         {
                             if (e.EditingElement is TextBox tb)
                             {
-                                int.TryParse(tb.Text, out int a);
-                                l.Outside.AmountSold = a;
+                                if(int.TryParse(tb.Text, out int a))
+                                    l.Outside.AmountSold = a;
                             }
                             break;
                         }
