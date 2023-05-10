@@ -46,18 +46,23 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         storage = value;
         OnPropertyChanged(propertyName);
     }
-    async void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
         Events.Clear();
-        foreach (var item in await giveawayORM.SelectAllEvents())
-        {
-            Events.Add(item);
-        }
         Products.Clear();
-        foreach(var i in await productsORM.SelectAll())
+        Task.Run(() =>
         {
-            Products.Add(i);
-        }
+            foreach (var item in giveawayORM.SelectAllEvents())
+            {
+                Dispatcher.Invoke(() =>
+                    Events.Add(item));
+            }
+            foreach (var i in productsORM.SelectAll())
+            {
+                Dispatcher.Invoke(() =>
+                    Products.Add(i));
+            }
+        });
     }
 
     void INavigationAware.OnNavigatedFrom()
@@ -67,12 +72,12 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ListView listView && listView.SelectedItem is GivenAway s)
         {
             SelectedGiveAways.Clear();
-            foreach (var i in await giveawayORM.SelectByEvent(s))
+            foreach (var i in giveawayORM.SelectByEvent(s))
             {
                 var giftDisplay = new GiftDisplay
                 {
@@ -83,9 +88,9 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
             }
         }
     }
-    async void Remove(GiftDisplay p)
+    void Remove(GiftDisplay p)
     {
-        await giveawayORM.Delete(p.GivenAway);
+        giveawayORM.Delete(p.GivenAway);
         SelectedGiveAways.Remove(p);
     }
 

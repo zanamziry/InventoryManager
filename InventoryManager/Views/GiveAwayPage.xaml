@@ -1,6 +1,4 @@
 ﻿<Page
-    x:Class="InventoryManager.Views.GiveAwayPage"
-    Style="{StaticResource MahApps.Styles.Page}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:InventoryManager.Views.Controls"
@@ -9,6 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    x:Class="InventoryManager.Views.GiveAwayPage"
+    Style="{StaticResource MahApps.Styles.Page}"
     d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
     d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
     mc:Ignorable="d"
@@ -25,7 +26,6 @@
             Text="{x:Static properties:Resources.GiveAwayPageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
             Background="{DynamicResource MahApps.Brushes.Gray10}">
             <!--
             The Mahapps Gray10 color represents where you should place your content.
@@ -37,9 +37,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <DockPanel Grid.Column="0" >
-                    <ListView VerticalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Gray10}" ItemsSource="{Binding Events,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Style="{StaticResource MahApps.Styles.ListView}">
+                    <ListView VerticalAlignment="Stretch" Padding="5,0" ItemsSource="{Binding Events}" SelectionChanged="ListView_SelectionChanged" d:ItemsSource="{d:SampleData ItemCount=5}">
                         <ListView.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
+                            <Style TargetType="{x:Type ListViewItem}">
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -47,23 +47,23 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{StaticResource MahApps.Brushes.Gray9}" BorderThickness="1" CornerRadius="5" Margin="4,1.5" Padding="4">
+                                <Border BorderBrush="{StaticResource MahApps.Brushes.Gray7}" BorderThickness="1" Margin="4,1.5" Padding="4">
                                     <StackPanel HorizontalAlignment="Left" Orientation="Vertical">
-                                    <TextBlock Text="{Binding Event}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" FontSize="12" FontWeight="SemiBold"/>
-                                    <TextBlock Text="{Binding Date, StringFormat='{}{0:dd/M/yyyy}'}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" FontSize="10" FontWeight="Regular"/>
-                                </StackPanel>
+                                        <TextBlock Text="{Binding Event}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" FontSize="12" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Date, StringFormat=\{0:dd/M/yyyy\}}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" FontSize="10" FontWeight="Regular"/>
+                                    </StackPanel>
                                 </Border>
                             </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </DockPanel>
                 <Grid Grid.Column="1">
                     <DataGrid x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID,Mode=OneWay}"/>
-                            <DataGridTextColumn Header="ProductID" IsReadOnly="True" Binding="{Binding Product.ID,Mode=OneWay}"/>
-                            <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Product.Name,Mode=OneWay}"/>
-                            <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding GivenAway.Amount,Mode=TwoWay}" />
+                            <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="ProductID" IsReadOnly="True" Binding="{Binding Product.ID, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Product.Name, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding GivenAway.Amount, Mode=TwoWay}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

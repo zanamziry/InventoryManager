@@ -25,18 +25,13 @@
             Text="{x:Static properties:Resources.SentOutsidePageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{DynamicResource MahApps.Brushes.Gray10}">
-            <!--
-            The Mahapps Gray10 color represents where you should place your content.
-            Place your content here.
-            -->
+            Background="{DynamicResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ListView Grid.Column="0" VerticalAlignment="Stretch" Background="{StaticResource MahApps.Brushes.Gray10}" ItemsSource="{Binding Locations,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Style="{StaticResource MahApps.Styles.ListView}">
+                <ListView Grid.Column="0" ItemsSource="{Binding Locations,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Margin" Value="0"/>
@@ -70,7 +65,7 @@
                 </DataGrid>
                     <DockPanel Grid.Row="1">
                         <TextBlock Text="{x:Static properties:Resources.SentOutsideTotalSold}" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
-                        <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat={}{0:C2}}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                        <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat={}{0:$0.00}}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
                     </DockPanel>
                 </Grid>
             </Grid>

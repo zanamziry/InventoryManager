@@ -78,42 +78,47 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void OnGetDataClicked(object sender, RoutedEventArgs e)
+    private void OnGetDataClicked(object sender, RoutedEventArgs e)
     {
-        IsLoading = true;
         DateTime d;
         if (SelectedDate.SelectedDate != null)
             d = SelectedDate.SelectedDate.Value;
         else d = DateTime.Now;
-        try
+        Task.Run(async () =>
         {
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(SelectedAgent.ID, d));
-            if (s != null && s.list != null && s.list.Any())
+            IsLoading = true;
+            try
             {
-                await SystemORM.DeleteAll();
-                SystemProducts.Clear();
-                foreach (var i in s.list)
+                var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(SelectedAgent.ID, d));
+                if (s != null && s.list != null && s.list.Any())
                 {
-                    await SystemORM.Insert(i);
-                    SystemProducts.Add(i);
+                    SystemORM.DeleteAll();
+                    Dispatcher.Invoke(() =>
+                            SystemProducts.Clear());
+                    foreach (var i in s.list)
+                    {
+                        SystemORM.Insert(i);
+                        Dispatcher.Invoke(() =>
+                                SystemProducts.Add(i));
+                    }
+                    LastUpdated = d;
                 }
-                LastUpdated = d;
+                else
+                {
+                    throw new Exception("Couldn't Load The Data Correctly, Please Try Again...");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("Couldn't Load The Data Correctly, Please Try Again...");
+                MessageBox.Show(ex.Message, "Error Updating", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error Updating", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+            finally
+            {
+                IsLoading = false;
+            }
+        });
     }
-    async void getAgents()
+    async Task getAgents()
     {
         string savedID = GetSavedSetting(AgentSettingsKey);
         IEnumerable<Agent> listOfAgents = Enumerable.Empty<Agent>();
@@ -139,18 +144,20 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
                 SelectedAgent = agent;
             }
         }
+        await Task.CompletedTask;
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        IsLoading = true;
-        getAgents();
+        await getAgents();
         DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
         LastUpdated = d;
         SystemProducts.Clear();
-        foreach (var item in await SystemORM.SelectAll())
-            SystemProducts.Add(item);
-        IsLoading = false;
-
+        await Task.Run(() =>
+        {
+            foreach (var item in SystemORM.SelectAll())
+                Dispatcher.Invoke(() =>
+                    SystemProducts.Add(item));
+        });
     }
     private string GetSavedSetting(string key)
     {
@@ -169,5 +176,4 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     void INavigationAware.OnNavigatedFrom()
     {
     }
-
 }

@@ -21,26 +21,26 @@ namespace InventoryManager.Core.Services {
             _dataAccess.Execute(cmd);
         }
 
-        public override async Task Delete(SystemProduct param) {
+        public override void Delete(SystemProduct param) {
             string cmd = $"DELETE FROM {nameof(SystemProduct)} WHERE {nameof(SystemProduct.ID)} = @{nameof(SystemProduct.ID)};";
-            await _dataAccess.ExecuteAsync(cmd, param);
+            _dataAccess.Execute(cmd, param);
         }
 
-        public override async Task<SystemProduct> Insert(SystemProduct param) {
+        public override SystemProduct Insert(SystemProduct param) {
             string cmd = $"INSERT INTO {nameof(SystemProduct)} ({nameof(SystemProduct.ID)}, {nameof(SystemProduct.Name)}, {nameof(SystemProduct.OpenBalance)}, {nameof(SystemProduct.Sold)}, {nameof(SystemProduct.CloseBalance)}) values(@{nameof(SystemProduct.ID)}, @{nameof(SystemProduct.Name)}, @{nameof(SystemProduct.OpenBalance)}, @{nameof(SystemProduct.Sold)}, @{nameof(SystemProduct.CloseBalance)});";
-            await _dataAccess.ExecuteAsync(cmd, param);
+            _dataAccess.Execute(cmd, param);
             return param;
         }
-        public async Task DeleteAll()
+        public void DeleteAll()
         {
             string cmd = $"DELETE FROM {nameof(SystemProduct)} WHERE 1 = 1;";
-            await _dataAccess.ExecuteAsync(cmd);
+            _dataAccess.Execute(cmd);
         }
 
-        public async Task<SystemProduct> SelectProduct(Product product)
+        public SystemProduct SelectProduct(Product product)
         {
             string cmd = $"SELECT * FROM {nameof(SystemProduct)} WHERE {nameof(SystemProduct.ID)} = @{nameof(Product.ID)};";
-            var products = (await _dataAccess.ReadDataAsync<SystemProduct>(cmd,product));
+            var products = _dataAccess.ReadData<SystemProduct>(cmd,product);
             if (products.Count() > 0)
                 return products.First();
             return new SystemProduct { ID = "NULL", Name = "NULL", CloseBalance = 0, OpenBalance = 0, Sold = 0};

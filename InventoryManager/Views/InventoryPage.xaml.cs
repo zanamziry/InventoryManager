@@ -67,7 +67,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         return false;
     }
 
-    async void Next()
+    void Next()
     {
         int s = Inventories.IndexOf(SelectedProduct);
         if (s == -1)
@@ -75,7 +75,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         s += 1;
         SelectedProduct = Inventories[s];
         SelectedProduct.Locals.Clear();
-        foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+        foreach (var item in InventoryORM.SelectProduct(SelectedProduct.Product))
             SelectedProduct.Locals.Add(item);
         UpdateUI();
     }
@@ -92,7 +92,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.OnPropertyChanged();
         IsButtonEnabled = SelectedProduct.Locals.Count > 0 && SelectedInv != null;
     }
-    async void Previous()
+    void Previous()
     {
         int s = Inventories.IndexOf(SelectedProduct);
         if (s == -1)
@@ -100,18 +100,18 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         s -= 1;
         SelectedProduct = Inventories[s];
         SelectedProduct.Locals.Clear();
-        foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+        foreach (var item in InventoryORM.SelectProduct(SelectedProduct.Product))
             SelectedProduct.Locals.Add(item);
         UpdateUI();
     }
 
-    async void AddInventory(LocalInventory value)
+    void AddInventory(LocalInventory value)
     {
         if (SelectedProduct.Locals.Contains(value))
             return;
         try
         {
-            SelectedProduct.Locals.Add(await InventoryORM.Insert(value));
+            SelectedProduct.Locals.Add(InventoryORM.Insert(value));
             UpdateUI();
         }
         catch (SqliteException ex)
@@ -135,9 +135,9 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     }
 
 
-    async void Remove(LocalInventory p)
+    void Remove(LocalInventory p)
     {
-        await InventoryORM.Delete(p);
+        InventoryORM.Delete(p);
         SelectedProduct.Locals.Remove(p);
         UpdateUI();
     }
@@ -157,7 +157,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
     }
 
-    async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
+    void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
@@ -195,7 +195,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 }
                 try
                 {
-                    await InventoryORM.Update(l);
+                    InventoryORM.Update(l);
                     UpdateUI();
                     int i = SelectedProduct.Locals.IndexOf(l);
                     SelectedProduct.Locals[i].OnRealChanged();
@@ -233,7 +233,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         ToggleAdd.IsChecked = false;
     }
 
-    async void OnGiveAwayClicked(object sender, RoutedEventArgs e)
+    void OnGiveAwayClicked(object sender, RoutedEventArgs e)
     {
         if (!GiveAwayDate.SelectedDate.HasValue)
             GiveAwayDate.SelectedDate = DateTime.Now;
@@ -244,7 +244,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Event = GiveAwayName.Text,
             Date = GiveAwayDate.SelectedDate.Value,
         };
-        await givenAwayORM.Insert(giveaway);
+        givenAwayORM.Insert(giveaway);
         SelectedProduct.GivenAways.Add(giveaway);
         AmountToGive.Text = "1";
         GiveAwayName.Text = "";
@@ -267,7 +267,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             return null;
         }
     }
-    async void OnSendClicked(object sender, RoutedEventArgs e)
+    void OnSendClicked(object sender, RoutedEventArgs e)
     {
         var outside = new SentOutside
         {
@@ -277,7 +277,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Location = PlaceToSend.Text,
             Old = IsOld.IsChecked.Value
         };
-        await outsideORM.Insert(outside);
+        outsideORM.Insert(outside);
         SelectedProduct.SentOutsides.Add(outside);
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;

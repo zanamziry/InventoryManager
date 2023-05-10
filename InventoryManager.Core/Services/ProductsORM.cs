@@ -21,9 +21,9 @@ namespace InventoryManager.Core.Services {
             _dataAccess.Execute(cmd);
         }
 
-        public override async Task Delete(Product param) {
+        public override void Delete(Product param) {
             string cmd = $"DELETE FROM {nameof(Product)} WHERE {nameof(Product.ID)} = @{nameof(Product.ID)};";
-            await _dataAccess.ExecuteAsync(cmd, param);
+            _dataAccess.Execute(cmd, param);
         }
         public async Task<Product> GetByID(string ProductID)
         {
@@ -33,15 +33,15 @@ namespace InventoryManager.Core.Services {
                 return products.First();
             return null;
         }
-        public async Task DeleteAll()
+        public void DeleteAll()
         {
             string cmd = $"DELETE FROM {nameof(Product)} WHERE 1 = 1;";
-            await _dataAccess.ExecuteAsync(cmd);
+            _dataAccess.Execute(cmd);
         }
         
-        public override async Task<Product> Insert(Product param) {
+        public override Product Insert(Product param) {
             string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Name_AR)}, {nameof(Product.Price)}, {nameof(Product.Old_Price)}, {nameof(Product.PV)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Name_AR)}, @{nameof(Product.Price)},@{nameof(Product.Old_Price)}, @{nameof(Product.PV)});";
-            await _dataAccess.ExecuteAsync(cmd, param);
+            _dataAccess.Execute(cmd, param);
             return param;
         }
     }

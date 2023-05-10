@@ -11,10 +11,11 @@ using InventoryManager.Core.Services;
 using InventoryManager.Models;
 using InventoryManager.Services;
 using InventoryManager.Views;
-
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace InventoryManager;
 
@@ -96,6 +97,19 @@ public partial class App : Application
 
     private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
+        var l = new LoggerFactory().CreateLogger("UNHANDLED");
+        if (e.Exception is SqliteException || e.Exception is StackOverflowException || e.Exception is NullReferenceException)
+        {
+            l.LogCritical(e.Exception, "CriticalUnhandled");
+            e.Handled = false;
+            MessageBox.Show(e.Exception.Message, "Critical Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        else
+        {
+            MessageBox.Show(e.Exception.Message, "Unhandled Error",MessageBoxButton.OK,MessageBoxImage.Warning);
+            l.LogError(e.Exception, "ErrorUnhandled");
+            e.Handled = true;
+        }
         // TODO: Please log and handle the exception as appropriate to your scenario
         // For more info see https://docs.microsoft.com/dotnet/api/system.windows.application.dispatcherunhandledexception?view=netcore-3.0
     }

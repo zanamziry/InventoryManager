@@ -12,8 +12,8 @@
     xmlns:li="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-    d:DesignHeight="450" d:DesignWidth="800" d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
-    d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}">
+    d:DesignHeight="450" d:DesignWidth="800" Background="{StaticResource MahApps.Brushes.ThemeBackground}"
+    Foreground="{StaticResource MahApps.Brushes.ThemeForeground}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -25,15 +25,10 @@
             Text="{x:Static properties:Resources.MainPageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{StaticResource MahApps.Brushes.Gray10}">
-            <!--
-            The Mahapps Gray10 color represents where you should place your content.
-            Place your content here.
-            -->
+            Background="{StaticResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
@@ -72,7 +67,7 @@
                 </DataGrid>
             </Grid>
         </Grid>
-        <local:ZMDialog Visibility="{Binding IsLoading,Converter={StaticResource BooleanToVisibilityConverter}}" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
+        <local:ZMDialog d:Visibility="Hidden" Visibility="{Binding IsLoading,Converter={StaticResource BooleanToVisibilityConverter}}" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
             <StackPanel VerticalAlignment="Center">
                 <li:LoadingSpinner IsLoading="True" Diameter="45" Thickness="3" Cap="Round" Color="{StaticResource MahApps.Brushes.Accent}" />
                 <TextBlock Text="{x:Static properties:Resources.SystemInventoryFetchData}" Foreground="#c000" HorizontalAlignment="Stretch" TextAlignment="Center" Padding="5" Margin="{StaticResource SmallTopMargin}"/>

@@ -64,13 +64,17 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         storage = value;
         OnPropertyChanged(propertyName);
     }
-    async void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
         Locations.Clear();
-        foreach (var item in await outsideORM.SelectAllLocations())
+        Task.Run(() =>
         {
-            Locations.Add(item);
-        }
+            foreach (var item in outsideORM.SelectAllLocations())
+            {
+                Dispatcher.Invoke(() =>
+                Locations.Add(item));
+            }
+        });
         Source.CollectionChanged += Source_CollectionChanged;
     }
 
@@ -91,7 +95,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         if (sender is ListView listView && listView.SelectedItem is string s)
         {
             Source.Clear();
-            foreach (var i in await outsideORM.SelectByLocation(s))
+            foreach (var i in outsideORM.SelectByLocation(s))
             {
                 SentOutDisplay OutDisplay = new SentOutDisplay();
                 OutDisplay.Product =  await productsORM.GetByID(i.ProductID);
@@ -100,9 +104,9 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
             }
         }
     }
-    async void Remove(SentOutDisplay p)
+    void Remove(SentOutDisplay p)
     {
-        await outsideORM.Delete(p.Outside);
+        outsideORM.Delete(p.Outside);
         Source.Remove(p);
     }
 
@@ -118,7 +122,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                 break;
         }
     }
-    async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
+    void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
@@ -151,7 +155,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                 }
                 try
                 {
-                    await outsideORM.Update(l.Outside);
+                    outsideORM.Update(l.Outside);
                     l.OnPropertyChanged();
                     OnPropertyChanged(nameof(TotalPrice));
                 }
