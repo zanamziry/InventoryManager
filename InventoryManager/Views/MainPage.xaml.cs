@@ -81,9 +81,9 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void OnRemoveAllButtonClicked(object sender, RoutedEventArgs e)
+    private async void OnRemoveAllButtonClicked(object sender, RoutedEventArgs e)
     {
-        ProductsORM.DeleteAll();
+        await ProductsORM.DeleteAll();
         Source.Clear();
     }
 
@@ -95,11 +95,11 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             try
             {
                 var products = JsonConvert.DeserializeObject<List<Product>>(json);
-                ProductsORM.DeleteAll();
+                await ProductsORM.DeleteAll();
                 Source.Clear();
                 foreach (var item in products)
                 {
-                    ProductsORM.Insert(item);
+                    await ProductsORM.Insert(item);
                     AddView(item);
                 }
             }
@@ -119,35 +119,31 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         }
     }
 
-    void AddView(Product p)
+    async Task AddView(Product p)
     {
-        var localDB = LocalORM.SelectProduct(p);
-        var sys = SystemORM.SelectProduct(p);
-        var local = new ObservableCollection<LocalInventory>(localDB);
-        var given = new ObservableCollection<GivenAway>(GivenORM.SelectByProduct(p));
-        var Sent = new ObservableCollection<SentOutside>(OutsideORM.SelectByProduct(p));
-        var newMain = new MainInventory
+        await Task.Run(async () =>
         {
-            Product = p,
-            System = sys,
-            GivenAways = given,
-            Locals = local,
-            SentOutsides = Sent
-        };
-        this.Dispatcher.Invoke(() =>
-            Source.Add(newMain));
+            IEnumerable<LocalInventory> localDB = await LocalORM.SelectProduct(p);
+            var newMain = new MainInventory
+            {
+                Product = p,
+                System = await SystemORM.SelectProduct(p),
+                GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
+                Locals = new ObservableCollection<LocalInventory>(localDB),
+                SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p))
+            };
+            this.Dispatcher.Invoke(() =>
+                Source.Add(newMain));
+        });
     }
-    void INavigationAware.OnNavigatedTo(object parameter)
+    async void INavigationAware.OnNavigatedTo(object parameter)
     {
         Source.CollectionChanged += Source_CollectionChanged;
         Source.Clear();
-        Task.Run(() =>
+        foreach (var p in await ProductsORM.SelectAll())
         {
-            foreach (var p in ProductsORM.SelectAll())
-            {
-                AddView(p);
-            }
-        });
+            await AddView(p);
+        }
     }
 
     private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

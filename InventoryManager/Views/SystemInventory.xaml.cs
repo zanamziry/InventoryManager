@@ -92,12 +92,12 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
                 var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(SelectedAgent.ID, d));
                 if (s != null && s.list != null && s.list.Any())
                 {
-                    SystemORM.DeleteAll();
+                    await SystemORM.DeleteAll();
                     Dispatcher.Invoke(() =>
                             SystemProducts.Clear());
                     foreach (var i in s.list)
                     {
-                        SystemORM.Insert(i);
+                        await SystemORM.Insert(i);
                         Dispatcher.Invoke(() =>
                                 SystemProducts.Add(i));
                     }
@@ -144,20 +144,21 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
                 SelectedAgent = agent;
             }
         }
-        await Task.CompletedTask;
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        await getAgents();
         DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
         LastUpdated = d;
         SystemProducts.Clear();
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
-            foreach (var item in SystemORM.SelectAll())
+            foreach (var item in await SystemORM.SelectAll())
                 Dispatcher.Invoke(() =>
                     SystemProducts.Add(item));
         });
+        Task.Run(async ()=>
+        await getAgents()
+        );
     }
     private string GetSavedSetting(string key)
     {

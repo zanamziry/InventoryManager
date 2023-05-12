@@ -67,9 +67,9 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         Locations.Clear();
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            foreach (var item in outsideORM.SelectAllLocations())
+            foreach (var item in await outsideORM.SelectAllLocations())
             {
                 Dispatcher.Invoke(() =>
                 Locations.Add(item));
@@ -95,7 +95,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         if (sender is ListView listView && listView.SelectedItem is string s)
         {
             Source.Clear();
-            foreach (var i in outsideORM.SelectByLocation(s))
+            foreach (var i in await outsideORM.SelectByLocation(s))
             {
                 SentOutDisplay OutDisplay = new SentOutDisplay();
                 OutDisplay.Product =  await productsORM.GetByID(i.ProductID);
@@ -104,29 +104,29 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
             }
         }
     }
-    void Remove(SentOutDisplay p)
+    async Task Remove(SentOutDisplay p)
     {
-        outsideORM.Delete(p.Outside);
+        await outsideORM.Delete(p.Outside);
         Source.Remove(p);
     }
 
-    void OnKeyUp(object sender, KeyEventArgs e)
+    async void OnKeyUp(object sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
             case Key.Delete:
                 if ((e.OriginalSource as FrameworkElement).DataContext is SentOutDisplay p)
                 {
-                    Remove(p);
+                    await Remove(p);
                 }
                 break;
         }
     }
-    void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
+    async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
-            Remove(e.Row.DataContext as SentOutDisplay);
+            await Remove(e.Row.DataContext as SentOutDisplay);
         }
         if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
         {
@@ -155,7 +155,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                 }
                 try
                 {
-                    outsideORM.Update(l.Outside);
+                    await outsideORM.Update(l.Outside);
                     l.OnPropertyChanged();
                     OnPropertyChanged(nameof(TotalPrice));
                 }

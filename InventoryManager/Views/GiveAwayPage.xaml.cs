@@ -50,14 +50,14 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
     {
         Events.Clear();
         Products.Clear();
-        Task.Run(() =>
+        Task.Run(async () =>
         {
-            foreach (var item in giveawayORM.SelectAllEvents())
+            foreach (var item in await giveawayORM.SelectAllEvents())
             {
                 Dispatcher.Invoke(() =>
                     Events.Add(item));
             }
-            foreach (var i in productsORM.SelectAll())
+            foreach (var i in await productsORM.SelectAll())
             {
                 Dispatcher.Invoke(() =>
                     Products.Add(i));
@@ -72,12 +72,12 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ListView listView && listView.SelectedItem is GivenAway s)
         {
             SelectedGiveAways.Clear();
-            foreach (var i in giveawayORM.SelectByEvent(s))
+            foreach (var i in await giveawayORM.SelectByEvent(s))
             {
                 var giftDisplay = new GiftDisplay
                 {
@@ -88,20 +88,20 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
             }
         }
     }
-    void Remove(GiftDisplay p)
+    async Task Remove(GiftDisplay p)
     {
-        giveawayORM.Delete(p.GivenAway);
+        await giveawayORM.Delete(p.GivenAway);
         SelectedGiveAways.Remove(p);
     }
 
-    void OnKeyUp(object sender, KeyEventArgs e)
+    async void OnKeyUp(object sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
             case Key.Delete:
                 if ((e.OriginalSource as FrameworkElement).DataContext is GiftDisplay p)
                 {
-                    Remove(p);
+                    await Remove(p);
                 }
                 break;
         }

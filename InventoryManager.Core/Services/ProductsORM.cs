@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public ProductsORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(Product)}(" +
             $"{nameof(Product.ID)} TEXT NOT NULL UNIQUE," +
@@ -18,12 +18,12 @@ namespace InventoryManager.Core.Services {
             $"{nameof(Product.Old_Price)} REAL," +
             $"{nameof(Product.PV)} REAL NOT NULL," +
             $"PRIMARY KEY({nameof(Product.ID)}));";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
-        public override void Delete(Product param) {
+        public override async Task Delete(Product param) {
             string cmd = $"DELETE FROM {nameof(Product)} WHERE {nameof(Product.ID)} = @{nameof(Product.ID)};";
-            _dataAccess.Execute(cmd, param);
+            await _dataAccess.ExecuteAsync(cmd, param);
         }
         public async Task<Product> GetByID(string ProductID)
         {
@@ -33,15 +33,15 @@ namespace InventoryManager.Core.Services {
                 return products.First();
             return null;
         }
-        public void DeleteAll()
+        public async Task DeleteAll()
         {
             string cmd = $"DELETE FROM {nameof(Product)} WHERE 1 = 1;";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
         
-        public override Product Insert(Product param) {
+        public override async Task<Product> Insert(Product param) {
             string cmd = $"INSERT INTO {nameof(Product)} ({nameof(Product.ID)}, {nameof(Product.Name)}, {nameof(Product.Name_AR)}, {nameof(Product.Price)}, {nameof(Product.Old_Price)}, {nameof(Product.PV)}) values(@{nameof(Product.ID)}, @{nameof(Product.Name)}, @{nameof(Product.Name_AR)}, @{nameof(Product.Price)},@{nameof(Product.Old_Price)}, @{nameof(Product.PV)});";
-            _dataAccess.Execute(cmd, param);
+            await _dataAccess.ExecuteAsync(cmd, param);
             return param;
         }
     }

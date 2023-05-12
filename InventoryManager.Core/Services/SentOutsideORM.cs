@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public SentOutsideORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(SentOutside)}(" +
             $"{nameof(SentOutside.ID)} INTEGER NOT NULL UNIQUE," +
@@ -19,52 +19,51 @@ namespace InventoryManager.Core.Services {
             $"{nameof(SentOutside.Old)} INTEGER NOT NULL DEFAULT 0," +
             //$"FOREIGN KEY({nameof(SentOutside.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(SentOutside.ID)} AUTOINCREMENT));";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
-        public override void Delete(SentOutside param) {
+        public override async Task Delete(SentOutside param) {
             string cmd = $"DELETE FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ID)} = @{nameof(SentOutside.ID)};";
-            _dataAccess.Execute(cmd, param);
+            await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override SentOutside Insert(SentOutside param) {
+        public override async Task<SentOutside> Insert(SentOutside param) {
             string cmd = $"INSERT INTO {nameof(SentOutside)} ({nameof(SentOutside.ProductID)}, {nameof(SentOutside.AmountSent)},{nameof(SentOutside.AmountSold)}, {nameof(SentOutside.Location)}, {nameof(SentOutside.Old)}) values(@{nameof(SentOutside.ProductID)}, @{nameof(SentOutside.AmountSent)}, @{nameof(SentOutside.AmountSold)}, @{nameof(SentOutside.Location)}, @{nameof(SentOutside.Old)});";
-            _dataAccess.Execute(cmd, param);
-            int id = LastInput();
-            param.ID = id;
+            await _dataAccess.ExecuteAsync(cmd, param);
+            param.ID = await LastInput();
             return param;
         }
 
-        public void Update(SentOutside param)
+        public async Task Update(SentOutside param)
         {
             string cmd = $"UPDATE {nameof(SentOutside)} SET {nameof(SentOutside.AmountSent)} = @{nameof(SentOutside.AmountSent)}, {nameof(SentOutside.AmountSold)} = @{nameof(SentOutside.AmountSold)},{nameof(SentOutside.Old)} = @{nameof(SentOutside.Old)}  WHERE {nameof(SentOutside.ID)} = @{nameof(SentOutside.ID)};";
-            _dataAccess.Execute(cmd, param);
+            await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public IEnumerable<SentOutside> SelectByInventoryID(LocalInventory inventory) {
+        public async Task<IEnumerable<SentOutside>> SelectByInventoryID(LocalInventory inventory) {
             string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(LocalInventory.ID)};";
-            var sentOutsides = _dataAccess.ReadData<SentOutside>(cmd, inventory);
+            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, inventory);
             return sentOutsides;
         }
 
-        public IEnumerable<string> SelectAllLocations()
+        public async Task<IEnumerable<string>> SelectAllLocations()
         {
             string cmd = $"SELECT {nameof(SentOutside.Location)} FROM {nameof(SentOutside)} GROUP BY {nameof(SentOutside.Location)};";
-            var sentOutsides = _dataAccess.ReadData<string>(cmd);
+            var sentOutsides = await _dataAccess.ReadDataAsync<string>(cmd);
             return sentOutsides;
         }
 
-        public IEnumerable<SentOutside> SelectByLocation(string location)
+        public async Task<IEnumerable<SentOutside>> SelectByLocation(string location)
         {
             string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.Location)} = '{location}';";
-            var sentOutsides = _dataAccess.ReadData<SentOutside>(cmd);
+            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd);
             return sentOutsides;
         }
 
-        public IEnumerable<SentOutside> SelectByProduct(Product p)
+        public async Task<IEnumerable<SentOutside>> SelectByProduct(Product p)
         {
             string cmd = $"SELECT * FROM {nameof(SentOutside)} WHERE {nameof(SentOutside.ProductID)} = @{nameof(Product.ID)};";
-            var sentOutsides = _dataAccess.ReadData<SentOutside>(cmd, p);
+            var sentOutsides = await _dataAccess.ReadDataAsync<SentOutside>(cmd, p);
             return sentOutsides;
         }
     }

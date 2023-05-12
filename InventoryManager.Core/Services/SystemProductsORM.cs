@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public SystemProductsORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(SystemProduct)}(" +
             $"{nameof(SystemProduct.ID)} TEXT NOT NULL UNIQUE," +
@@ -18,29 +18,29 @@ namespace InventoryManager.Core.Services {
             $"{nameof(SystemProduct.CloseBalance)} INTEGER," +
             $"PRIMARY KEY({nameof(SystemProduct.ID)}));";
             //$"FOREIGN KEY({nameof(SystemProduct.ID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) on delete no action);";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
-        public override void Delete(SystemProduct param) {
+        public override async Task Delete(SystemProduct param) {
             string cmd = $"DELETE FROM {nameof(SystemProduct)} WHERE {nameof(SystemProduct.ID)} = @{nameof(SystemProduct.ID)};";
-            _dataAccess.Execute(cmd, param);
+            await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override SystemProduct Insert(SystemProduct param) {
+        public override async Task<SystemProduct> Insert(SystemProduct param) {
             string cmd = $"INSERT INTO {nameof(SystemProduct)} ({nameof(SystemProduct.ID)}, {nameof(SystemProduct.Name)}, {nameof(SystemProduct.OpenBalance)}, {nameof(SystemProduct.Sold)}, {nameof(SystemProduct.CloseBalance)}) values(@{nameof(SystemProduct.ID)}, @{nameof(SystemProduct.Name)}, @{nameof(SystemProduct.OpenBalance)}, @{nameof(SystemProduct.Sold)}, @{nameof(SystemProduct.CloseBalance)});";
-            _dataAccess.Execute(cmd, param);
+            await _dataAccess.ExecuteAsync(cmd, param);
             return param;
         }
-        public void DeleteAll()
+        public async Task DeleteAll()
         {
             string cmd = $"DELETE FROM {nameof(SystemProduct)} WHERE 1 = 1;";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
-        public SystemProduct SelectProduct(Product product)
+        public async Task<SystemProduct> SelectProduct(Product product)
         {
             string cmd = $"SELECT * FROM {nameof(SystemProduct)} WHERE {nameof(SystemProduct.ID)} = @{nameof(Product.ID)};";
-            var products = _dataAccess.ReadData<SystemProduct>(cmd,product);
+            var products = await _dataAccess.ReadDataAsync<SystemProduct>(cmd,product);
             if (products.Count() > 0)
                 return products.First();
             return new SystemProduct { ID = "NULL", Name = "NULL", CloseBalance = 0, OpenBalance = 0, Sold = 0};

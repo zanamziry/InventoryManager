@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public GivenAwayORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(GivenAway)}(" +
             $"{nameof(GivenAway.ID)} INTEGER NOT NULL UNIQUE," +
@@ -18,46 +18,45 @@ namespace InventoryManager.Core.Services {
             $"{nameof(GivenAway.Date)} TEXT NOT NULL," +
             //$"FOREIGN KEY({nameof(GivenAway.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(GivenAway.ID)} AUTOINCREMENT));";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
-        public override void Delete(GivenAway param) {
+        public override async Task Delete(GivenAway param) {
             string cmd = $"DELETE FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.ID)} = @{nameof(GivenAway.ID)};";
-            _dataAccess.Execute(cmd, param);
+            await _dataAccess.ExecuteAsync(cmd, param);
         }
 
-        public override GivenAway Insert(GivenAway param) {
+        public override async Task<GivenAway> Insert(GivenAway param) {
             string cmd = $"INSERT INTO {nameof(GivenAway)} ({nameof(GivenAway.ProductID)}, {nameof(GivenAway.Amount)}, {nameof(GivenAway.Event)}, {nameof(GivenAway.Date)}) values(@{nameof(GivenAway.ProductID)}, @{nameof(GivenAway.Amount)}, @{nameof(GivenAway.Event)}, '{param.Date.ToShortDateString()}');";
-            _dataAccess.Execute(cmd, param);
-            int id = LastInput();
-            param.ID = id;
+            await _dataAccess.ExecuteAsync(cmd, param);
+            param.ID = await LastInput();
             return param;
         }
 
-        public IEnumerable<GivenAway> SelectByProduct(Product p) {
+        public async Task<IEnumerable<GivenAway>> SelectByProduct(Product p) {
             string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.ProductID)} = @{nameof(Product.ID)};";
-            var products = _dataAccess.ReadData<GivenAway>(cmd, p);
+            var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd, p);
             return products;
         }
 
-        public IEnumerable<GivenAway> SelectAllEvents()
+        public async Task<IEnumerable<GivenAway>> SelectAllEvents()
         {
             string cmd = $"SELECT * FROM {nameof(GivenAway)} GROUP BY {nameof(GivenAway.Event)}, {nameof(GivenAway.Date)};";
-            var products = _dataAccess.ReadData<GivenAway>(cmd);
+            var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd);
             return products;
         }
 
-        public IEnumerable<GivenAway> SelectByEvent(GivenAway giveaway)
+        public async Task<IEnumerable<GivenAway>> SelectByEvent(GivenAway giveaway)
         {
             string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.Event)} = @{nameof(giveaway.Event)} AND {nameof(GivenAway.Date)} = '{giveaway.Date.ToShortDateString()}';";
-            var products = _dataAccess.ReadData<GivenAway>(cmd, giveaway);
+            var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd, giveaway);
             return products;
         }
 
-        public int SelectTotalAmount(Product p)
+        public async Task<int> SelectTotalAmount(Product p)
         {
             string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.ProductID)} = @{nameof(Product.ID)};";
-            var givenAways = _dataAccess.ReadData<GivenAway>(cmd, p);
+            var givenAways = await _dataAccess.ReadDataAsync<GivenAway>(cmd, p);
             int total = 0;
             foreach (var i in givenAways) {
                 total += i.Amount;

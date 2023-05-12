@@ -75,8 +75,11 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         s += 1;
         SelectedProduct = Inventories[s];
         SelectedProduct.Locals.Clear();
-        foreach (var item in InventoryORM.SelectProduct(SelectedProduct.Product))
-            SelectedProduct.Locals.Add(item);
+        Task.Run(async () => {
+            foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+                await Dispatcher.BeginInvoke(() =>
+            SelectedProduct.Locals.Add(item));
+        });
         UpdateUI();
     }
     bool CanPrevious()
@@ -100,18 +103,21 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         s -= 1;
         SelectedProduct = Inventories[s];
         SelectedProduct.Locals.Clear();
-        foreach (var item in InventoryORM.SelectProduct(SelectedProduct.Product))
-            SelectedProduct.Locals.Add(item);
+        Task.Run(async () => {
+            foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
+                await Dispatcher.BeginInvoke(() =>
+            SelectedProduct.Locals.Add(item));
+        });
         UpdateUI();
     }
 
-    void AddInventory(LocalInventory value)
+    async Task AddInventory(LocalInventory value)
     {
         if (SelectedProduct.Locals.Contains(value))
             return;
         try
         {
-            SelectedProduct.Locals.Add(InventoryORM.Insert(value));
+            SelectedProduct.Locals.Add(await InventoryORM.Insert(value));
             UpdateUI();
         }
         catch (SqliteException ex)
@@ -135,9 +141,9 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     }
 
 
-    void Remove(LocalInventory p)
+    async Task Remove(LocalInventory p)
     {
-        InventoryORM.Delete(p);
+        await InventoryORM.Delete(p);
         SelectedProduct.Locals.Remove(p);
         UpdateUI();
     }
@@ -157,11 +163,11 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
     }
 
-    void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
+    async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
-            Remove(e.Row.DataContext as LocalInventory);
+            await Remove(e.Row.DataContext as LocalInventory);
         }
         if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
         {
@@ -171,20 +177,23 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 {
                     case nameof(LocalInventory.Inventory):
                         {
-                            int.TryParse(tb.Text, out int a);
-                            l.Inventory = a;
+                            if (int.TryParse(tb.Text, out int a))
+                                l.Inventory = a;
+                            else l.Inventory = 0;
                             break;
                         }
                     case nameof(LocalInventory.Open):
                         {
-                            int.TryParse(tb.Text, out int b);
-                            l.Open = b;
+                            if(int.TryParse(tb.Text, out int b))
+                                l.Open = b;
+                            else l.Open = 0;
                             break;
                         }
                     case nameof(LocalInventory.ExpireDate):
                         {
-                            DateTime.TryParse(tb.Text, out DateTime c);
-                            l.ExpireDate = c;
+                            if (DateTime.TryParse(tb.Text, out DateTime c))
+                                l.ExpireDate = c;
+                            else l.ExpireDate = DateTime.MaxValue;
                             break;
                         }
                     case nameof(LocalInventory.Note):
@@ -195,7 +204,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 }
                 try
                 {
-                    InventoryORM.Update(l);
+                    await InventoryORM.Update(l);
                     UpdateUI();
                     int i = SelectedProduct.Locals.IndexOf(l);
                     SelectedProduct.Locals[i].OnRealChanged();
@@ -209,20 +218,20 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     }
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
+    async void OnRemoveButtonClicked(object sender, RoutedEventArgs e)
     {
         if (GridOfInventory.SelectedItem is LocalInventory p)
         {
-            Remove(p);
+            await Remove(p);
         }
     }
 
-    void OnAddButtonClicked(object sender, RoutedEventArgs e)
+    async void OnAddButtonClicked(object sender, RoutedEventArgs e)
     {
         if (CanAdd())
         {
             DateTime.TryParse(ProductExpire.Text, out DateTime r);
-            AddInventory(new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r });
+            await AddInventory(new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r });
             ToggleAdd.IsChecked = false;
         }
     }
@@ -233,7 +242,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         ToggleAdd.IsChecked = false;
     }
 
-    void OnGiveAwayClicked(object sender, RoutedEventArgs e)
+    async void OnGiveAwayClicked(object sender, RoutedEventArgs e)
     {
         if (!GiveAwayDate.SelectedDate.HasValue)
             GiveAwayDate.SelectedDate = DateTime.Now;
@@ -244,7 +253,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Event = GiveAwayName.Text,
             Date = GiveAwayDate.SelectedDate.Value,
         };
-        givenAwayORM.Insert(giveaway);
+        await givenAwayORM.Insert(giveaway);
         SelectedProduct.GivenAways.Add(giveaway);
         AmountToGive.Text = "1";
         GiveAwayName.Text = "";
@@ -267,7 +276,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             return null;
         }
     }
-    void OnSendClicked(object sender, RoutedEventArgs e)
+    async void OnSendClicked(object sender, RoutedEventArgs e)
     {
         var outside = new SentOutside
         {
@@ -277,7 +286,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             Location = PlaceToSend.Text,
             Old = IsOld.IsChecked.Value
         };
-        outsideORM.Insert(outside);
+        await outsideORM.Insert(outside);
         SelectedProduct.SentOutsides.Add(outside);
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
