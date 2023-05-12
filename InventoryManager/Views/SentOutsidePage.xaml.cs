@@ -71,8 +71,8 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         {
             foreach (var item in await outsideORM.SelectAllLocations())
             {
-                Dispatcher.Invoke(() =>
-                Locations.Add(item));
+                await Dispatcher.BeginInvoke(() =>
+                    Locations.Add(item));
             }
         });
         Source.CollectionChanged += Source_CollectionChanged;
@@ -90,18 +90,21 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ListView listView && listView.SelectedItem is string s)
         {
             Source.Clear();
-            foreach (var i in await outsideORM.SelectByLocation(s))
+            Task.Run(async () =>
             {
-                SentOutDisplay OutDisplay = new SentOutDisplay();
-                OutDisplay.Product =  await productsORM.GetByID(i.ProductID);
-                OutDisplay.Outside =  i;
-                Source.Add(OutDisplay);
-            }
+                foreach (var i in await outsideORM.SelectByLocation(s))
+                {
+                    SentOutDisplay OutDisplay = new SentOutDisplay();
+                    OutDisplay.Product = await productsORM.GetByID(i.ProductID);
+                    OutDisplay.Outside = i;
+                    Source.Add(OutDisplay);
+                }
+            });
         }
     }
     async Task Remove(SentOutDisplay p)

@@ -28,7 +28,7 @@
             Background="{DynamicResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ListView Grid.Column="0" ItemsSource="{Binding Locations,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged">

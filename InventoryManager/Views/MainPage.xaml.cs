@@ -100,7 +100,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
                 foreach (var item in products)
                 {
                     await ProductsORM.Insert(item);
-                    AddView(item);
+                    await AddView(item);
                 }
             }
             catch
@@ -121,8 +121,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     async Task AddView(Product p)
     {
-        await Task.Run(async () =>
-        {
+
             IEnumerable<LocalInventory> localDB = await LocalORM.SelectProduct(p);
             var newMain = new MainInventory
             {
@@ -134,16 +133,18 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             };
             this.Dispatcher.Invoke(() =>
                 Source.Add(newMain));
-        });
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
         Source.CollectionChanged += Source_CollectionChanged;
         Source.Clear();
-        foreach (var p in await ProductsORM.SelectAll())
+        await Task.Run(async () =>
         {
-            await AddView(p);
-        }
+            foreach (var p in await ProductsORM.SelectAll())
+            {
+                await AddView(p);
+            }
+        });
     }
 
     private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

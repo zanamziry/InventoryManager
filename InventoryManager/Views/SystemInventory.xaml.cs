@@ -123,42 +123,42 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         string savedID = GetSavedSetting(AgentSettingsKey);
         IEnumerable<Agent> listOfAgents = Enumerable.Empty<Agent>();
         string json = await _dataGather.GetAgentsAsync();
-        if (json != null)
+        if (json == null)
+            return;
+        try
         {
-            try
-            {
-                listOfAgents = JsonConvert.DeserializeObject<IEnumerable<Agent>>(json);
-            }
-            catch
-            {
-                MessageBox.Show("No Agents Found!");
-                return;
-            }
+            listOfAgents = JsonConvert.DeserializeObject<IEnumerable<Agent>>(json);
         }
-        Agents.Clear();
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+            return;
+        }
+        Dispatcher.Invoke(() =>
+            Agents.Clear());
         foreach (var agent in listOfAgents)
         {
-            Agents.Add(agent);
+            Dispatcher.Invoke(() =>
+                Agents.Add(agent));
             if (agent.ID == savedID)
             {
                 SelectedAgent = agent;
             }
         }
     }
-    async void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
         DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
         LastUpdated = d;
         SystemProducts.Clear();
-        await Task.Run(async () =>
+        Task.Run(async () =>
         {
             foreach (var item in await SystemORM.SelectAll())
                 Dispatcher.Invoke(() =>
                     SystemProducts.Add(item));
         });
-        Task.Run(async ()=>
-        await getAgents()
-        );
+        Task.Run(async () =>
+        await getAgents());
     }
     private string GetSavedSetting(string key)
     {

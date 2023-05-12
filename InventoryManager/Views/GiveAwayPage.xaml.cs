@@ -72,20 +72,24 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ListView listView && listView.SelectedItem is GivenAway s)
         {
             SelectedGiveAways.Clear();
-            foreach (var i in await giveawayORM.SelectByEvent(s))
+            Task.Run(async() =>
             {
-                var giftDisplay = new GiftDisplay
+                foreach (var i in await giveawayORM.SelectByEvent(s))
                 {
-                    GivenAway = i,
-                    Product = Products.Find(o => o.ID == i.ProductID),
-                };
-                SelectedGiveAways.Add(giftDisplay);
-            }
+                    var giftDisplay = new GiftDisplay
+                    {
+                        GivenAway = i,
+                        Product = Products.Find(o => o.ID == i.ProductID),
+                    };
+                    Dispatcher.Invoke(() =>
+                    SelectedGiveAways.Add(giftDisplay));
+                }
+            });
         }
     }
     async Task Remove(GiftDisplay p)

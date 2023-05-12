@@ -33,15 +33,10 @@
             Text="{x:Static properties:Resources.InventoryPageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{DynamicResource MahApps.Brushes.Gray10}">
-            <!--
-            The Mahapps Gray10 color represents where you should place your content.
-            Place your content here.
-            -->
+            Background="{DynamicResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="{StaticResource SmallLeftTopRightBottomMargin}">

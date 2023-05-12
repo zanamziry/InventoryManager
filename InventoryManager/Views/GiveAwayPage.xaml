@@ -26,14 +26,14 @@
             Text="{x:Static properties:Resources.GiveAwayPageTitle}" />
         <Grid
             Grid.Row="1"
-            Background="{DynamicResource MahApps.Brushes.Gray10}">
+            Background="{StaticResource ListView.LightGray}">
             <!--
             The Mahapps Gray10 color represents where you should place your content.
             Place your content here.
             -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <DockPanel Grid.Column="0" >
@@ -57,7 +57,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </DockPanel>
-                <Grid Grid.Column="1">
+                <Grid Grid.Column="1" Margin="{StaticResource SmallRightMargin}">
                     <DataGrid x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID, Mode=OneWay}"/>
