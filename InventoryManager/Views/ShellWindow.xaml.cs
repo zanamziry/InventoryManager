@@ -15,7 +15,6 @@ namespace InventoryManager.Views;
 public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyChanged
 {
     private readonly INavigationService _navigationService;
-    private readonly ILanguageSelectorService _languageSelector;
     private bool _canGoBack;
     private HamburgerMenuItem _selectedMenuItem;
     private HamburgerMenuItem _selectedOptionsMenuItem;
@@ -55,9 +54,9 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
     public ShellWindow(INavigationService navigationService, ILanguageSelectorService languageSelector)
     {
         _navigationService = navigationService;
-        InitializeComponent();
         DataContext = this;
-        _languageSelector = languageSelector;
+        languageSelector.InitializeLanguage();
+        InitializeComponent();
     }
 
     public Frame GetNavigationFrame()
@@ -99,10 +98,7 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
                     .OfType<HamburgerMenuItem>()
                     .FirstOrDefault(i => pageType == i.TargetPageType);
         if (item != null)
-        {
-            FlowDirection = _languageSelector.Flow;
             SelectedMenuItem = item;
-        }
         else
         {
             SelectedOptionsMenuItem = OptionMenuItems

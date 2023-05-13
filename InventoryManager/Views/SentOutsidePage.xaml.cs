@@ -27,7 +27,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         _dBSetup = dBSetup;
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
-        FlowDirection = languageSelector.Flow;
+        languageSelector.InitializeLanguage();
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
@@ -102,7 +102,8 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                     SentOutDisplay OutDisplay = new SentOutDisplay();
                     OutDisplay.Product = await productsORM.GetByID(i.ProductID);
                     OutDisplay.Outside = i;
-                    Source.Add(OutDisplay);
+                    Dispatcher.Invoke(() =>
+                    Source.Add(OutDisplay));
                 }
             });
         }

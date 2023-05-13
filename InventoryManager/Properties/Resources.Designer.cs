@@ -340,6 +340,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total PV.
+        /// </summary>
+        public static string SentOutsideTotalPoints {
+            get {
+                return ResourceManager.GetString("SentOutsideTotalPoints", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Sold.
         /// </summary>
         public static string SentOutsideTotalSold {

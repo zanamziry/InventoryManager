@@ -1,7 +1,10 @@
 ﻿using InventoryManager.Contracts.Services;
 using InventoryManager.Models;
+using Microsoft.Office.Interop.Excel;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
+using System.Windows.Threading;
 
 namespace InventoryManager.Services
 {
@@ -15,7 +18,7 @@ namespace InventoryManager.Services
             new Language { Tag = "ar-IQ", Header = "عربي" },
         };
         public Language PreferedLang { get; set; }
-        public FlowDirection Flow => PreferedLang.Tag == Languages.First().Tag ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
+        public FlowDirection Flow => PreferedLang?.Tag == Languages.First().Tag ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
 
         public void InitializeLanguage()
         {
@@ -27,8 +30,19 @@ namespace InventoryManager.Services
         {
             if (Language != PreferedLang)
                 SaveLanguagePreferences(Language);
-            App.Current.Dispatcher.Thread.CurrentCulture = new CultureInfo(Language.Tag);
-            App.Current.Dispatcher.Thread.CurrentUICulture = new CultureInfo(Language.Tag);
+            var cult = new CultureInfo(Language.Tag);
+            Dispatcher.CurrentDispatcher.Thread.CurrentCulture = cult;
+            Dispatcher.CurrentDispatcher.Thread.CurrentUICulture = cult;
+            App.Current.Dispatcher.Thread.CurrentCulture = cult;
+            App.Current.Dispatcher.Thread.CurrentUICulture = cult;
+            CultureInfo.CurrentCulture = cult;
+            CultureInfo.CurrentUICulture = cult;
+            CultureInfo.DefaultThreadCurrentUICulture = cult;
+            CultureInfo.DefaultThreadCurrentCulture = cult;
+            if (App.Current.MainWindow != null)
+            {
+                App.Current.MainWindow.Language = XmlLanguage.GetLanguage(Language.Tag);
+            }
         }
 
         private Language LoadLanguagePreferences()

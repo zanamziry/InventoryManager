@@ -57,15 +57,25 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </DockPanel>
-                <Grid Grid.Column="1" Margin="{StaticResource SmallRightMargin}">
-                    <DataGrid x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID, Mode=OneWay}"/>
-                            <DataGridTextColumn Header="ProductID" IsReadOnly="True" Binding="{Binding Product.ID, Mode=OneWay}"/>
-                            <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Product.Name, Mode=OneWay}"/>
-                            <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding GivenAway.Amount, Mode=TwoWay}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Column="1" Margin="{StaticResource SmallRightMargin}">
+                        <DataGrid x:Name="GridOfSent" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="ProductID" IsReadOnly="True" Binding="{Binding Product.ID, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Product.Name, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding GivenAway.Amount, Mode=TwoWay}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <DockPanel Grid.Row="1">
+                        <TextBlock Text="{x:Static properties:Resources.SentOutsideTotalPoints}" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                        <TextBlock Text="{Binding TotalPV,Mode=OneWay, StringFormat={}{0:0.00}}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                    </DockPanel>
                 </Grid>
             </Grid>
         </Grid>

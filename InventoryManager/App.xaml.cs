@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -35,9 +36,9 @@ public partial class App : Application
     public App()
     {
     }
-
-    private async void OnStartup(object sender, StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
+        base.OnStartup(e);
         var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         // For more information about .NET generic host see  https://docs.microsoft.com/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0
@@ -48,8 +49,7 @@ public partial class App : Application
                 })
                 .ConfigureServices(ConfigureServices)
                 .Build();
-
-        await _host.StartAsync();
+        _host.StartAsync();
     }
 
     private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
@@ -87,12 +87,12 @@ public partial class App : Application
         // Configuration
         services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
     }
-
-    private async void OnExit(object sender, ExitEventArgs e)
+    protected async override void OnExit(ExitEventArgs e)
     {
         await _host.StopAsync();
         _host.Dispose();
         _host = null;
+        base.OnExit(e);
     }
 
     private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

@@ -35,7 +35,7 @@ public class ApplicationHostService : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         // Initialize services that you need before app activation
-        await InitializeAsync();
+        InitializeAsync();
 
         await HandleActivationAsync();
         
@@ -50,7 +50,7 @@ public class ApplicationHostService : IHostedService
         await Task.CompletedTask;
     }
 
-    private async Task InitializeAsync()
+    private void InitializeAsync()
     {
         if (!_isInitialized)
         {
@@ -58,7 +58,6 @@ public class ApplicationHostService : IHostedService
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
             _languageSelector.InitializeLanguage();
-            await Task.CompletedTask;
         }
     }
 
@@ -66,6 +65,7 @@ public class ApplicationHostService : IHostedService
     {
         if (!_isInitialized)
         {
+            _languageSelector.InitializeLanguage();
             await Task.CompletedTask;
         }
     }

@@ -32,7 +32,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         givenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
-        FlowDirection = languageSelector.Flow;
+        languageSelector.InitializeLanguage();
     }
 
     private IList<MainInventory> Inventories = new List<MainInventory>();

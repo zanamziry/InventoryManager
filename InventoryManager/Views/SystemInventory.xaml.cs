@@ -21,9 +21,8 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
-        FlowDirection = languageSelector.Flow;
+        languageSelector.InitializeLanguage();
     }
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
     private Agent _selectedAgent;

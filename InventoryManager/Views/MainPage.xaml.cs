@@ -21,7 +21,6 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
     public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
     {
-        InitializeComponent();
         DataContext = this;
         _navigationService = navigationService;
         _dBSetup = dBSetup;
@@ -31,7 +30,8 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         GivenORM = _dBSetup.GetTable<GivenAwayORM>();
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
         _dataGather = dataGather;
-        FlowDirection = languageSelector.Flow;
+        languageSelector.InitializeLanguage();
+        InitializeComponent();
     }
     private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;

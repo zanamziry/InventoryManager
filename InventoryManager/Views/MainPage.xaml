@@ -65,7 +65,7 @@
                                     <mt:PackIcon Width="14" Kind="PackageVariant"/>
                                     <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="10" Text="{x:Static properties:Resources.MainPageOutsideLabel}"/>
                                 </DockPanel>
-                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat={}{0:$0.00}, Mode=OneWay}"/>
+                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat=C, Mode=OneWay}"/>
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="1" CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="100" Height="70">

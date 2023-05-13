@@ -22,10 +22,9 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         _dBSetup = dBSetup;
         giveawayORM = _dBSetup.GetTable<GivenAwayORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
-        FlowDirection = languageSelector.Flow;
+        languageSelector.InitializeLanguage();
         InitializeComponent();
     }
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     public ObservableCollection<GivenAway> Events { get; } = new ObservableCollection<GivenAway>();
     public ObservableCollection<GiftDisplay> SelectedGiveAways { get; } = new ObservableCollection<GiftDisplay>();
     public List<Product> Products { get; private set; } = new List<Product>();
