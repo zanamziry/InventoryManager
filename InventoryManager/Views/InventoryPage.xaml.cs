@@ -45,7 +45,37 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private RelayCommand gotoPrevious;
     private MainInventory _selectedProduct;
     private bool isButtonEnabled;
+    public string[] Agents { get; } =
+    {
+        "Duhok",
+        "Arbil",
+        "Sulaimania",
+        "Kirkuk",
+        "Mosul",
+        "Al-Adhamiya",
+        "Mammon",
+        "Dora",
+        "Maysan",
+        "Najaf",
+        "Basra",
+        "Salah Al-Din",
+        "Karbala",
+        "Diyala",
+        "Babl",
+        "Fallujah",
+        "Diqar",
+        "Al-Ramadi",
+        };
 
+    public LocalInventory SelectedInv
+    {
+        get
+        {
+            if (GridOfInventory.SelectedItem is LocalInventory l)
+                return l;
+            return null;
+        }
+    }
     public bool IsButtonEnabled
     {
         get { return isButtonEnabled; }
@@ -68,7 +98,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         return false;
     }
 
-    void Next()
+    async void Next()
     {
         int s = Inventories.IndexOf(SelectedProduct);
         if (s == -1)
@@ -76,12 +106,12 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         s += 1;
         SelectedProduct = Inventories[s];
         SelectedProduct.Locals.Clear();
-        Task.Run(async () => {
+        await Task.Run(async () =>
+        {
             foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
                 await Dispatcher.BeginInvoke(() =>
             SelectedProduct.Locals.Add(item));
         });
-        UpdateUI();
     }
     bool CanPrevious()
     {
@@ -96,7 +126,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.OnPropertyChanged();
         IsButtonEnabled = SelectedProduct.Locals.Count > 0 && SelectedInv != null;
     }
-    void Previous()
+    async void Previous()
     {
         int s = Inventories.IndexOf(SelectedProduct);
         if (s == -1)
@@ -104,12 +134,12 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         s -= 1;
         SelectedProduct = Inventories[s];
         SelectedProduct.Locals.Clear();
-        Task.Run(async () => {
+        await Task.Run(async () =>
+        {
             foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
                 await Dispatcher.BeginInvoke(() =>
             SelectedProduct.Locals.Add(item));
         });
-        UpdateUI();
     }
 
     async Task AddInventory(LocalInventory value)
@@ -119,7 +149,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         try
         {
             SelectedProduct.Locals.Add(await InventoryORM.Insert(value));
-            UpdateUI();
         }
         catch (SqliteException ex)
         {
@@ -146,22 +175,27 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
         await InventoryORM.Delete(p);
         SelectedProduct.Locals.Remove(p);
-        UpdateUI();
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
     {
         if ((parameter as dynamic).SelectedProduct is MainInventory p && (parameter as dynamic).Source is ObservableCollection<MainInventory> s)
         {
-            Inventories = s.ToList();
             SelectedProduct = p;
+            SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;   
+            Inventories = s.ToList();
             UpdateUI();
         }
     }
 
+    private void Locals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        UpdateUI();
+    }
 
     void INavigationAware.OnNavigatedFrom()
     {
+        SelectedProduct.Locals.CollectionChanged -= Locals_CollectionChanged;
     }
 
     async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
@@ -268,15 +302,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         GiveAwayName.Text = "";
         ToggleGift.IsChecked = false;
     }
-    public LocalInventory SelectedInv
-    {
-        get
-        {
-            if (GridOfInventory.SelectedItem is LocalInventory l)
-                return l;
-            return null;
-        }
-    }
+
     async void OnSendClicked(object sender, RoutedEventArgs e)
     {
         var outside = new SentOutside
@@ -291,35 +317,12 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.SentOutsides.Add(outside);
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
-        UpdateUI();
     }
     void OnCancelSendClicked(object sender, RoutedEventArgs e)
     {
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
     }
-
-    public string[] Agents { get; } =
-        {
-        "Duhok",
-        "Arbil",
-        "Sulaimania",
-        "Kirkuk",
-        "Mosul",
-        "Al-Adhamiya",
-        "Mammon",
-        "Dora",
-        "Maysan",
-        "Najaf",
-        "Basra",
-        "Salah Al-Din",
-        "Karbala",
-        "Diyala",
-        "Babl",
-        "Fallujah",
-        "Diqar",
-        "Al-Ramadi",
-        };
 
     void AmountToSend_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
@@ -339,10 +342,5 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     void AmountToGive_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out int r);
-    }
-
-    private void GridOfInventory_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        UpdateUI();
     }
 }

@@ -261,4 +261,9 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         xl.Save(sd.FileName);
         #endregion
     }
+
+    private void Page_KeyUp(object sender, KeyEventArgs e)
+    {
+
+    }
 }
