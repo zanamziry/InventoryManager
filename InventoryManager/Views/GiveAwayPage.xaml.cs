@@ -23,6 +23,7 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         giveawayORM = _dBSetup.GetTable<GivenAwayORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
         languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
     public ObservableCollection<GivenAway> Events { get; } = new ObservableCollection<GivenAway>();
@@ -86,7 +87,7 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
                         Product = Products.Find(o => o.ID == i.ProductID),
                     };
                     Dispatcher.Invoke(() =>
-                    SelectedGiveAways.Add(giftDisplay));
+                        SelectedGiveAways.Add(giftDisplay));
                 }
             });
         }

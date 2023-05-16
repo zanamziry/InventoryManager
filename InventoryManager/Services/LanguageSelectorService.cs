@@ -41,7 +41,10 @@ namespace InventoryManager.Services
             CultureInfo.DefaultThreadCurrentCulture = cult;
             if (App.Current.MainWindow != null)
             {
+                App.Current.MainWindow.FlowDirection = Flow;
                 App.Current.MainWindow.Language = XmlLanguage.GetLanguage(Language.Tag);
+                App.Current.MainWindow.UpdateLayout();
+
             }
         }
 

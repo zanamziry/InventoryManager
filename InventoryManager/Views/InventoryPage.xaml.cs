@@ -26,13 +26,14 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     public InventoryPage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
-        InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         givenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
         languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
+        InitializeComponent();
     }
 
     private IList<MainInventory> Inventories = new List<MainInventory>();

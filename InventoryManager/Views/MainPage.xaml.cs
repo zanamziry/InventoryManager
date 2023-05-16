@@ -31,6 +31,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
         _dataGather = dataGather;
         languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
     private readonly INavigationService _navigationService;

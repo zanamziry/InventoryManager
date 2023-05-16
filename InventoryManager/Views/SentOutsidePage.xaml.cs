@@ -28,6 +28,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
         languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();

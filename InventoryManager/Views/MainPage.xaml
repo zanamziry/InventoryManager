@@ -79,7 +79,7 @@
                         </Border>
                     </Grid>
                 </StackPanel>
-                <DataGrid Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" MouseDoubleClick="OnGridDoubleClick">
+                <DataGrid Grid.Column="1" IsReadOnly="True" x:Name="GridOfProducts" ItemsSource="{Binding Source}" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Product Name" Width="150">
                             <DataGridTemplateColumn.CellTemplate>

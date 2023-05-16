@@ -16,12 +16,13 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 {
     public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
     {
-        InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
         languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
+        InitializeComponent();
     }
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
