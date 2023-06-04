@@ -229,7 +229,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             ws.Cells[i, 4].Value = item.TotalGivenAway;
             ws.Cells[i, 4].Style = cellstyle;
 
-            ws.Cells[i, 5].Value = item.TotalOutside;
+            ws.Cells[i, 5].Value = item.RemainingOutside;
             ws.Cells[i, 5].Style = cellstyle;
 
             ws.Cells[i, 6].Value = item.Result;

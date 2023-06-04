@@ -16,6 +16,7 @@ namespace InventoryManager.Models
         public int TotalGivenAway => GivenAways.Sum(s => s.Amount);
         public int TotalOutside => SentOutsides.Sum(s => s.AmountSent);
         public int TotalSoldOutside => SentOutsides.Sum(s => s.AmountSold);
+        public int RemainingOutside => TotalOutside - TotalSoldOutside;
         public int TotalReal => Locals.Sum(o => o.Total);
         public int TotalOpen => Locals.Sum(o => o.Open);
         public int TotalInv => Locals.Sum(o => o.Inventory);

@@ -125,7 +125,7 @@
                         </DockPanel>
                         <DockPanel Grid.Column="1" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageOutsideLabel}"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalOutside,Mode=OneWay}"/>
+                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.RemainingOutside,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="2" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageGivenAwayLabel}"/>

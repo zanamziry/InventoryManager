@@ -94,7 +94,7 @@
                         <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}" ElementStyle="{StaticResource GDCellStyle}"/>
                         <DataGridTextColumn Header="System" Binding="{Binding System.CloseBalance}" ElementStyle="{StaticResource GDCellStyle}"/>
                         <DataGridTextColumn Header="Local" Binding="{Binding TotalReal}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="Outside" Binding="{Binding TotalOutside}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="Outside" Binding="{Binding RemainingOutside}" ElementStyle="{StaticResource GDCellStyle}"/>
                         <DataGridTextColumn Header="GiveAway" Binding="{Binding TotalGivenAway}" ElementStyle="{StaticResource GDCellStyle}"/>
                         <DataGridTextColumn Header="Result" Binding="{Binding Result}">
                             <DataGridTextColumn.ElementStyle>
