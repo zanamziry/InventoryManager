@@ -14,15 +14,16 @@ namespace InventoryManager.Views;
 
 public partial class SystemInventory : Page, INotifyPropertyChanged, INavigationAware
 {
-    public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather)
+    public SystemInventory(IDBSetup dBSetup, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
     {
-        InitializeComponent();
         DataContext = this;
         _dBSetup = dBSetup;
         _dataGather = dataGather;
         SystemORM = _dBSetup.GetTable<SystemProductsORM>();
+        languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
+        InitializeComponent();
     }
-
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
     private Agent _selectedAgent;
@@ -34,9 +35,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         get { return _isLoading; }
         set { Set(ref _isLoading ,value); }
     }
-
     public bool IsSelected => SelectedAgent != null;
-
     public Agent SelectedAgent
     {
         get { return _selectedAgent; }
@@ -79,79 +78,87 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void OnGetDataClicked(object sender, RoutedEventArgs e)
+    private void OnGetDataClicked(object sender, RoutedEventArgs e)
     {
-        IsLoading = true;
         DateTime d;
         if (SelectedDate.SelectedDate != null)
             d = SelectedDate.SelectedDate.Value;
         else d = DateTime.Now;
-        try
+        Task.Run(async () =>
         {
-            var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(SelectedAgent.ID, d));
-            if (s != null && s.list != null && s.list.Any())
+            IsLoading = true;
+            try
             {
-                await SystemORM.DeleteAll();
-                SystemProducts.Clear();
-                foreach (var i in s.list)
+                var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(SelectedAgent.ID, d));
+                if (s != null && s.list != null && s.list.Any())
                 {
-                    await SystemORM.Insert(i);
-                    SystemProducts.Add(i);
+                    await SystemORM.DeleteAll();
+                    Dispatcher.Invoke(() =>
+                            SystemProducts.Clear());
+                    foreach (var i in s.list)
+                    {
+                        await SystemORM.Insert(i);
+                        Dispatcher.Invoke(() =>
+                                SystemProducts.Add(i));
+                    }
+                    LastUpdated = d;
                 }
-                LastUpdated = d;
+                else
+                {
+                    throw new Exception("Couldn't Load The Data Correctly, Please Try Again...");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("Couldn't Load The Data Correctly, Please Try Again...");
+                MessageBox.Show(ex.Message, "Error Updating", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message, "Error Updating", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+            finally
+            {
+                IsLoading = false;
+            }
+        });
     }
-    async void getAgents()
+    async Task getAgents()
     {
         string savedID = GetSavedSetting(AgentSettingsKey);
         IEnumerable<Agent> listOfAgents = Enumerable.Empty<Agent>();
         string json = await _dataGather.GetAgentsAsync();
-        if (json != null)
+        if (json == null)
+            return;
+        try
         {
-            try
-            {
-                listOfAgents = JsonConvert.DeserializeObject<IEnumerable<Agent>>(json);
-            }
-            catch
-            {
-                MessageBox.Show("No Agents Found!");
-                return;
-            }
+            listOfAgents = JsonConvert.DeserializeObject<IEnumerable<Agent>>(json);
         }
-        Agents.Clear();
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+            return;
+        }
+        Dispatcher.Invoke(() =>
+            Agents.Clear());
         foreach (var agent in listOfAgents)
         {
-            Agents.Add(agent);
+            Dispatcher.Invoke(() =>
+                Agents.Add(agent));
             if (agent.ID == savedID)
             {
                 SelectedAgent = agent;
             }
         }
     }
-    async void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
-        IsLoading = true;
-        getAgents();
         DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
         LastUpdated = d;
         SystemProducts.Clear();
-        foreach (var item in await SystemORM.SelectAll())
-            SystemProducts.Add(item);
-        IsLoading = false;
-
+        Task.Run(async () =>
+        {
+            foreach (var item in await SystemORM.SelectAll())
+                Dispatcher.Invoke(() =>
+                    SystemProducts.Add(item));
+        });
+        Task.Run(async () =>
+        await getAgents());
     }
     private string GetSavedSetting(string key)
     {
@@ -170,5 +177,4 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     void INavigationAware.OnNavigatedFrom()
     {
     }
-
 }

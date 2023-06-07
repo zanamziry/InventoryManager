@@ -74,8 +74,10 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         _dataGather = dataGather;
         _dBSetup = dBSetup;
         _languageSelector = languageSelector;
-        InitializeComponent();
+        languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
         DataContext = this;
+        InitializeComponent();
     }
 
     public void OnNavigatedTo(object parameter)

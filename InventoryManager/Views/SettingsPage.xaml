@@ -31,7 +31,7 @@
                     Text="{x:Static properties:Resources.Language}" />
                 <ComboBox
                     ItemsSource="{Binding Languages, Mode=OneWay}"
-                    SelectedItem="{Binding SelectedLang, Mode=TwoWay}"
+                    SelectedItem="{Binding SelectedLang, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource MahApps.Styles.ComboBox}">
                     <ComboBox.ItemTemplate>
@@ -45,7 +45,7 @@
                     Style="{StaticResource SubtitleTextStyle}"
                     Text="{x:Static properties:Resources.SettingsPageServerTitle}" />
                 <TextBox
-                    Text="{Binding ServerAddress, Mode=TwoWay}"
+                    Text="{Binding ServerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource MahApps.Styles.TextBox}" />
                 <TextBlock

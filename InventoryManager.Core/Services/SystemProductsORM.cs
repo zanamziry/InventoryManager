@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public SystemProductsORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(SystemProduct)}(" +
             $"{nameof(SystemProduct.ID)} TEXT NOT NULL UNIQUE," +
@@ -18,7 +18,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(SystemProduct.CloseBalance)} INTEGER," +
             $"PRIMARY KEY({nameof(SystemProduct.ID)}));";
             //$"FOREIGN KEY({nameof(SystemProduct.ID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) on delete no action);";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
         public override async Task Delete(SystemProduct param) {
@@ -40,7 +40,7 @@ namespace InventoryManager.Core.Services {
         public async Task<SystemProduct> SelectProduct(Product product)
         {
             string cmd = $"SELECT * FROM {nameof(SystemProduct)} WHERE {nameof(SystemProduct.ID)} = @{nameof(Product.ID)};";
-            var products = (await _dataAccess.ReadDataAsync<SystemProduct>(cmd,product));
+            var products = await _dataAccess.ReadDataAsync<SystemProduct>(cmd,product);
             if (products.Count() > 0)
                 return products.First();
             return new SystemProduct { ID = "NULL", Name = "NULL", CloseBalance = 0, OpenBalance = 0, Sold = 0};

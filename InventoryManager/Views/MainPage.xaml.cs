@@ -19,9 +19,8 @@ namespace InventoryManager.Views;
 
 public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 {
-    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather)
+    public MainPage(IDBSetup dBSetup,INavigationService navigationService, ISystemDataGather dataGather, ILanguageSelectorService languageSelector)
     {
-        InitializeComponent();
         DataContext = this;
         _navigationService = navigationService;
         _dBSetup = dBSetup;
@@ -31,6 +30,9 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         GivenORM = _dBSetup.GetTable<GivenAwayORM>();
         OutsideORM = _dBSetup.GetTable<SentOutsideORM>();
         _dataGather = dataGather;
+        languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
+        InitializeComponent();
     }
     private readonly INavigationService _navigationService;
     private readonly ISystemDataGather _dataGather;
@@ -99,7 +101,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
                 foreach (var item in products)
                 {
                     await ProductsORM.Insert(item);
-                    AddToView(item);
+                    await AddView(item);
                 }
             }
             catch
@@ -118,25 +120,32 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         }
     }
 
-    async void AddToView(Product p)
+    async Task AddView(Product p)
     {
-        var localDB = await LocalORM.SelectProduct(p);
-        var sys = await SystemORM.SelectProduct(p);
-        Source.Add(new MainInventory
-        {
-            Product = p,
-            System = sys,
-            Locals = new ObservableCollection<LocalInventory>(localDB),
-            GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
-            SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p)),
-        });
+
+            IEnumerable<LocalInventory> localDB = await LocalORM.SelectProduct(p);
+            var newMain = new MainInventory
+            {
+                Product = p,
+                System = await SystemORM.SelectProduct(p),
+                GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
+                Locals = new ObservableCollection<LocalInventory>(localDB),
+                SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p))
+            };
+            this.Dispatcher.Invoke(() =>
+                Source.Add(newMain));
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        Source.CollectionChanged += Source_CollectionChanged; 
+        Source.CollectionChanged += Source_CollectionChanged;
         Source.Clear();
-        foreach (var p in await ProductsORM.SelectAll())
-            AddToView(p);
+        await Task.Run(async () =>
+        {
+            foreach (var p in await ProductsORM.SelectAll())
+            {
+                await AddView(p);
+            }
+        });
     }
 
     private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -220,7 +229,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             ws.Cells[i, 4].Value = item.TotalGivenAway;
             ws.Cells[i, 4].Style = cellstyle;
 
-            ws.Cells[i, 5].Value = item.TotalOutside;
+            ws.Cells[i, 5].Value = item.RemainingOutside;
             ws.Cells[i, 5].Style = cellstyle;
 
             ws.Cells[i, 6].Value = item.Result;
@@ -251,5 +260,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         xl.Protected = true;
         xl.Save(sd.FileName);
         #endregion
+    }
+
+    private void Page_KeyUp(object sender, KeyEventArgs e)
+    {
+
     }
 }

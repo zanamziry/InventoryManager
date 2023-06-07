@@ -9,15 +9,12 @@ using InventoryManager.Contracts.Views;
 
 using MahApps.Metro.Controls;
 using System.Globalization;
-using MaterialDesignThemes.Wpf;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace InventoryManager.Views;
 
 public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyChanged
 {
     private readonly INavigationService _navigationService;
-    private readonly ILanguageSelectorService _languageSelector;
     private bool _canGoBack;
     private HamburgerMenuItem _selectedMenuItem;
     private HamburgerMenuItem _selectedOptionsMenuItem;
@@ -40,6 +37,7 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
         set { Set(ref _selectedOptionsMenuItem, value); }
     }
 
+    // TODO: Change the icons and titles for all HamburgerMenuItems here.
     public ObservableCollection<HamburgerMenuItem> MenuItems { get; } = new ObservableCollection<HamburgerMenuItem>()
     {
         new HamburgerMenuIconItem() { Label = Properties.Resources.ShellMainPage, Icon = new MahApps.Metro.IconPacks.PackIconVaadinIcons(){ Kind = MahApps.Metro.IconPacks.PackIconVaadinIconsKind.Storage}, TargetPageType = typeof(MainPage) },
@@ -53,11 +51,12 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
         new HamburgerMenuGlyphItem() { Label = Properties.Resources.ShellSettingsPage, Glyph = "\uE713", TargetPageType = typeof(SettingsPage) }
     };
 
-    public ShellWindow(INavigationService navigationService)
+    public ShellWindow(INavigationService navigationService, ILanguageSelectorService languageSelector)
     {
         _navigationService = navigationService;
-        InitializeComponent();
         DataContext = this;
+        languageSelector.InitializeLanguage();
+        InitializeComponent();
     }
 
     public Frame GetNavigationFrame()

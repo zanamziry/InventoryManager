@@ -12,8 +12,8 @@
     xmlns:li="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
     mc:Ignorable="d"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-    d:DesignHeight="450" d:DesignWidth="800" d:Background="{StaticResource MahApps.Brushes.ThemeBackground}"
-    d:Foreground="{StaticResource MahApps.Brushes.ThemeForeground}">
+    d:DesignHeight="450" d:DesignWidth="800" Background="{StaticResource MahApps.Brushes.ThemeBackground}"
+    Foreground="{StaticResource MahApps.Brushes.ThemeForeground}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -25,42 +25,39 @@
             Text="{x:Static properties:Resources.MainPageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{StaticResource MahApps.Brushes.Gray10}">
-            <!--
-            The Mahapps Gray10 color represents where you should place your content.
-            Place your content here.
-            -->
+            Background="{StaticResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <TextBlock Text="{x:Static properties:Resources.SystemInventoryLastUpdate}" FontWeight="SemiBold" Margin="0,3"/>
-                    <TextBlock Text="{Binding LastUpdated,Mode=TwoWay, StringFormat='{}{0:ddddd dd/M/yyyy H:mm tt}'}" TextWrapping="Wrap" FontWeight="Light" FontSize="12"/>
-                    <Line Stroke="Black" Margin="0,12" StrokeThickness="1" X1="0" X2="1000"/>
-                    <TextBlock Text="{x:Static properties:Resources.SystemInventoryAgentLabel}" Margin="0,3"/>
-                    <ComboBox SelectedItem="{Binding SelectedAgent,Mode=TwoWay}" ItemsSource="{Binding Agents,Mode=OneWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0">
-                                    <TextBlock Text="{Binding ID}"/>
-                                    <TextBlock Text=" - "/>
-                                    <TextBlock Text="{Binding Username}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <TextBlock Text="{x:Static properties:Resources.SystemInventoryDateLabel}" Margin="0,3"/>
-                    <DatePicker x:Name="SelectedDate"/>
-                    <Button IsEnabled="{Binding IsSelected,Mode=OneWay}" Padding="20,0" Margin="{StaticResource SmallTopMargin}" Click="OnGetDataClicked">
-                        <DockPanel>
-                            <mt:PackIcon Kind="Update"/>
-                            <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.SystemInventoryUpdateLabel}"/>
-                        </DockPanel>
-                    </Button>
-                </StackPanel>
+                <Border BorderBrush="{StaticResource GrayLine}" BorderThickness="0,0,1.5,0">
+                    <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+                        <TextBlock Text="{x:Static properties:Resources.SystemInventoryLastUpdate}" FontWeight="SemiBold" Margin="0,3"/>
+                        <TextBlock Text="{Binding LastUpdated,Mode=TwoWay, StringFormat='{}{0:ddddd dd/M/yyyy H:mm tt}'}" TextWrapping="Wrap" FontWeight="Light" FontSize="12"/>
+                        <Line Stroke="Black" Margin="0,12" StrokeThickness="1" X1="0" X2="1000"/>
+                        <TextBlock Text="{x:Static properties:Resources.SystemInventoryAgentLabel}" Margin="0,3"/>
+                        <ComboBox SelectedItem="{Binding SelectedAgent,Mode=TwoWay}" ItemsSource="{Binding Agents,Mode=OneWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0">
+                                        <TextBlock Text="{Binding ID}"/>
+                                        <TextBlock Text=" - "/>
+                                        <TextBlock Text="{Binding Username}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="{x:Static properties:Resources.SystemInventoryDateLabel}" Margin="0,3"/>
+                        <DatePicker x:Name="SelectedDate"/>
+                        <Button IsEnabled="{Binding IsSelected,Mode=OneWay}" Padding="20,0" Margin="{StaticResource SmallTopMargin}" Click="OnGetDataClicked">
+                            <DockPanel>
+                                <mt:PackIcon Kind="Update"/>
+                                <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.SystemInventoryUpdateLabel}"/>
+                            </DockPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
                 <DataGrid Grid.Column="1" ItemsSource="{Binding SystemProducts}" AutoGenerateColumns="False"  BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="True" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="150"/>
@@ -72,7 +69,7 @@
                 </DataGrid>
             </Grid>
         </Grid>
-        <local:ZMDialog Visibility="{Binding IsLoading,Converter={StaticResource BooleanToVisibilityConverter}}" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
+        <local:ZMDialog d:Visibility="Hidden" Visibility="{Binding IsLoading,Converter={StaticResource BooleanToVisibilityConverter}}" IsTitleVisible="Collapsed" Grid.RowSpan="2" DialogHeight="120" DialogWidth="150" Title="Loading">
             <StackPanel VerticalAlignment="Center">
                 <li:LoadingSpinner IsLoading="True" Diameter="45" Thickness="3" Cap="Round" Color="{StaticResource MahApps.Brushes.Accent}" />
                 <TextBlock Text="{x:Static properties:Resources.SystemInventoryFetchData}" Foreground="#c000" HorizontalAlignment="Stretch" TextAlignment="Center" Padding="5" Margin="{StaticResource SmallTopMargin}"/>

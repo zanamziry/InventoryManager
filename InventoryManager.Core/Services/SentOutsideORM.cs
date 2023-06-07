@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public SentOutsideORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(SentOutside)}(" +
             $"{nameof(SentOutside.ID)} INTEGER NOT NULL UNIQUE," +
@@ -19,7 +19,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(SentOutside.Old)} INTEGER NOT NULL DEFAULT 0," +
             //$"FOREIGN KEY({nameof(SentOutside.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(SentOutside.ID)} AUTOINCREMENT));";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
         public override async Task Delete(SentOutside param) {
@@ -30,8 +30,7 @@ namespace InventoryManager.Core.Services {
         public override async Task<SentOutside> Insert(SentOutside param) {
             string cmd = $"INSERT INTO {nameof(SentOutside)} ({nameof(SentOutside.ProductID)}, {nameof(SentOutside.AmountSent)},{nameof(SentOutside.AmountSold)}, {nameof(SentOutside.Location)}, {nameof(SentOutside.Old)}) values(@{nameof(SentOutside.ProductID)}, @{nameof(SentOutside.AmountSent)}, @{nameof(SentOutside.AmountSold)}, @{nameof(SentOutside.Location)}, @{nameof(SentOutside.Old)});";
             await _dataAccess.ExecuteAsync(cmd, param);
-            int id = await LastInput();
-            param.ID = id;
+            param.ID = await LastInput();
             return param;
         }
 

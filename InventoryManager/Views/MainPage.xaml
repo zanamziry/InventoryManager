@@ -29,15 +29,10 @@
             Text="{x:Static properties:Resources.MainPageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{DynamicResource MahApps.Brushes.Gray10}">
-            <!--
-            The Mahapps Gray10 color represents where you should place your content.
-            Place your content here.
-            -->
+            Background="{DynamicResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
@@ -64,27 +59,27 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="95" Height="70">
+                        <Border CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="100" Height="70">
                             <StackPanel>
-                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4">
-                                    <mt:PackIcon Width="12" Kind="PackageVariant"/>
-                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="{x:Static properties:Resources.MainPageOutsideLabel}"/>
+                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,4">
+                                    <mt:PackIcon Width="14" Kind="PackageVariant"/>
+                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="10" Text="{x:Static properties:Resources.MainPageOutsideLabel}"/>
                                 </DockPanel>
-                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat={}{0:C}, Mode=OneWay}"/>
+                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat=C, Mode=OneWay}"/>
                             </StackPanel>
                         </Border>
-                        <Border Grid.Column="1" CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="90" Height="70">
+                        <Border Grid.Column="1" CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="100" Height="70">
                             <StackPanel>
-                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4">
-                                    <mt:PackIcon Width="12" Kind="GiftOutline"/>
-                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="9" Text="{x:Static properties:Resources.MainPageGiftsLabel}"/>
+                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,4">
+                                    <mt:PackIcon Width="14" Kind="GiftOutline"/>
+                                    <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="10" Text="{x:Static properties:Resources.MainPageGiftsLabel}"/>
                                 </DockPanel>
-                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding GiftPoints,StringFormat={}{0:G}, Mode=OneWay}"/>
+                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding GiftPoints,StringFormat={}{0:0.0}, Mode=OneWay}"/>
                             </StackPanel>
                         </Border>
                     </Grid>
                 </StackPanel>
-                <DataGrid ScrollViewer.CanContentScroll="False" Grid.Column="1" x:Name="GridOfProducts" ItemsSource="{Binding Source}" AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="OnGridDoubleClick">
+                <DataGrid Grid.Column="1" IsReadOnly="True" x:Name="GridOfProducts" ItemsSource="{Binding Source}" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Product Name" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
@@ -96,12 +91,12 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="System" Binding="{Binding System.CloseBalance}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="Local" Binding="{Binding TotalReal}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="Outside" Binding="{Binding TotalOutside}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="GiveAway" Binding="{Binding TotalGivenAway}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="Result" Binding="{Binding Result}"  HeaderStyle="{StaticResource GDHeaderStyle}" >
+                        <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="System" Binding="{Binding System.CloseBalance}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="Local" Binding="{Binding TotalReal}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="Outside" Binding="{Binding RemainingOutside}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="GiveAway" Binding="{Binding TotalGivenAway}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="Result" Binding="{Binding Result}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource GDCellStyle}">
                                     <Setter Property="FontWeight" Value="Bold"/>
@@ -118,11 +113,10 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource GDHeaderStyle}" Header="Expire" Binding="{Binding NearestExp, StringFormat='{}{0:M/yyyy}'}">
+                        <DataGridTextColumn Header="Expire" Binding="{Binding NearestExp, StringFormat='{}{0:M/yyyy}'}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Background" Value="{Binding NearestExp, Converter={StaticResource ExpireToColorConverter}}"/>
-                                    <Setter Property="Foreground" Value="#df000000"/>
                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                     <Setter Property="TextAlignment" Value="Center"/>
                                     <Setter Property="Padding" Value="6.5"/>

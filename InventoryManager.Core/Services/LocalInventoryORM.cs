@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public LocalInventoryORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(LocalInventory)}(" +
             $"{nameof(LocalInventory.ID)} INTEGER NOT NULL UNIQUE," +
@@ -19,7 +19,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(LocalInventory.Note)} TEXT," +
             $"PRIMARY KEY({nameof(LocalInventory.ID)} AUTOINCREMENT));";
             //$"FOREIGN KEY({nameof(LocalInventory.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE);";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
         public override async Task Delete(LocalInventory param) {
@@ -30,8 +30,7 @@ namespace InventoryManager.Core.Services {
         public override async Task<LocalInventory> Insert(LocalInventory param) {
             string cmd = $"INSERT INTO {nameof(LocalInventory)} ({nameof(LocalInventory.ProductID)}, {nameof(LocalInventory.Inventory)}, {nameof(LocalInventory.Open)}, {nameof(LocalInventory.ExpireDate)}, {nameof(LocalInventory.Note)}) values(@{nameof(LocalInventory.ProductID)}, @{nameof(LocalInventory.Inventory)}, @{nameof(LocalInventory.Open)}, @{nameof(LocalInventory.ExpireDate)}, @{nameof(LocalInventory.Note)});";
             await _dataAccess.ExecuteAsync(cmd, param);
-            int id = await LastInput();
-            param.ID = id;
+            param.ID = await LastInput();
             return param;
         }
         public async Task Update(LocalInventory param)

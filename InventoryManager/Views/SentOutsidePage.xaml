@@ -25,21 +25,25 @@
             Text="{x:Static properties:Resources.SentOutsidePageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{DynamicResource MahApps.Brushes.Gray10}">
-            <!--
-            The Mahapps Gray10 color represents where you should place your content.
-            Place your content here.
-            -->
+            Background="{DynamicResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ListView Grid.Column="0" BorderThickness="0 0 1 0" BorderBrush="{StaticResource MahApps.Brushes.Accent}" ItemsSource="{Binding Locations,Mode=OneWay}" SelectionChanged="ListView_SelectionChanged" Style="{StaticResource MahApps.Styles.ListView}">
+                <ListView Grid.Column="0" Padding="5" ItemsSource="{Binding Locations,Mode=OneWay}" d:ItemsSource="{d:SampleData}" SelectionChanged="ListView_SelectionChanged">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+                            <Border BorderBrush="{StaticResource MahApps.Brushes.Gray7}" Background="{StaticResource MahApps.Brushes.Gray10}" CornerRadius="5" BorderThickness="1" Margin="0,1.5" Padding="4">
+                                <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+                            </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -48,7 +52,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
-                    <DataGrid Grid.Row="0" x:Name="GridOfSent" ItemsSource="{Binding Source}" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
+                    <DataGrid Grid.Row="0" x:Name="GridOfSent" ItemsSource="{Binding Source}" d:ItemsSource="{d:SampleData}" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding Outside.ID,Mode=OneWay}"/>
                         <DataGridTextColumn Header="Product Code" IsReadOnly="True" Binding="{Binding Product.ID,Mode=TwoWay}" />
@@ -61,7 +65,7 @@
                 </DataGrid>
                     <DockPanel Grid.Row="1">
                         <TextBlock Text="{x:Static properties:Resources.SentOutsideTotalSold}" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
-                        <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat={}{0:C2}}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                        <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat=C2}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
                     </DockPanel>
                 </Grid>
             </Grid>

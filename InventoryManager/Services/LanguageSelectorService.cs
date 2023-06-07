@@ -1,9 +1,10 @@
 ﻿using InventoryManager.Contracts.Services;
 using InventoryManager.Models;
-using MahApps.Metro.Controls;
-using System.ComponentModel;
+using Microsoft.Office.Interop.Excel;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
+using System.Windows.Threading;
 
 namespace InventoryManager.Services
 {
@@ -17,10 +18,8 @@ namespace InventoryManager.Services
             new Language { Tag = "ar-IQ", Header = "عربي" },
         };
         public Language PreferedLang { get; set; }
-        public FlowDirection Flow => PreferedLang.Tag == Languages.First().Tag ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
+        public FlowDirection Flow => PreferedLang?.Tag == Languages.First().Tag ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnLanguageChanged() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PreferedLang.Tag));
         public void InitializeLanguage()
         {
             PreferedLang = LoadLanguagePreferences();
@@ -29,16 +28,23 @@ namespace InventoryManager.Services
 
         public void SetLanguagePreferences(Language Language)
         {
-            SaveLanguagePreferences(Language);
-            OnLanguageChanged();
+            if (Language != PreferedLang)
+                SaveLanguagePreferences(Language);
             var cult = new CultureInfo(Language.Tag);
+            Dispatcher.CurrentDispatcher.Thread.CurrentCulture = cult;
+            Dispatcher.CurrentDispatcher.Thread.CurrentUICulture = cult;
             App.Current.Dispatcher.Thread.CurrentCulture = cult;
             App.Current.Dispatcher.Thread.CurrentUICulture = cult;
+            CultureInfo.CurrentCulture = cult;
+            CultureInfo.CurrentUICulture = cult;
+            CultureInfo.DefaultThreadCurrentUICulture = cult;
+            CultureInfo.DefaultThreadCurrentCulture = cult;
             if (App.Current.MainWindow != null)
             {
                 App.Current.MainWindow.FlowDirection = Flow;
-                App.Current.MainWindow.Language = System.Windows.Markup.XmlLanguage.GetLanguage(Language.Tag);
+                App.Current.MainWindow.Language = XmlLanguage.GetLanguage(Language.Tag);
                 App.Current.MainWindow.UpdateLayout();
+
             }
         }
 

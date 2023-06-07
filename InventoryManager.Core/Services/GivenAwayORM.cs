@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public GivenAwayORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(GivenAway)}(" +
             $"{nameof(GivenAway.ID)} INTEGER NOT NULL UNIQUE," +
@@ -18,7 +18,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(GivenAway.Date)} TEXT NOT NULL," +
             //$"FOREIGN KEY({nameof(GivenAway.ProductID)}) REFERENCES {nameof(Product)}({nameof(Product.ID)}) ON DELETE CASCADE," +
             $"PRIMARY KEY({nameof(GivenAway.ID)} AUTOINCREMENT));";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
         public override async Task Delete(GivenAway param) {
@@ -29,8 +29,7 @@ namespace InventoryManager.Core.Services {
         public override async Task<GivenAway> Insert(GivenAway param) {
             string cmd = $"INSERT INTO {nameof(GivenAway)} ({nameof(GivenAway.ProductID)}, {nameof(GivenAway.Amount)}, {nameof(GivenAway.Event)}, {nameof(GivenAway.Date)}) values(@{nameof(GivenAway.ProductID)}, @{nameof(GivenAway.Amount)}, @{nameof(GivenAway.Event)}, '{param.Date.ToShortDateString()}');";
             await _dataAccess.ExecuteAsync(cmd, param);
-            int id = await LastInput();
-            param.ID = id;
+            param.ID = await LastInput();
             return param;
         }
 

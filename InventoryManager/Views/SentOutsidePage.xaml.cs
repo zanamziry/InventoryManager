@@ -21,12 +21,14 @@ namespace InventoryManager.Views;
 public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigationAware
 {
 
-    public SentOutsidePage(IDBSetup dBSetup)
+    public SentOutsidePage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         DataContext = this;
         _dBSetup = dBSetup;
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
+        languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
@@ -63,13 +65,17 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         storage = value;
         OnPropertyChanged(propertyName);
     }
-    async void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
         Locations.Clear();
-        foreach (var item in await outsideORM.SelectAllLocations())
+        Task.Run(async () =>
         {
-            Locations.Add(item);
-        }
+            foreach (var item in await outsideORM.SelectAllLocations())
+            {
+                await Dispatcher.BeginInvoke(() =>
+                    Locations.Add(item));
+            }
+        });
         Source.CollectionChanged += Source_CollectionChanged;
     }
 
@@ -85,34 +91,38 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ListView listView && listView.SelectedItem is string s)
         {
             Source.Clear();
-            foreach (var i in await outsideORM.SelectByLocation(s))
+            Task.Run(async () =>
             {
-                SentOutDisplay OutDisplay = new SentOutDisplay();
-                OutDisplay.Product =  await productsORM.GetByID(i.ProductID);
-                OutDisplay.Outside =  i;
-                Source.Add(OutDisplay);
-            }
+                foreach (var i in await outsideORM.SelectByLocation(s))
+                {
+                    SentOutDisplay OutDisplay = new SentOutDisplay();
+                    OutDisplay.Product = await productsORM.GetByID(i.ProductID);
+                    OutDisplay.Outside = i;
+                    Dispatcher.Invoke(() =>
+                    Source.Add(OutDisplay));
+                }
+            });
         }
     }
-    async void Remove(SentOutDisplay p)
+    async Task Remove(SentOutDisplay p)
     {
         await outsideORM.Delete(p.Outside);
         Source.Remove(p);
     }
 
-    void OnKeyUp(object sender, KeyEventArgs e)
+    async void OnKeyUp(object sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
             case Key.Delete:
                 if ((e.OriginalSource as FrameworkElement).DataContext is SentOutDisplay p)
                 {
-                    Remove(p);
+                    await Remove(p);
                 }
                 break;
         }
@@ -121,7 +131,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
     {
         if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
         {
-            Remove(e.Row.DataContext as SentOutDisplay);
+            await Remove(e.Row.DataContext as SentOutDisplay);
         }
         if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
         {
@@ -134,8 +144,8 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                         {
                             if (e.EditingElement is TextBox tb)
                             {
-                                int.TryParse(tb.Text, out int a);
-                                l.Outside.AmountSold = a;
+                                if(int.TryParse(tb.Text, out int a))
+                                    l.Outside.AmountSold = a;
                             }
                             break;
                         }

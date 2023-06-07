@@ -16,15 +16,16 @@ namespace InventoryManager.Views;
 public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAware
 {
 
-    public GiveAwayPage(IDBSetup dBSetup)
+    public GiveAwayPage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         DataContext = this;
         _dBSetup = dBSetup;
         giveawayORM = _dBSetup.GetTable<GivenAwayORM>();
         productsORM = _dBSetup.GetTable<ProductsORM>();
+        languageSelector.InitializeLanguage();
+        FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
-    public FlowDirection Direction => CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar") ? FlowDirection.LeftToRight : FlowDirection.RightToLeft;
     public ObservableCollection<GivenAway> Events { get; } = new ObservableCollection<GivenAway>();
     public ObservableCollection<GiftDisplay> SelectedGiveAways { get; } = new ObservableCollection<GiftDisplay>();
     public List<Product> Products { get; private set; } = new List<Product>();
@@ -45,18 +46,23 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         storage = value;
         OnPropertyChanged(propertyName);
     }
-    async void INavigationAware.OnNavigatedTo(object parameter)
+    void INavigationAware.OnNavigatedTo(object parameter)
     {
         Events.Clear();
-        foreach (var item in await giveawayORM.SelectAllEvents())
-        {
-            Events.Add(item);
-        }
         Products.Clear();
-        foreach(var i in await productsORM.SelectAll())
+        Task.Run(async () =>
         {
-            Products.Add(i);
-        }
+            foreach (var item in await giveawayORM.SelectAllEvents())
+            {
+                Dispatcher.Invoke(() =>
+                    Events.Add(item));
+            }
+            foreach (var i in await productsORM.SelectAll())
+            {
+                Dispatcher.Invoke(() =>
+                    Products.Add(i));
+            }
+        });
     }
 
     void INavigationAware.OnNavigatedFrom()
@@ -66,36 +72,40 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ListView listView && listView.SelectedItem is GivenAway s)
         {
             SelectedGiveAways.Clear();
-            foreach (var i in await giveawayORM.SelectByEvent(s))
+            Task.Run(async() =>
             {
-                var giftDisplay = new GiftDisplay
+                foreach (var i in await giveawayORM.SelectByEvent(s))
                 {
-                    GivenAway = i,
-                    Product = Products.Find(o => o.ID == i.ProductID),
-                };
-                SelectedGiveAways.Add(giftDisplay);
-            }
+                    var giftDisplay = new GiftDisplay
+                    {
+                        GivenAway = i,
+                        Product = Products.Find(o => o.ID == i.ProductID),
+                    };
+                    Dispatcher.Invoke(() =>
+                        SelectedGiveAways.Add(giftDisplay));
+                }
+            });
         }
     }
-    async void Remove(GiftDisplay p)
+    async Task Remove(GiftDisplay p)
     {
         await giveawayORM.Delete(p.GivenAway);
         SelectedGiveAways.Remove(p);
     }
 
-    void OnKeyUp(object sender, KeyEventArgs e)
+    async void OnKeyUp(object sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
             case Key.Delete:
                 if ((e.OriginalSource as FrameworkElement).DataContext is GiftDisplay p)
                 {
-                    Remove(p);
+                    await Remove(p);
                 }
                 break;
         }

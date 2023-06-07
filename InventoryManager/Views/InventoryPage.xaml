@@ -33,15 +33,10 @@
             Text="{x:Static properties:Resources.InventoryPageTitle}" />
         <Grid
             Grid.Row="1"
-            Margin="{StaticResource MediumLeftRightMargin}"
-            Background="{DynamicResource MahApps.Brushes.Gray10}">
-            <!--
-            The Mahapps Gray10 color represents where you should place your content.
-            Place your content here.
-            -->
+            Background="{DynamicResource ListView.LightGray}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="240"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
@@ -96,7 +91,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="70"/>
                     </Grid.RowDefinitions>
-                    <DataGrid x:Name="GridOfInventory" CellEditEnding="OnCellEdited" CanUserDeleteRows="False" CanUserAddRows="False" SelectionChanged="GridOfInventory_SelectionChanged" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
+                    <DataGrid x:Name="GridOfInventory" CellEditEnding="OnCellEdited" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding ID}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}" Width="65"/>
                             <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
@@ -130,7 +125,7 @@
                         </DockPanel>
                         <DockPanel Grid.Column="1" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageOutsideLabel}"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalOutside,Mode=OneWay}"/>
+                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.RemainingOutside,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="2" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageGivenAwayLabel}"/>

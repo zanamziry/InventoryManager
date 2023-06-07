@@ -8,7 +8,7 @@ namespace InventoryManager.Core.Services {
         public ProductsORM(IDataAccess dataAccess) : base(dataAccess) {
         }
 
-        public override void Create() {
+        public override async Task Create() {
             string cmd =
             $"CREATE TABLE IF NOT EXISTS {nameof(Product)}(" +
             $"{nameof(Product.ID)} TEXT NOT NULL UNIQUE," +
@@ -18,7 +18,7 @@ namespace InventoryManager.Core.Services {
             $"{nameof(Product.Old_Price)} REAL," +
             $"{nameof(Product.PV)} REAL NOT NULL," +
             $"PRIMARY KEY({nameof(Product.ID)}));";
-            _dataAccess.Execute(cmd);
+            await _dataAccess.ExecuteAsync(cmd);
         }
 
         public override async Task Delete(Product param) {
