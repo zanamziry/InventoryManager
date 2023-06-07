@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace InventoryManager.Contracts.Services
 {
-    public interface ILanguageSelectorService : INotifyPropertyChanged
+    public interface ILanguageSelectorService 
     {
         IEnumerable<Language> Languages { get; }
         Language PreferedLang { get; set; }
