@@ -26,6 +26,14 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
+    private decimal _totalPV;
+
+    public decimal TotalPV
+    {
+        get { return _totalPV; }
+        set { Set(ref _totalPV ,value); }
+    }
+
     public ObservableCollection<GivenAway> Events { get; } = new ObservableCollection<GivenAway>();
     public ObservableCollection<GiftDisplay> SelectedGiveAways { get; } = new ObservableCollection<GiftDisplay>();
     public List<Product> Products { get; private set; } = new List<Product>();
@@ -72,12 +80,12 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ListView listView && listView.SelectedItem is GivenAway s)
         {
             SelectedGiveAways.Clear();
-            Task.Run(async() =>
+            await Task.Run(async() =>
             {
                 foreach (var i in await giveawayORM.SelectByEvent(s))
                 {
@@ -90,6 +98,8 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
                         SelectedGiveAways.Add(giftDisplay));
                 }
             });
+            TotalPV = 0;
+            TotalPV += SelectedGiveAways.Sum(o => o.Product.PV * o.GivenAway.Amount);
         }
     }
     async Task Remove(GiftDisplay p)
