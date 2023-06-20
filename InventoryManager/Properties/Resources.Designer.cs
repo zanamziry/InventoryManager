@@ -358,6 +358,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check For Updates.
+        /// </summary>
+        public static string SettingsCheckForUpdates {
+            get {
+                return ResourceManager.GetString("SettingsCheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This application is made by Zana Masoud to help make managing inventories easier.
         /// </summary>
         public static string SettingsPageAboutText {

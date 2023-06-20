@@ -8,7 +8,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <!-- <icon>icon.png</icon> -->
-    <projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>
+    <projectUrl>https://github.com/zanamziry/InventoryManager/</projectUrl>
     <description>Manage your inventory easeier with this program, hourse of work turned to minutes</description>
     <releaseNotes>Beta Version Released</releaseNotes>
     <copyright>$copyright$</copyright>

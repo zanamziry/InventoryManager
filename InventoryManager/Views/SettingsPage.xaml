@@ -76,6 +76,11 @@
                     Text="{Binding VersionDescription, Mode=OneWay}"
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource BodyTextStyle}" />
+                <Button
+                    Content="{x:Static properties:Resources.SettingsCheckForUpdates}"
+                    Margin="{StaticResource XSmallTopMargin}"
+                    HorizontalAlignment="Left" 
+                    Click="OnCheckUpdateClicked"/>
                 <TextBlock
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource BodyTextStyle}"

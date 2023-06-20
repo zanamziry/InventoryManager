@@ -291,4 +291,7 @@
   <data name="SentOutsideTotalPoints" xml:space="preserve">
     <value>Total PV</value>
   </data>
+  <data name="SettingsCheckForUpdates" xml:space="preserve">
+    <value>Check For Updates</value>
+  </data>
 </root>

@@ -294,4 +294,7 @@
   <data name="SentOutsideTotalPoints" xml:space="preserve">
     <value>مجموع النقاط</value>
   </data>
+  <data name="SettingsCheckForUpdates" xml:space="preserve">
+    <value>تحقق من التحديثات</value>
+  </data>
 </root>
