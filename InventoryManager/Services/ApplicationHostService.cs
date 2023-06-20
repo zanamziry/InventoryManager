@@ -6,6 +6,9 @@ using InventoryManager.Core.Services;
 using InventoryManager.Views;
 
 using Microsoft.Extensions.Hosting;
+using Squirrel;
+using System.Diagnostics;
+using System.Windows;
 
 namespace InventoryManager.Services;
 
@@ -58,14 +61,37 @@ public class ApplicationHostService : IHostedService
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
             _languageSelector.InitializeLanguage();
+            Updates();
         }
     }
-
+    private async void Updates()
+    {
+        try
+        {
+            var updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/zanamziry/InventoryManager");
+            var updateInfo = await updateManager.CheckForUpdate();
+            if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
+            {
+                if (MessageBoxResult.Yes == MessageBox.Show($"New Update Is Available Do You Want To Update To {updateInfo.ReleasesToApply.First().Version}", "Update Availbable!", MessageBoxButton.YesNo, MessageBoxImage.Question))
+                {
+                    await updateManager.UpdateApp();
+                    MessageBox.Show($"Update Complete", "Restart Required For the Update To Take Effect");
+                    UpdateManager.RestartApp();
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            Debug.WriteLine(e.Message);
+            return;
+        }
+    }
     private async Task StartupAsync()
     {
         if (!_isInitialized)
         {
             _languageSelector.InitializeLanguage();
+
             await Task.CompletedTask;
         }
     }

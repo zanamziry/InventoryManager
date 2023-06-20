@@ -12,6 +12,7 @@ using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Models;
 
 using Microsoft.Extensions.Options;
+using Squirrel;
 
 namespace InventoryManager.Views;
 
@@ -107,6 +108,32 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
 
         storage = value;
         OnPropertyChanged(propertyName);
+    }
+    private async void OnCheckUpdateClicked(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var updateManager = await UpdateManager.GitHubUpdateManager(@"https://github.com/zanamziry/InventoryManager");
+            var updateInfo = await updateManager.CheckForUpdate();
+            if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
+            {
+                if (MessageBoxResult.Yes == MessageBox.Show($"New Update Is Available Do You Want To Update To {updateInfo.ReleasesToApply.First().Version}", "Update Availbable!", MessageBoxButton.YesNo, MessageBoxImage.Question))
+                {
+                    await updateManager.UpdateApp();
+                    MessageBox.Show($"Update Complete", "Restart Required For the Update To Take Effect");
+                    UpdateManager.RestartApp();
+                }
+                else
+                {
+                    MessageBox.Show("This is the latest version", "No Updates Founds");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"There was a problem while searching for updates\n{ex.Message}", "No Updates Founds");
+            return;
+        }
     }
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
