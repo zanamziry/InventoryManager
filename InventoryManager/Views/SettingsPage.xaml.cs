@@ -10,7 +10,7 @@ using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Models;
-
+using InventoryManager.Services;
 using Microsoft.Extensions.Options;
 using Squirrel;
 
@@ -26,6 +26,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private AppTheme _theme;
     private IDBSetup _dBSetup;
     private ILanguageSelectorService _languageSelector;
+    private IUpdatingService _updatingService;
     private Language _selectedLang;
     private string _serverAddress;
     private string _versionDescription;
@@ -67,7 +68,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     }
 
 
-    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector)
+    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector, IUpdatingService updatingService)
     {
         _appConfig = appConfig.Value;
         _systemService = systemService;
@@ -75,6 +76,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         _dataGather = dataGather;
         _dBSetup = dBSetup;
         _languageSelector = languageSelector;
+        _updatingService = updatingService;
         languageSelector.InitializeLanguage();
         FlowDirection = languageSelector.Flow;
         DataContext = this;
@@ -109,31 +111,9 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         storage = value;
         OnPropertyChanged(propertyName);
     }
-    private async void OnCheckUpdateClicked(object sender, RoutedEventArgs e)
+    private void OnCheckUpdateClicked(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            var updateManager = await UpdateManager.GitHubUpdateManager(@"https://github.com/zanamziry/InventoryManager");
-            var updateInfo = await updateManager.CheckForUpdate();
-            if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
-            {
-                if (MessageBoxResult.Yes == MessageBox.Show($"New Update Is Available Do You Want To Update To {updateInfo.ReleasesToApply.First().Version}", "Update Availbable!", MessageBoxButton.YesNo, MessageBoxImage.Question))
-                {
-                    await updateManager.UpdateApp();
-                    MessageBox.Show($"Update Complete", "Restart Required For the Update To Take Effect");
-                    UpdateManager.RestartApp();
-                }
-                else
-                {
-                    MessageBox.Show("This is the latest version", "No Updates Founds");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"There was a problem while searching for updates\n{ex.Message}", "No Updates Founds");
-            return;
-        }
+        _updatingService.Update();
     }
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

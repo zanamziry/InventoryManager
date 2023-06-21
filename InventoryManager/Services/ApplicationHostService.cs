@@ -22,9 +22,10 @@ public class ApplicationHostService : IHostedService
     private readonly IPersistAndRestoreService _persistAndRestoreService;
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
     private IShellWindow _shellWindow;
+    IUpdatingService _updatingService;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ILanguageSelectorService languageSelector)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ILanguageSelectorService languageSelector, IUpdatingService updatingService)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
@@ -33,6 +34,7 @@ public class ApplicationHostService : IHostedService
         _dBSetup = dBSetup;
         _systemDataGather = systemDataGather;
         _languageSelector = languageSelector;
+        _updatingService = updatingService;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -61,31 +63,11 @@ public class ApplicationHostService : IHostedService
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
             _languageSelector.InitializeLanguage();
-            Updates();
+            _updatingService.Initialize();
+            _updatingService.Update();
         }
     }
-    private async void Updates()
-    {
-        try
-        {
-            var updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/zanamziry/InventoryManager");
-            var updateInfo = await updateManager.CheckForUpdate();
-            if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
-            {
-                if (MessageBoxResult.Yes == MessageBox.Show($"New Update Is Available Do You Want To Update To {updateInfo.ReleasesToApply.First().Version}", "Update Availbable!", MessageBoxButton.YesNo, MessageBoxImage.Question))
-                {
-                    await updateManager.UpdateApp();
-                    MessageBox.Show($"Update Complete", "Restart Required For the Update To Take Effect");
-                    UpdateManager.RestartApp();
-                }
-            }
-        }
-        catch(Exception e)
-        {
-            Debug.WriteLine(e.Message);
-            return;
-        }
-    }
+
     private async Task StartupAsync()
     {
         if (!_isInitialized)

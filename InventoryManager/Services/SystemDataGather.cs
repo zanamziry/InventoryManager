@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows;
 using InventoryManager.Contracts.Services;
 
 namespace InventoryManager.Services
@@ -38,7 +39,15 @@ namespace InventoryManager.Services
         public async Task<string> GetAgentsAsync()
         {
             string url = $"{base_url}/api/agent/?format=json";
-            return await client.GetStringAsync(url);
+            try
+            {
+                return await client.GetStringAsync(url);
+            }
+            catch (Exception s)
+            {
+                MessageBox.Show(s.Message);
+                return "";
+            }
         }
 
         public void LoadSettings()

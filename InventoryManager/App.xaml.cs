@@ -72,6 +72,7 @@ public partial class App : Application
         services.AddSingleton<IDBSetup, DBSetup>();
         services.AddSingleton<ISystemDataGather, SystemDataGather>();
         services.AddSingleton<ILanguageSelectorService, LanguageSelectorService>();
+        services.AddSingleton<IUpdatingService, UpdatingService>();
 
         // Views
         services.AddTransient<IShellWindow, ShellWindow>();
