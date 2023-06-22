@@ -10,46 +10,34 @@ using System.Windows;
 
 namespace InventoryManager.Services
 {
-    public class UpdatingService : IUpdatingService
+    public static class UpdatingService
     {
-        string githubRepo = @"https://github.com/zanamziry/InventoryManager";
-        private UpdateManager manager;
-        public async void Initialize()
+        public static async void Update()
         {
-            if (manager == null)
-                try
-                {
-                    manager = await UpdateManager.GitHubUpdateManager(githubRepo);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"Error Initializing The Update Module\n{e.Message}");
-                }
-        }
-        public async Task Update()
-        {
-            if (manager == null)
-            {
-                MessageBox.Show("Update Manager Not Initialized!");
-                return;
-            }
             try
             {
-                var updateInfo = await manager.CheckForUpdate();
-                if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
+                using (var manager = await UpdateManager.GitHubUpdateManager(@"https://github.com/zanamziry/InventoryManager"))
                 {
-                    if (MessageBoxResult.Yes == MessageBox.Show($"New Update Is Available Do You Want To Update To {updateInfo.ReleasesToApply.First().Version}", "Update Availbable!", MessageBoxButton.YesNo, MessageBoxImage.Question))
+                    var updateInfo = await manager.CheckForUpdate();
+                    if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
                     {
-                        var s = await manager.UpdateApp();
-                        ///TODO: Make A popup to show the progress
-                        /*
-                        while (s.StagingPercentage != null || s.StagingPercentage < 100)
+                        if (MessageBoxResult.Yes == MessageBox.Show($"New Update Is Available Do You Want To Update To {updateInfo.ReleasesToApply.First().Version}", "Update Availbable!", MessageBoxButton.YesNo, MessageBoxImage.Question))
                         {
-                             
+                            var s = await manager.UpdateApp();
+                            ///TODO: Make A popup to show the progress
+                            /*
+                            while (s.StagingPercentage != null || s.StagingPercentage < 100)
+                            {
+
+                            }
+                            */
+                            MessageBox.Show($"Update Complete", "Restart Required For the Update To Take Effect");
+                            UpdateManager.RestartApp();
                         }
-                        */
-                        MessageBox.Show($"Update Complete", "Restart Required For the Update To Take Effect");
-                        UpdateManager.RestartApp();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"This is the latest version", "No Updates Available");
                     }
                 }
             }

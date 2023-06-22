@@ -26,7 +26,6 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private AppTheme _theme;
     private IDBSetup _dBSetup;
     private ILanguageSelectorService _languageSelector;
-    private IUpdatingService _updatingService;
     private Language _selectedLang;
     private string _serverAddress;
     private string _versionDescription;
@@ -68,7 +67,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     }
 
 
-    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector, IUpdatingService updatingService)
+    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         _appConfig = appConfig.Value;
         _systemService = systemService;
@@ -76,7 +75,6 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         _dataGather = dataGather;
         _dBSetup = dBSetup;
         _languageSelector = languageSelector;
-        _updatingService = updatingService;
         languageSelector.InitializeLanguage();
         FlowDirection = languageSelector.Flow;
         DataContext = this;
@@ -113,7 +111,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     }
     private void OnCheckUpdateClicked(object sender, RoutedEventArgs e)
     {
-        _updatingService.Update();
+        UpdatingService.Update();
     }
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

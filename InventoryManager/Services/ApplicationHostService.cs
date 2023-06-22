@@ -22,10 +22,9 @@ public class ApplicationHostService : IHostedService
     private readonly IPersistAndRestoreService _persistAndRestoreService;
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
     private IShellWindow _shellWindow;
-    IUpdatingService _updatingService;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ILanguageSelectorService languageSelector, IUpdatingService updatingService)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ILanguageSelectorService languageSelector)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
@@ -34,7 +33,6 @@ public class ApplicationHostService : IHostedService
         _dBSetup = dBSetup;
         _systemDataGather = systemDataGather;
         _languageSelector = languageSelector;
-        _updatingService = updatingService;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -63,8 +61,7 @@ public class ApplicationHostService : IHostedService
             _dBSetup.InitializeDatabase();
             _systemDataGather.LoadSettings();
             _languageSelector.InitializeLanguage();
-            _updatingService.Initialize();
-            _updatingService.Update();
+            UpdatingService.Update();
         }
     }
 
