@@ -29,6 +29,8 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private Language _selectedLang;
     private string _serverAddress;
     private string _versionDescription;
+    private string Password;
+    private string Username;
 
     public AppTheme Theme
     {
@@ -52,6 +54,22 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
             Set(ref _serverAddress, value);
             _dataGather.SaveSettings(value);
         }
+    }
+
+    public string _username
+    {
+        get { return Username; }
+        set 
+        {
+            Set(ref Username, value);
+            App.Current.Properties['Username'];
+        }
+    }
+
+    public string _password
+    {
+        get { return Password; }
+        set { Set(ref Password ,value); }
     }
 
     public ObservableCollection<Language> Languages { get; set; } = new ObservableCollection<Language>();

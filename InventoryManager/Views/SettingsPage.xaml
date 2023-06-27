@@ -30,6 +30,8 @@
                     Style="{StaticResource SubtitleTextStyle}"
                     Text="{x:Static properties:Resources.Language}" />
                 <ComboBox
+                    HorizontalAlignment="Left"
+                    MinWidth="200"
                     ItemsSource="{Binding Languages, Mode=OneWay}"
                     SelectedItem="{Binding SelectedLang, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     Margin="{StaticResource XSmallTopMargin}"
@@ -43,8 +45,40 @@
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
+                    Text="Login Info" />
+                <DockPanel HorizontalAlignment="Left">
+                    <StackPanel HorizontalAlignment="Left">
+                        <TextBlock 
+                            Text="User"
+                            Style="{StaticResource ListSubTitleStyle}"
+                            Margin="{StaticResource XXSmallTopMargin}"/>
+                        <TextBox
+                            HorizontalAlignment="Left"
+                            MinWidth="200"
+                            Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="{StaticResource XXSmallTopMargin}"
+                            Style="{StaticResource MahApps.Styles.TextBox}" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Margin="{StaticResource XSmallLeftMargin}">
+                        <TextBlock 
+                            Text="Password"
+                            Style="{StaticResource ListSubTitleStyle}"
+                            Margin="{StaticResource XXSmallTopMargin}"/>
+                        <TextBox
+                            HorizontalAlignment="Left"
+                            MinWidth="200"
+                            Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="{StaticResource XXSmallTopMargin}"
+                            Style="{StaticResource MahApps.Styles.TextBox}" />
+                    </StackPanel>
+                </DockPanel>
+                <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Style="{StaticResource SubtitleTextStyle}"
                     Text="{x:Static properties:Resources.SettingsPageServerTitle}" />
                 <TextBox
+                    HorizontalAlignment="Left"
+                    MinWidth="200"
                     Text="{Binding ServerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource MahApps.Styles.TextBox}" />
