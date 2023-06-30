@@ -26,7 +26,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     }
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
-    private Agent _selectedAgent;
+    private ServiceCenter _selectedAgent;
     private DateTime lastUpdated;
     private bool _isLoading;
 
@@ -36,13 +36,13 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         set { Set(ref _isLoading ,value); }
     }
     public bool IsSelected => SelectedAgent != null;
-    public Agent SelectedAgent
+    public ServiceCenter SelectedAgent
     {
         get { return _selectedAgent; }
         set 
         { 
             Set(ref _selectedAgent, value);
-            SaveSetting(_selectedAgent.ID, AgentSettingsKey);
+            SaveSetting(_selectedAgent.id, AgentSettingsKey);
             OnPropertyChanged(nameof(IsSelected));
         }
     }
@@ -62,7 +62,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     private readonly SystemProductsORM SystemORM;
 
     public ObservableCollection<SystemProduct> SystemProducts { get; } = new ObservableCollection<SystemProduct>();
-    public ObservableCollection<Agent> Agents { get; } = new ObservableCollection<Agent>();
+    public ObservableCollection<ServiceCenter> Agents { get; } = new ObservableCollection<ServiceCenter>();
     public event PropertyChangedEventHandler PropertyChanged;
 
     private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
@@ -89,7 +89,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
             IsLoading = true;
             try
             {
-                var s = JsonConvert.DeserializeObject<SystemAPI>(await _dataGather.GetInventoryAsync(SelectedAgent.ID, d));
+                var s = await _dataGather.GetInventoryAsync(SelectedAgent.id, d);
                 if (s != null && s.list != null && s.list.Any())
                 {
                     await SystemORM.DeleteAll();
@@ -118,29 +118,19 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
             }
         });
     }
-    async Task getAgents()
+    async Task getCenters()
     {
         string savedID = GetSavedSetting(AgentSettingsKey);
-        IEnumerable<Agent> listOfAgents = Enumerable.Empty<Agent>();
-        string json = await _dataGather.GetAgentsAsync();
-        if (json == null)
+        IEnumerable<ServiceCenter> listOfAgents = await _dataGather.GetServiceCentersAsync();
+        if (!listOfAgents.Any())
             return;
-        try
-        {
-            listOfAgents = JsonConvert.DeserializeObject<IEnumerable<Agent>>(json);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message);
-            return;
-        }
         Dispatcher.Invoke(() =>
             Agents.Clear());
         foreach (var agent in listOfAgents)
         {
             Dispatcher.Invoke(() =>
                 Agents.Add(agent));
-            if (agent.ID == savedID)
+            if (agent.id == savedID)
             {
                 SelectedAgent = agent;
             }
@@ -158,7 +148,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
                     SystemProducts.Add(item));
         });
         Task.Run(async () =>
-        await getAgents());
+        await getCenters());
     }
     private string GetSavedSetting(string key)
     {
