@@ -90,12 +90,11 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     private async void OnGetLatestListClicked(object sender, RoutedEventArgs e)
     {
-        string json = await _dataGather.GetProductsAsync();
-        if(json != null)
+        List<Product> products = new List<Product>(await _dataGather.GetProductsAsync());
+        if(products != null && products.Count > 0)
         {
             try
             {
-                var products = JsonConvert.DeserializeObject<List<Product>>(json);
                 await ProductsORM.DeleteAll();
                 Source.Clear();
                 foreach (var item in products)
@@ -104,12 +103,14 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
                     await AddView(item);
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("Didnt Find Any Products!");
+                MessageBox.Show(ex.Message);
                 return;
             }
         }
+        else
+            MessageBox.Show("Didnt Find Any Products!");
     }
 
     private void OnGridDoubleClick(object sender, MouseButtonEventArgs e)

@@ -64,14 +64,22 @@
                             Text="Password"
                             Style="{StaticResource ListSubTitleStyle}"
                             Margin="{StaticResource XXSmallTopMargin}"/>
-                        <TextBox
+                        <PasswordBox
+                            x:Name="passField"
                             HorizontalAlignment="Left"
                             MinWidth="200"
-                            Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            PasswordChanged="OnPasswordChanged"
                             Margin="{StaticResource XXSmallTopMargin}"
-                            Style="{StaticResource MahApps.Styles.TextBox}" />
+                            Style="{StaticResource MahApps.Styles.PasswordBox}" />
                     </StackPanel>
                 </DockPanel>
+                <Button
+                    Content="Test Login"
+                    HorizontalAlignment="Left"
+                    Background="CadetBlue"
+                    Foreground="White"
+                    Margin="{StaticResource XXSmallTopMargin}" Click="Button_Click"
+                        />
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
@@ -79,7 +87,7 @@
                 <TextBox
                     HorizontalAlignment="Left"
                     MinWidth="200"
-                    Text="{Binding ServerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ServerAddress, Mode=TwoWay}"
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource MahApps.Styles.TextBox}" />
                 <TextBlock

@@ -41,9 +41,9 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="0">
-                                        <TextBlock Text="{Binding ID}"/>
+                                        <TextBlock Text="{Binding id}"/>
                                         <TextBlock Text=" - "/>
-                                        <TextBlock Text="{Binding Username}"/>
+                                        <TextBlock Text="{Binding name}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>

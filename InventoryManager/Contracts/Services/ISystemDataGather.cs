@@ -1,15 +1,17 @@
-﻿namespace InventoryManager.Contracts.Services
+﻿using InventoryManager.Core.Models;
+
+namespace InventoryManager.Contracts.Services
 {
     public interface ISystemDataGather
     {
-        Task<string> GetInventoryAsync(string id, DateTime date);
-        Task<string> GetProductsAsync();
-        Task<string> GetAgentsAsync();
+        Task<SystemAPI> GetInventoryAsync(string id, DateTime date);
+        Task<IEnumerable<Product>> GetProductsAsync();
+        Task<IEnumerable<ServiceCenter>> GetServiceCentersAsync();
+        Task<bool> TestLogin(string username, string password);
 
-        void LoadSettings();
-        void SaveSettings(string NewUrl);
         string DEFAULT { get; }
-        string SettingsKey { get; }
-        string base_url { get; set; }
+        string BASE_URL { get; set; }
+        string Username { get; set; }
+        string Password { get; set; }
     }
 }

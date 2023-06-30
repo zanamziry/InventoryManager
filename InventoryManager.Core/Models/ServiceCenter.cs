@@ -4,9 +4,9 @@ using System.Text;
 
 namespace InventoryManager.Core.Models
 {
-    public class Agent
+    public class ServiceCenter
     {
-        public string username { get; set; }
-        public string password { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
     }
 }

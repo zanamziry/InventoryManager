@@ -59,7 +59,6 @@ public class ApplicationHostService : IHostedService
         {
             _persistAndRestoreService.RestoreData();
             _dBSetup.InitializeDatabase();
-            _systemDataGather.LoadSettings();
             _languageSelector.InitializeLanguage();
             UpdatingService.Update();
         }

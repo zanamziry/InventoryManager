@@ -29,21 +29,21 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private Language _selectedLang;
     private string _serverAddress;
     private string _versionDescription;
-    private string Password;
-    private string Username;
+    private string _password;
+    private string _username;
 
+    public ObservableCollection<Language> Languages { get; set; } = new ObservableCollection<Language>();
+    public event PropertyChangedEventHandler PropertyChanged;
     public AppTheme Theme
     {
         get { return _theme; }
         set { Set(ref _theme, value); }
     }
-
     public string VersionDescription
     {
         get { return _versionDescription; }
         set { Set(ref _versionDescription, value); }
     }
-
     public string ServerAddress
     {
         get { return _serverAddress; }
@@ -52,28 +52,27 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
             if (string.IsNullOrEmpty(value) || !v.IsMatch(value))
                 value = _dataGather.DEFAULT;
             Set(ref _serverAddress, value);
-            _dataGather.SaveSettings(value);
+            _dataGather.BASE_URL = value;
         }
     }
-
-    public string _username
+    public string Username
     {
-        get { return Username; }
+        get { return _username; }
         set 
         {
-            Set(ref Username, value);
-            App.Current.Properties['Username'];
+            Set(ref _username, value);
+            _dataGather.Username = value;
         }
     }
-
-    public string _password
+    public string Password
     {
-        get { return Password; }
-        set { Set(ref Password ,value); }
+        get { return _password; }
+        set 
+        { 
+            Set(ref _password ,value);
+            _dataGather.Password = value;
+        }
     }
-
-    public ObservableCollection<Language> Languages { get; set; } = new ObservableCollection<Language>();
-
     public Language SelectedLang
     {
         get { return _selectedLang; }
@@ -83,8 +82,6 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
             _languageSelector.SetLanguagePreferences(value);
         }
     }
-
-
     public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         _appConfig = appConfig.Value;
@@ -95,28 +92,25 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         _languageSelector = languageSelector;
         languageSelector.InitializeLanguage();
         FlowDirection = languageSelector.Flow;
-        DataContext = this;
         InitializeComponent();
     }
-
     public void OnNavigatedTo(object parameter)
     {
         VersionDescription = $"{Properties.Resources.AppDisplayName} - {_applicationInfoService.GetVersion()}";
-        ServerAddress = _dataGather.base_url;
+        ServerAddress = _dataGather.BASE_URL;
+        Username = _dataGather.Username;
+        Password = _dataGather.Password;
+        passField.Password = Password;
         SelectedLang = _languageSelector.PreferedLang;
         Languages = new ObservableCollection<Language>(_languageSelector.Languages);
         OnPropertyChanged(nameof(Languages));
     }
-
     public void OnNavigatedFrom()
     {
     }
 
     private void OnPrivacyStatementClick(object sender, RoutedEventArgs e)
         => _systemService.OpenInWebBrowser(_appConfig.PrivacyStatement);
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
     private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
     {
         if (Equals(storage, value))
@@ -131,12 +125,26 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     {
         UpdatingService.Update();
     }
-
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
     private void OnDeleteAllClicked(object sender, RoutedEventArgs e)
     {
         _dBSetup.DropTables();
         _dBSetup.CreateTables();
+    }
+    private void OnPasswordChanged(object sender, RoutedEventArgs e)
+    {
+        if(e.Source is PasswordBox pb)
+        {
+            Password = pb.Password;
+        }
+    }
+
+    private async void Button_Click(object sender, RoutedEventArgs e)
+    {
+        var result = await _dataGather.TestLogin(Username, Password);
+        if (result)
+            MessageBox.Show("Login Successful","Result",MessageBoxButton.OK);
+        else
+            MessageBox.Show("Login Failed", "Result", MessageBoxButton.OK,MessageBoxImage.Warning);
     }
 }
