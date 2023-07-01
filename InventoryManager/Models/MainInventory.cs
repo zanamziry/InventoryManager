@@ -37,19 +37,21 @@ namespace InventoryManager.Models
                 return $"{outsideNote} ### {giftNote}";
             }
         }
-        public DateTime NearestExp
+        public DateTime? NearestExp
         {
             get
             {
-                DateTime NearestDate = DateTime.MaxValue;
+                DateTime? NearestDate = null;
                 var nearestByDays = DateTime.MaxValue.Subtract(DateTime.Now);
                 foreach (var item in Locals)
                 {
-                    var i = item.ExpireDate.Subtract(DateTime.Now);
+                    if (item.ExpireDate == null)
+                        continue;
+                    var i = item.ExpireDate?.Subtract(DateTime.Now);
                     if (i < nearestByDays)
                     {
                         NearestDate = item.ExpireDate;
-                        nearestByDays = i;
+                        nearestByDays = (TimeSpan)i;
                     }
                 }
                 return NearestDate;

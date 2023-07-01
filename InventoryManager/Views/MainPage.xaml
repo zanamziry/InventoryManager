@@ -65,7 +65,7 @@
                                     <mt:PackIcon Width="14" Kind="PackageVariant"/>
                                     <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="10" Text="{x:Static properties:Resources.MainPageOutsideLabel}"/>
                                 </DockPanel>
-                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat=C, Mode=OneWay}"/>
+                                <TextBlock d:Text="$450.3" TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding SoldMoney,StringFormat=C, Mode=OneWay}"/>
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="1" CornerRadius="10" Margin="{StaticResource SmallTopMargin}" Background="{StaticResource MahApps.Brushes.Gray9}" Width="100" Height="70">
@@ -74,12 +74,12 @@
                                     <mt:PackIcon Width="14" Kind="GiftOutline"/>
                                     <TextBlock Margin="5,0" VerticalAlignment="Center" FontSize="10" Text="{x:Static properties:Resources.MainPageGiftsLabel}"/>
                                 </DockPanel>
-                                <TextBlock TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding GiftPoints,StringFormat={}{0:0.0}, Mode=OneWay}"/>
+                                <TextBlock d:Text="300.5" TextAlignment="Center" FontWeight="SemiBold" FontSize="14" Text="{Binding GiftPoints,StringFormat={}{0:0.0}, Mode=OneWay}"/>
                             </StackPanel>
                         </Border>
                     </Grid>
                 </StackPanel>
-                <DataGrid Grid.Column="1" IsReadOnly="True" x:Name="GridOfProducts" ItemsSource="{Binding Source}" MouseDoubleClick="OnGridDoubleClick">
+                <DataGrid d:ItemsSource="{d:SampleData}" Grid.Column="1" IsReadOnly="True" x:Name="GridOfProducts" ItemsSource="{Binding Source}" Margin="{StaticResource SmallRightMargin}" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Product Name" Width="150">
                             <DataGridTemplateColumn.CellTemplate>

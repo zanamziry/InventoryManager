@@ -40,9 +40,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="{StaticResource SmallLeftTopRightBottomMargin}">
-                    <TextBlock Text="{Binding SelectedProduct.Product.Name}" TextAlignment="Left" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
-                    <TextBlock Text="{Binding SelectedProduct.Product.ID}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
-                    <TextBlock Text="{Binding SelectedProduct.Product.Price}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock d:Text="Ganozhi Toothpaste" Text="{Binding SelectedProduct.Product.Name}" TextAlignment="Left" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock d:Text="PC006" Text="{Binding SelectedProduct.Product.ID}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
+                    <TextBlock d:Text="$7.2" Text="{Binding SelectedProduct.Product.Price}" TextAlignment="Left" HorizontalAlignment="Stretch" FontSize="14" Style="{StaticResource SubtitleTextStyle}" Margin="0,3"/>
                     <Grid HorizontalAlignment="Stretch" FlowDirection="LeftToRight" Margin="{StaticResource SmallTopMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -86,28 +86,33 @@
                         </DockPanel>
                     </Button>
                 </StackPanel>
-                <Grid Grid.Column="1">
+                <Grid Grid.Column="1" Margin="{StaticResource SmallRightMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="70"/>
                     </Grid.RowDefinitions>
-                    <DataGrid x:Name="GridOfInventory" CellEditEnding="OnCellEdited" SelectionChanged="GridOfInventory_SelectionChanged" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
+                    <DataGrid d:ItemsSource="{d:SampleData}" x:Name="GridOfInventory" CellEditEnding="OnCellEdited" SelectionChanged="GridOfInventory_SelectionChanged" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding ID}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}" Width="65"/>
                             <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
                             <DataGridTextColumn Header="Open" Binding="{Binding Open}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
                             <DataGridTextColumn Header="Total" IsReadOnly="True" Binding="{Binding Total}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                            <DataGridTextColumn Header="ExpireDate" Binding="{Binding ExpireDate, StringFormat='{}{0:M/yyyy}'}" HeaderStyle="{StaticResource GDHeaderStyle}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="Background" Value="{Binding ExpireDate, Converter={StaticResource ExpireToColorConverter}}"/>
-                                        <Setter Property="Foreground" Value="#df000000"/>
-                                        <Setter Property="FontWeight" Value="SemiBold"/>
-                                        <Setter Property="TextAlignment" Value="Center"/>
-                                        <Setter Property="Padding" Value="6.5"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Header="ExpireDate" HeaderStyle="{StaticResource GDHeaderStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding ExpireDate}" SelectedDateFormat="Short" SelectedDateChanged="DatePicker_SelectedDateChanged">
+                                            <DatePicker.Style>
+                                                <Style TargetType="{x:Type DatePicker}">
+                                                    <Setter Property="Background" Value="{Binding ExpireDate, Converter={StaticResource ExpireToColorConverter}}"/>
+                                                    <Setter Property="Foreground" Value="#df000000"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="Padding" Value="0"/>
+                                                </Style>
+                                            </DatePicker.Style>
+                                        </DatePicker>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -121,23 +126,23 @@
                         </Grid.ColumnDefinitions>
                         <DockPanel Grid.Column="0">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageSystemLabel}"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.System.CloseBalance,Mode=OneWay}"/>
+                            <TextBox d:Text="5" TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.System.CloseBalance,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="1" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageOutsideLabel}"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.RemainingOutside,Mode=OneWay}"/>
+                            <TextBox d:Text="5" TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.RemainingOutside,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="2" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageGivenAwayLabel}"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalGivenAway,Mode=OneWay}"/>
+                            <TextBox d:Text="5" TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalGivenAway,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="3" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageRealLabel}"/>
-                            <TextBox TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalReal,Mode=OneWay}"/>
+                            <TextBox d:Text="5" TextAlignment="Center" IsReadOnly="True" Text="{Binding SelectedProduct.TotalReal,Mode=OneWay}"/>
                         </DockPanel>
                         <DockPanel Grid.Column="4" Margin="{StaticResource SmallLeftMargin}">
                             <TextBlock Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="2" TextAlignment="Center" DockPanel.Dock="Top" Text="{x:Static properties:Resources.InventoryPageResultLabel}"/>
-                            <TextBox IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}">
+                            <TextBox d:Text="25" IsReadOnly="True" Text="{Binding SelectedProduct.Result,Mode=OneWay}">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
                                         <Setter Property="FontWeight" Value="Bold"/>
@@ -166,7 +171,7 @@
                 <TextBlock Text="Open" Margin="0,3"/>
                 <TextBox x:Name="OpenAmount" Text="0" PreviewTextInput="OpenAmount_PreviewTextInput"/>
                 <TextBlock Text="ExpireDate" Margin="0,3"/>
-                <DatePicker x:Name="ProductExpire" SelectedDateFormat="Short" />
+                <DatePicker x:Name="ProductExpire" SelectedDateFormat="Short"/>
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

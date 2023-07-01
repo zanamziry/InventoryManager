@@ -239,7 +239,10 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             ws.Cells[i, 6].Value = item.Result;
             ws.Cells[i, 6].Style = cellstyle;
 
-            ws.Cells[i, 7].Value = item.NearestExp.ToString("M/yyyy");
+            if(item.NearestExp == null)
+                ws.Cells[i, 7].Value = "";
+            else
+                ws.Cells[i, 7].Value = item.NearestExp?.ToString("M/yyyy");
             ws.Cells[i, 7].Style = cellstyle;
 
             ws.Cells[i, 8].Value = item.Note;
