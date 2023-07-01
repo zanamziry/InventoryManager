@@ -30,12 +30,14 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
         givenAwayORM = _dBSetup.GetTable<GivenAwayORM>();
-        languageSelector.InitializeLanguage();
-        FlowDirection = languageSelector.Flow;
+        _languageSelector = languageSelector;
+        _languageSelector.InitializeLanguage();
+        FlowDirection = _languageSelector.Flow;
         InitializeComponent();
     }
 
     private IList<MainInventory> Inventories = new List<MainInventory>();
+    private ILanguageSelectorService _languageSelector;
     private readonly LocalInventoryORM InventoryORM;
     private readonly SentOutsideORM outsideORM;
     private readonly GivenAwayORM givenAwayORM;
@@ -203,37 +205,31 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         }
         if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
         {
-            if (e.Row.DataContext is LocalInventory l && e.EditingElement is TextBox tb && e.Column.Header is string header)
+            if (e.Row.DataContext is LocalInventory l)
             {
-                switch (header)
-                {
-                    case nameof(LocalInventory.Inventory):
-                        {
-                            if (int.TryParse(tb.Text, out int a))
-                                l.Inventory = a;
-                            else l.Inventory = 0;
-                            break;
-                        }
-                    case nameof(LocalInventory.Open):
-                        {
-                            if(int.TryParse(tb.Text, out int b))
-                                l.Open = b;
-                            else l.Open = 0;
-                            break;
-                        }
-                    case nameof(LocalInventory.ExpireDate):
-                        {
-                            if (DateTime.TryParse(tb.Text, out DateTime c))
-                                l.ExpireDate = c;
-                            else l.ExpireDate = DateTime.MaxValue;
-                            break;
-                        }
-                    case nameof(LocalInventory.Note):
-                        {
-                            l.Note = tb.Text;
-                            break;
-                        }
-                }
+                if (e.EditingElement is TextBox tb && e.Column.Header is string header)
+                    switch (header)
+                    {
+                        case nameof(LocalInventory.Inventory):
+                            {
+                                if (int.TryParse(tb.Text, out int a))
+                                    l.Inventory = a;
+                                else l.Inventory = 0;
+                                break;
+                            }
+                        case nameof(LocalInventory.Open):
+                            {
+                                if (int.TryParse(tb.Text, out int b))
+                                    l.Open = b;
+                                else l.Open = 0;
+                                break;
+                            }
+                        case nameof(LocalInventory.Note):
+                            {
+                                l.Note = tb.Text;
+                                break;
+                            }
+                    }
                 try
                 {
                     await InventoryORM.Update(l);
@@ -262,8 +258,8 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
         if (CanAdd())
         {
-            DateTime.TryParse(ProductExpire.Text, out DateTime r);
-            await AddInventory(new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = r });
+            var newLocal = new LocalInventory { ProductID = SelectedProduct.Product.ID, Inventory = int.Parse(InventoryAmount.Text), Open = int.Parse(OpenAmount.Text), ExpireDate = ProductExpire.SelectedDate };
+            await AddInventory(newLocal);
             ToggleAdd.IsChecked = false;
         }
     }
@@ -345,5 +341,26 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private void GridOfInventory_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         UpdateUI();
+    }
+
+    private async void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if(sender is DatePicker dateSelected && dateSelected.DataContext is LocalInventory localInventory)
+        {
+            if (dateSelected.SelectedDate == localInventory.ExpireDate)
+                return;
+            int i = SelectedProduct.Locals.IndexOf(localInventory);
+            localInventory.ExpireDate = dateSelected.SelectedDate;
+            SelectedProduct.Locals[i].ExpireDate = localInventory.ExpireDate;
+            try
+            {
+                await InventoryORM.Update(localInventory);
+                SelectedProduct.Locals[i].OnRealChanged();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Database Error");
+            }
+        }
     }
 }

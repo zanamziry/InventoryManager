@@ -47,7 +47,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Grid Grid.Column="1">
+                <Grid Grid.Column="1" Margin="{StaticResource SmallRightMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="50"/>
@@ -65,7 +65,7 @@
                 </DataGrid>
                     <DockPanel Grid.Row="1">
                         <TextBlock Text="{x:Static properties:Resources.SentOutsideTotalSold}" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
-                        <TextBlock Text="{Binding TotalPrice,Mode=OneWay, StringFormat=C2}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
+                        <TextBlock d:Text="$100.7" Text="{Binding TotalPrice,Mode=OneWay, StringFormat=C2}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Padding="10,0"/>
                     </DockPanel>
                 </Grid>
             </Grid>
