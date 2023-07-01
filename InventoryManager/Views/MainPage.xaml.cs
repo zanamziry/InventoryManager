@@ -86,6 +86,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     {
         await ProductsORM.DeleteAll();
         Source.Clear();
+        UpdateUI();
     }
 
     private async void OnGetLatestListClicked(object sender, RoutedEventArgs e)
@@ -124,21 +125,23 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
     async Task AddView(Product p)
     {
 
-            IEnumerable<LocalInventory> localDB = await LocalORM.SelectProduct(p);
-            var newMain = new MainInventory
-            {
-                Product = p,
-                System = await SystemORM.SelectProduct(p),
-                GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
-                Locals = new ObservableCollection<LocalInventory>(localDB),
-                SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p))
-            };
-            this.Dispatcher.Invoke(() =>
-                Source.Add(newMain));
+        IEnumerable<LocalInventory> localDB = await LocalORM.SelectProduct(p);
+        var newMain = new MainInventory
+        {
+            Product = p,
+            System = await SystemORM.SelectProduct(p),
+            GivenAways = new ObservableCollection<GivenAway>(await GivenORM.SelectByProduct(p)),
+            Locals = new ObservableCollection<LocalInventory>(localDB),
+            SentOutsides = new ObservableCollection<SentOutside>(await OutsideORM.SelectByProduct(p))
+        };
+        this.Dispatcher.Invoke(() =>
+        {
+            Source.Add(newMain);
+            UpdateUI();
+        });
     }
     async void INavigationAware.OnNavigatedTo(object parameter)
     {
-        Source.CollectionChanged += Source_CollectionChanged;
         Source.Clear();
         await Task.Run(async () =>
         {
@@ -149,7 +152,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         });
     }
 
-    private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void UpdateUI()
     {
         OnPropertyChanged(nameof(SoldMoney));
         OnPropertyChanged(nameof(GiftMoney));
@@ -159,7 +162,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
     void INavigationAware.OnNavigatedFrom()
     {
-        Source.CollectionChanged -= Source_CollectionChanged;
+
     }
     
     #region Excel Exportation
@@ -261,10 +264,5 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         xl.Protected = true;
         xl.Save(sd.FileName);
         #endregion
-    }
-
-    private void Page_KeyUp(object sender, KeyEventArgs e)
-    {
-
     }
 }

@@ -63,6 +63,7 @@ namespace InventoryManager.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalGivenAway)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalOutside)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalSoldOutside)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemainingOutside)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalReal)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalOpen)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalInv)));

@@ -91,7 +91,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="70"/>
                     </Grid.RowDefinitions>
-                    <DataGrid x:Name="GridOfInventory" CellEditEnding="OnCellEdited" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
+                    <DataGrid x:Name="GridOfInventory" CellEditEnding="OnCellEdited" SelectionChanged="GridOfInventory_SelectionChanged" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding ID}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}" Width="65"/>
                             <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
