@@ -26,7 +26,6 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
 
     public InventoryPage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
-        DataContext = this;
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
         outsideORM = _dBSetup.GetTable<SentOutsideORM>();
@@ -91,6 +90,13 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         get { return _selectedProduct; }
         set { Set(ref _selectedProduct, value); }
     }
+    void UpdateUI()
+    {
+        GotoNext.OnCanExecuteChanged();
+        GotoPrevious.OnCanExecuteChanged();
+        SelectedProduct.OnPropertyChanged();
+        IsButtonEnabled = SelectedProduct.Locals.Count > 0 && SelectedInv != null;
+    }
     bool CanNext()
     {
         if (Inventories.Count > 1 && Inventories.Last() != SelectedProduct)
@@ -110,8 +116,9 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         {
             foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
                 await Dispatcher.BeginInvoke(() =>
-            SelectedProduct.Locals.Add(item));
+                SelectedProduct.Locals.Add(item));
         });
+        UpdateUI();
     }
     bool CanPrevious()
     {
@@ -119,13 +126,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
             return true;
         return false;
     }
-    void UpdateUI()
-    {
-        GotoNext.OnCanExecuteChanged();
-        GotoPrevious.OnCanExecuteChanged();
-        SelectedProduct.OnPropertyChanged();
-        IsButtonEnabled = SelectedProduct.Locals.Count > 0 && SelectedInv != null;
-    }
+
     async void Previous()
     {
         int s = Inventories.IndexOf(SelectedProduct);
@@ -138,10 +139,10 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         {
             foreach (var item in await InventoryORM.SelectProduct(SelectedProduct.Product))
                 await Dispatcher.BeginInvoke(() =>
-            SelectedProduct.Locals.Add(item));
+                    SelectedProduct.Locals.Add(item));
         });
+        UpdateUI();
     }
-
     async Task AddInventory(LocalInventory value)
     {
         if (SelectedProduct.Locals.Contains(value))
@@ -149,6 +150,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         try
         {
             SelectedProduct.Locals.Add(await InventoryORM.Insert(value));
+            UpdateUI();
         }
         catch (SqliteException ex)
         {
@@ -175,6 +177,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     {
         await InventoryORM.Delete(p);
         SelectedProduct.Locals.Remove(p);
+        UpdateUI();
     }
 
     void INavigationAware.OnNavigatedTo(object parameter)
@@ -182,20 +185,14 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         if ((parameter as dynamic).SelectedProduct is MainInventory p && (parameter as dynamic).Source is ObservableCollection<MainInventory> s)
         {
             SelectedProduct = p;
-            SelectedProduct.Locals.CollectionChanged += Locals_CollectionChanged;   
             Inventories = s.ToList();
             UpdateUI();
         }
     }
 
-    private void Locals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        UpdateUI();
-    }
 
     void INavigationAware.OnNavigatedFrom()
     {
-        SelectedProduct.Locals.CollectionChanged -= Locals_CollectionChanged;
     }
 
     async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
@@ -317,6 +314,7 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         SelectedProduct.SentOutsides.Add(outside);
         AmountToSend.Text = "0";
         ToggleSend.IsChecked = false;
+        UpdateUI();
     }
     void OnCancelSendClicked(object sender, RoutedEventArgs e)
     {
@@ -342,5 +340,10 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     void AmountToGive_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out int r);
+    }
+
+    private void GridOfInventory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        UpdateUI();
     }
 }
