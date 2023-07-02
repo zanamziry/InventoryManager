@@ -70,8 +70,8 @@ namespace InventoryManager.Services
             {
                 if (string.IsNullOrEmpty(_password))
                 {
-                    if (App.Current.Properties.Contains(UserSettingsKey))
-                        _password = App.Current.Properties[UserSettingsKey].ToString();
+                    if (App.Current.Properties.Contains(PassSettingsKey))
+                        _password = App.Current.Properties[PassSettingsKey].ToString();
                     else _password = "";
                 }
                 return _password;
