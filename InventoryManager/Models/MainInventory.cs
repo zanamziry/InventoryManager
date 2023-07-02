@@ -27,14 +27,18 @@ namespace InventoryManager.Models
                 string outsideNote = "";
                 foreach(var i in SentOutsides)
                 {
+                    if (i.Remaining == 0)
+                        continue;
                     outsideNote += $"({i.Remaining} في {i.Location})";
                 }
                 string giftNote = "";
                 foreach (var i in GivenAways)
                 {
+                    if (i.Amount == 0)
+                        continue;
                     giftNote += $"({i.Amount} عرض {i.Event})";
                 }
-                return $"{outsideNote} ### {giftNote}";
+                return $"{outsideNote} # {giftNote}";
             }
         }
         public DateTime? NearestExp
