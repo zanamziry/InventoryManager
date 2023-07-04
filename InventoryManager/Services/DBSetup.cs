@@ -45,6 +45,10 @@ namespace InventoryManager.Services {
             }
             var dataAccess = new DataAccess(ConnectionString);
             CreateTables(dataAccess);
+            foreach (ITable table in _listOfTables.Values)
+            {
+                table.Create();
+            }
         }
 
         private void SaveConnectionString(string ConnectionStr) => App.Current.Properties[preferenceKey] = ConnectionStr;
