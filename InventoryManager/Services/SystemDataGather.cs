@@ -103,8 +103,9 @@ namespace InventoryManager.Services
                 resp = await client.PostAsync(url, content);
                 return JsonConvert.DeserializeObject<SystemAPI>(await resp.Content.ReadAsStringAsync());
             }
-            catch
+            catch(Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 return null;
             }
         }
@@ -117,18 +118,18 @@ namespace InventoryManager.Services
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            string resp = "";
             string url = $"{BASE_URL}/api/?format=json";
             IEnumerable<Product> products;
             using HttpClient client = new();
             try
             {
-                resp = await client.GetStringAsync(url);
+                string resp = await client.GetStringAsync(url);
                 products = JsonConvert.DeserializeObject<IEnumerable<Product>>(resp);
             }
-            catch
+            catch (Exception ex)
             {
                 products = Enumerable.Empty<Product>();
+                MessageBox.Show(ex.Message);
             }
             return products;
         }
@@ -144,10 +145,10 @@ namespace InventoryManager.Services
                     var resp = await client.GetStringAsync(url);
                     centers = JsonConvert.DeserializeObject<IEnumerable<ServiceCenter>>(resp);
                 }
-                catch (Exception s)
+                catch (Exception ex)
                 {
                     centers = Enumerable.Empty<ServiceCenter>();
-                    MessageBox.Show(s.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
             return centers;
@@ -155,7 +156,6 @@ namespace InventoryManager.Services
 
         public async Task<bool> TestLogin(string user, string passwd)
         {
-            string result = "";
             string url = $"{BASE_URL}/api/testLogin/";
             var agent = new Agent
             {
@@ -167,8 +167,7 @@ namespace InventoryManager.Services
             content.Headers.ContentType =new MediaTypeHeaderValue("application/json");
             using HttpClient client = new();
             using HttpResponseMessage resp = await client.PostAsync(url, content);
-            result = await resp.Content.ReadAsStringAsync();
-            Debug.WriteLine(result);
+            string result = await resp.Content.ReadAsStringAsync();
             if (bool.TryParse(result, out bool resultOfLogin))
                 return resultOfLogin;
             else return false;
