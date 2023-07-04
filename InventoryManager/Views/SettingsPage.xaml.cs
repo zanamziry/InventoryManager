@@ -12,6 +12,7 @@ using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Models;
 using InventoryManager.Services;
 using Microsoft.Extensions.Options;
+using SQLClient;
 using Squirrel;
 
 namespace InventoryManager.Views;
@@ -129,7 +130,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private void OnDeleteAllClicked(object sender, RoutedEventArgs e)
     {
         _dBSetup.DropTables();
-        _dBSetup.CreateTables();
+        _dBSetup.CreateTables(new DataAccess(_dBSetup.ConnectionString));
     }
     private void OnPasswordChanged(object sender, RoutedEventArgs e)
     {

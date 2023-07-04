@@ -15,7 +15,6 @@ namespace InventoryManager.Services {
         private const string DBName = "SystemData.db";
         private readonly string _localFolder;
         private string _connectionStr;
-        public IDataAccess dataAccess { get; private set; }
 
         public string ConnectionString
         {
@@ -44,14 +43,18 @@ namespace InventoryManager.Services {
                 };
                 ConnectionString = CSBuilder.ConnectionString;
             }
-            dataAccess = new DataAccess(ConnectionString);
-            CreateTables();
+            var dataAccess = new DataAccess(ConnectionString);
+            CreateTables(dataAccess);
+            foreach (ITable table in _listOfTables.Values)
+            {
+                table.Create();
+            }
         }
 
         private void SaveConnectionString(string ConnectionStr) => App.Current.Properties[preferenceKey] = ConnectionStr;
         private string LoadConnectionString() => App.Current.Properties.Contains(preferenceKey) ? (string)App.Current.Properties[preferenceKey] : null;
         
-        public void CreateTables() {
+        public void CreateTables(IDataAccess dataAccess) {
 
             //TODO: Add your Database Tables here, and place them correctly based on the connection between 
             Configure(new ProductsORM(dataAccess));
