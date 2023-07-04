@@ -15,6 +15,8 @@ using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using InventoryManager.Helpers;
 using InventoryManager.Models;
+using Microsoft.Extensions.Logging;
+using NuGet;
 
 namespace InventoryManager.Views;
 
@@ -32,6 +34,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         InitializeComponent();
     }
     public ObservableCollection<string> Locations { get; } = new ObservableCollection<string>();
+    public List<SentOutside> AllSent { get; private set; } = new List<SentOutside>();
     public ObservableCollection<SentOutDisplay> Source { get; } = new ObservableCollection<SentOutDisplay>();
     private readonly SentOutsideORM outsideORM;
     private readonly ProductsORM productsORM;
@@ -70,23 +73,17 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         Locations.Clear();
         Task.Run(async () =>
         {
+            AllSent = new List<SentOutside>(await outsideORM.SelectAll());
             foreach (var item in await outsideORM.SelectAllLocations())
             {
                 await Dispatcher.BeginInvoke(() =>
                     Locations.Add(item));
             }
         });
-        Source.CollectionChanged += Source_CollectionChanged;
-    }
-
-    private void Source_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        OnPropertyChanged(nameof(TotalPrice));
     }
 
     void INavigationAware.OnNavigatedFrom()
     {
-        Source.CollectionChanged -= Source_CollectionChanged;
     }
 
     void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -98,7 +95,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
             Source.Clear();
             Task.Run(async () =>
             {
-                foreach (var i in await outsideORM.SelectByLocation(s))
+                foreach (var i in AllSent.Where(o => o.Location == s))
                 {
                     SentOutDisplay OutDisplay = new SentOutDisplay();
                     OutDisplay.Product = await productsORM.GetByID(i.ProductID);
@@ -106,6 +103,7 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                     Dispatcher.Invoke(() =>
                     Source.Add(OutDisplay));
                 }
+                OnPropertyChanged(nameof(TotalPrice));
             });
         }
     }
@@ -113,6 +111,10 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
     {
         await outsideORM.Delete(p.Outside);
         Source.Remove(p);
+        AllSent.Remove(p.Outside);
+        if (Source.Count < 1)
+            Locations.RemoveAll(o => o == p.Outside.Location);
+        OnPropertyChanged(nameof(TotalPrice));
     }
 
     async void OnKeyUp(object sender, KeyEventArgs e)

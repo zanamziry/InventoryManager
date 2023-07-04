@@ -10,6 +10,7 @@ using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using InventoryManager.Models;
+using NuGet;
 
 namespace InventoryManager.Views;
 
@@ -26,17 +27,13 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         FlowDirection = languageSelector.Flow;
         InitializeComponent();
     }
-    private decimal _totalPV;
 
-    public decimal TotalPV
-    {
-        get { return _totalPV; }
-        set { Set(ref _totalPV ,value); }
-    }
+    public decimal TotalPV => SelectedGiveAways.Sum(o => o.Product.PV * o.GivenAway.Amount); 
 
     public ObservableCollection<GivenAway> Events { get; } = new ObservableCollection<GivenAway>();
     public ObservableCollection<GiftDisplay> SelectedGiveAways { get; } = new ObservableCollection<GiftDisplay>();
     public List<Product> Products { get; private set; } = new List<Product>();
+    public List<GivenAway> AllGiveAways { get; private set; } = new List<GivenAway>();
 
     private readonly GivenAwayORM giveawayORM;
     private readonly ProductsORM productsORM;
@@ -54,23 +51,21 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         storage = value;
         OnPropertyChanged(propertyName);
     }
-    void INavigationAware.OnNavigatedTo(object parameter)
+    async void INavigationAware.OnNavigatedTo(object parameter)
     {
         Events.Clear();
         Products.Clear();
-        Task.Run(async () =>
+        await Task.Run(async () =>
         {
+            Products = new List<Product>(await productsORM.SelectAll());
+            AllGiveAways = new List<GivenAway>(await giveawayORM.SelectAll());
             foreach (var item in await giveawayORM.SelectAllEvents())
             {
                 Dispatcher.Invoke(() =>
                     Events.Add(item));
             }
-            foreach (var i in await productsORM.SelectAll())
-            {
-                Dispatcher.Invoke(() =>
-                    Products.Add(i));
-            }
         });
+        OnPropertyChanged(nameof(TotalPV));
     }
 
     void INavigationAware.OnNavigatedFrom()
@@ -85,9 +80,9 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
         if (sender is ListView listView && listView.SelectedItem is GivenAway s)
         {
             SelectedGiveAways.Clear();
-            await Task.Run(async() =>
+            await Task.Run(() =>
             {
-                foreach (var i in await giveawayORM.SelectByEvent(s))
+                foreach (var i in AllGiveAways.Where(o=>o.Date == s.Date && o.Event == s.Event))
                 {
                     var giftDisplay = new GiftDisplay
                     {
@@ -98,14 +93,17 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
                         SelectedGiveAways.Add(giftDisplay));
                 }
             });
-            TotalPV = 0;
-            TotalPV += SelectedGiveAways.Sum(o => o.Product.PV * o.GivenAway.Amount);
+            OnPropertyChanged(nameof(TotalPV));
         }
     }
     async Task Remove(GiftDisplay p)
     {
         await giveawayORM.Delete(p.GivenAway);
         SelectedGiveAways.Remove(p);
+        AllGiveAways.Remove(p.GivenAway);
+        if (SelectedGiveAways.Count < 1)
+            Events.RemoveAll(o => o.Event == p.GivenAway.Event);
+        OnPropertyChanged(nameof(TotalPV));
     }
 
     async void OnKeyUp(object sender, KeyEventArgs e)

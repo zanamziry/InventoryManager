@@ -27,7 +27,7 @@ namespace InventoryManager.Core.Services {
         }
 
         public override async Task<GivenAway> Insert(GivenAway param) {
-            string cmd = $"INSERT INTO {nameof(GivenAway)} ({nameof(GivenAway.ProductID)}, {nameof(GivenAway.Amount)}, {nameof(GivenAway.Event)}, {nameof(GivenAway.Date)}) values(@{nameof(GivenAway.ProductID)}, @{nameof(GivenAway.Amount)}, @{nameof(GivenAway.Event)}, @{nameof(param.Date)}';";
+            string cmd = $"INSERT INTO {nameof(GivenAway)} ({nameof(GivenAway.ProductID)}, {nameof(GivenAway.Amount)}, {nameof(GivenAway.Event)}, {nameof(GivenAway.Date)}) values(@{nameof(GivenAway.ProductID)}, @{nameof(GivenAway.Amount)}, @{nameof(GivenAway.Event)}, @{nameof(GivenAway.Date)});";
             await _dataAccess.ExecuteAsync(cmd, param);
             param.ID = await LastInput();
             return param;
@@ -48,7 +48,7 @@ namespace InventoryManager.Core.Services {
 
         public async Task<IEnumerable<GivenAway>> SelectByEvent(GivenAway giveaway)
         {
-            string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.Event)} = @{nameof(giveaway.Event)} AND {nameof(GivenAway.Date)} = @{nameof(giveaway.Date)}";
+            string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.Event)} = @{nameof(giveaway.Event)} AND {nameof(GivenAway.Date)} = @{nameof(GivenAway.Date)};";
             var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd, giveaway);
             return products;
         }
