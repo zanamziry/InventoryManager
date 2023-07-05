@@ -177,8 +177,8 @@
   <data name="GiveAwayPageTitle" xml:space="preserve">
     <value>Gifts</value>
   </data>
-  <data name="SystemInventoryAgentLabel" xml:space="preserve">
-    <value>Agent</value>
+  <data name="SystemInventoryServiceCenterLabel" xml:space="preserve">
+    <value>Service Center</value>
   </data>
   <data name="SystemInventoryFetchData" xml:space="preserve">
     <value>Fetching Data...</value>
@@ -359,5 +359,26 @@
   </data>
   <data name="MainPageExpireTitle" xml:space="preserve">
     <value>Expire</value>
+  </data>
+  <data name="SettingsPageLoginTest" xml:space="preserve">
+    <value>Login Test</value>
+  </data>
+  <data name="SettingsPageLoginTitle" xml:space="preserve">
+    <value>User Credentials</value>
+  </data>
+  <data name="SettingsPagePassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SettingsPageUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="SystemInventoryCloseBalance" xml:space="preserve">
+    <value>Close Balance</value>
+  </data>
+  <data name="SystemInventoryOpenBalance" xml:space="preserve">
+    <value>Open Balance</value>
+  </data>
+  <data name="SystemInventorySoldQuantity" xml:space="preserve">
+    <value>Sold Quantity</value>
   </data>
 </root>

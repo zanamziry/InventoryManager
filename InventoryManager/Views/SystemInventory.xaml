@@ -34,9 +34,9 @@
                 <Border BorderBrush="{StaticResource GrayLine}" BorderThickness="0,0,1.5,0">
                     <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                         <TextBlock Text="{x:Static properties:Resources.SystemInventoryLastUpdate}" FontWeight="SemiBold" Margin="0,3"/>
-                        <TextBlock Text="{Binding LastUpdated,Mode=TwoWay, StringFormat='{}{0:ddddd dd/M/yyyy H:mm tt}'}" TextWrapping="Wrap" FontWeight="Light" FontSize="12"/>
+                        <TextBlock Text="{Binding LastUpdated,Mode=OneWay, StringFormat='{}{0:ddddd dd/M/yyyy H:mm tt}'}" TextWrapping="Wrap" FontWeight="Light" FontSize="12"/>
                         <Line Stroke="Black" Margin="0,12" StrokeThickness="1" X1="0" X2="1000"/>
-                        <TextBlock Text="{x:Static properties:Resources.SystemInventoryAgentLabel}" Margin="0,3"/>
+                        <TextBlock Text="{x:Static properties:Resources.SystemInventoryServiceCenterLabel}" Margin="0,3"/>
                         <ComboBox SelectedItem="{Binding SelectedAgent,Mode=TwoWay}" ItemsSource="{Binding Agents,Mode=OneWay}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -58,13 +58,13 @@
                         </Button>
                     </StackPanel>
                 </Border>
-                <DataGrid Grid.Column="1" ItemsSource="{Binding SystemProducts}" AutoGenerateColumns="False"  BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="True" >
+                <DataGrid Grid.Column="1" d:ItemsSource="{d:SampleData}" ItemsSource="{Binding SystemProducts}" AutoGenerateColumns="False"  BorderBrush="{StaticResource MahApps.Brushes.Button.Border}" IsReadOnly="True" >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="150"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="Open Balance" Binding="{Binding OpenBalance}" />
-                        <DataGridTextColumn Header="Close Balance" Binding="{Binding CloseBalance}" />
-                        <DataGridTextColumn Header="Sold" Binding="{Binding Sold}" />
+                        <DataGridTextColumn Header="#" Binding="{Binding ID}" Width="80"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.ProductName}" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.SystemInventoryOpenBalance}" Binding="{Binding OpenBalance}" />
+                        <DataGridTextColumn Header="{x:Static properties:Resources.SystemInventoryCloseBalance}" Binding="{Binding CloseBalance}" />
+                        <DataGridTextColumn Header="{x:Static properties:Resources.SystemInventorySoldQuantity}" Binding="{Binding Sold}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

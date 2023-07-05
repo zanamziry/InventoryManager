@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:converters="clr-namespace:InventoryManager.Converters"
     xmlns:models="clr-namespace:InventoryManager.Models"
+    xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:properties="clr-namespace:InventoryManager.Properties"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
     mc:Ignorable="d"
@@ -46,11 +47,11 @@
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
-                    Text="Login Info" />
+                    Text="{x:Static properties:Resources.SettingsPageLoginTitle}" />
                 <DockPanel HorizontalAlignment="Left">
                     <StackPanel HorizontalAlignment="Left">
                         <TextBlock 
-                            Text="User"
+                            Text="{x:Static properties:Resources.SettingsPageUsername}"
                             Style="{StaticResource ListSubTitleStyle}"
                             Margin="{StaticResource XXSmallTopMargin}"/>
                         <TextBox
@@ -63,7 +64,7 @@
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Left" Margin="{StaticResource XSmallLeftMargin}">
                         <TextBlock 
-                            Text="Password"
+                            Text="{x:Static properties:Resources.SettingsPagePassword}"
                             Style="{StaticResource ListSubTitleStyle}"
                             Margin="{StaticResource XXSmallTopMargin}"/>
                         <PasswordBox
@@ -77,12 +78,17 @@
                     </StackPanel>
                 </DockPanel>
                 <Button
-                    Content="Test Login"
                     HorizontalAlignment="Left"
+                    Padding="15,5"
                     Background="CadetBlue"
                     Foreground="White"
-                    Margin="{StaticResource XXSmallTopMargin}" Click="Button_Click"
-                        />
+                    HorizontalContentAlignment="Center"
+                    Margin="{StaticResource XXSmallTopMargin}" Click="Button_Click">
+                    <DockPanel>
+                        <mt:PackIcon Kind="Login" UseLayoutRounding="True"/>
+                        <TextBlock Text="{x:Static properties:Resources.SettingsPageLoginTest}" Margin="{StaticResource XSmallLeftMargin}"/>
+                    </DockPanel>
+                </Button>
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
@@ -100,19 +106,32 @@
                     Text="{x:Static properties:Resources.SettingsPageDatabaseTitle}" />
                 <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallTopMargin}" >
                     <Button
-                        Click="OnDeleteAllClicked"
-                        Content="{x:Static properties:Resources.SettingsPageDatabaseDeleteAll}" 
+                        Click="OnDeleteAllClicked" 
+                        Padding="15,5"
                         Background="IndianRed"
                         Foreground="White"
-                        FontWeight="DemiBold"/>
+                        FontWeight="DemiBold">
+                        <DockPanel>
+                            <mt:PackIcon Kind="DeleteForever" UseLayoutRounding="True"/>
+                            <TextBlock Text="{x:Static properties:Resources.SettingsPageDatabaseDeleteAll}" Margin="{StaticResource XSmallLeftMargin}"/>
+                        </DockPanel>
+                    </Button>
                     <Button
-                        Content="{x:Static properties:Resources.SettingsPageDatabaseBackup}"
-                        Margin="{StaticResource XSmallLeftMargin}"
-                        />
+                        Padding="15,5"
+                        Margin="{StaticResource XSmallLeftMargin}">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Backup" UseLayoutRounding="True"/>
+                            <TextBlock Text="{x:Static properties:Resources.SettingsPageDatabaseBackup}" Margin="{StaticResource XSmallLeftMargin}"/>
+                        </DockPanel>
+                    </Button>
                     <Button
-                        Content="{x:Static properties:Resources.SettingsPageDatabaseRestore}"
-                        Margin="{StaticResource XSmallLeftMargin}"
-                        />
+                        Padding="15,5"
+                        Margin="{StaticResource XSmallLeftMargin}">
+                        <DockPanel>
+                            <mt:PackIcon Kind="SettingsBackupRestore" UseLayoutRounding="True"/>
+                            <TextBlock Text="{x:Static properties:Resources.SettingsPageDatabaseRestore}" Margin="{StaticResource XSmallLeftMargin}"/>
+                        </DockPanel>
+                    </Button>
                 </StackPanel>
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
@@ -123,10 +142,14 @@
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource BodyTextStyle}" />
                 <Button
-                    Content="{x:Static properties:Resources.SettingsCheckForUpdates}"
                     Margin="{StaticResource XSmallTopMargin}"
                     HorizontalAlignment="Left" 
-                    Click="OnCheckUpdateClicked"/>
+                    Click="OnCheckUpdateClicked">
+                    <DockPanel>
+                        <mt:PackIcon Kind="Update" UseLayoutRounding="True"/>
+                        <TextBlock Text="{x:Static properties:Resources.SettingsCheckForUpdates}" Margin="{StaticResource XSmallLeftMargin}"/>
+                    </DockPanel>
+                </Button>
                 <TextBlock
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource BodyTextStyle}"

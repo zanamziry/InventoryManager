@@ -48,38 +48,38 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Padding="0" HorizontalContentAlignment="Center" Margin="0,0,2,0" Command="{Binding GotoPrevious}" >
+                        <Button Padding="0,5" HorizontalContentAlignment="Center" Margin="0,0,2,0" Command="{Binding GotoPrevious}" >
                             <DockPanel>
                                 <mt:PackIcon Kind="NavigateBefore" UseLayoutRounding="True" RenderTransformOrigin="0.571,0.602"/>
                                 <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static properties:Resources.InventoryPagePrevious}"/>
                             </DockPanel>
                         </Button>
-                        <Button Grid.Column="1" HorizontalContentAlignment="Center" Padding="0" Margin="2,0,0,0" Command="{Binding GotoNext}">
+                        <Button Grid.Column="1" HorizontalContentAlignment="Center" Padding="0,5" Margin="2,0,0,0" Command="{Binding GotoNext}">
                             <DockPanel>
                                 <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static properties:Resources.InventoryPageNext}"/>
                                 <mt:PackIcon Kind="NavigateNext" UseLayoutRounding="True" RenderTransformOrigin="0.5,0.8"/>
                             </DockPanel>
                         </Button>
                     </Grid>
-                    <ToggleButton x:Name="ToggleAdd" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
+                    <ToggleButton x:Name="ToggleAdd" Padding="40,5" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="Add" UseLayoutRounding="True"/>
                             <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{x:Static properties:Resources.InventoryPageAddLabel}"/>
                         </DockPanel>
                     </ToggleButton>
-                    <ToggleButton x:Name="ToggleSend" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
+                    <ToggleButton x:Name="ToggleSend" Padding="40,5" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="SendOutline"/>
                             <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.InventoryPageSendLabel}"/>
                         </DockPanel>
                     </ToggleButton>
-                    <ToggleButton x:Name="ToggleGift" Padding="40,0" Margin="{StaticResource SmallTopMargin}">
+                    <ToggleButton x:Name="ToggleGift" Padding="40,5" Margin="{StaticResource SmallTopMargin}">
                         <DockPanel>
                             <mt:PackIcon Kind="GiftOutline"/>
                             <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.InventoryPageGiftLabel}"/>
                         </DockPanel>
                     </ToggleButton>
-                    <Button Padding="40,0" IsEnabled="{Binding IsButtonEnabled,Mode=OneWay}" Margin="{StaticResource SmallTopMargin}" Click="OnRemoveButtonClicked">
+                    <Button Padding="40,5" IsEnabled="{Binding IsButtonEnabled,Mode=OneWay}" Margin="{StaticResource SmallTopMargin}" Click="OnRemoveButtonClicked">
                         <DockPanel>
                             <mt:PackIcon Kind="Remove"/>
                             <TextBlock TextAlignment="Center" Text="{x:Static properties:Resources.InventoryPageRemoveLabel}"/>
