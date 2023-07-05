@@ -207,24 +207,24 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
         {
             if (e.Row.DataContext is LocalInventory l)
             {
-                if (e.EditingElement is TextBox tb && e.Column.Header is string header)
-                    switch (header)
+                if (e.EditingElement is TextBox tb)
+                    switch (e.Column.SortMemberPath)
                     {
-                        case nameof(LocalInventory.Inventory):
+                        case $"{nameof(LocalInventory)}.{nameof(LocalInventory.Inventory)}":
                             {
                                 if (int.TryParse(tb.Text, out int a))
                                     l.Inventory = a;
                                 else l.Inventory = 0;
                                 break;
                             }
-                        case nameof(LocalInventory.Open):
+                        case $"{nameof(LocalInventory)}.{nameof(LocalInventory.Open)}":
                             {
                                 if (int.TryParse(tb.Text, out int b))
                                     l.Open = b;
                                 else l.Open = 0;
                                 break;
                             }
-                        case nameof(LocalInventory.Note):
+                        case $"{nameof(LocalInventory)}.{nameof(LocalInventory.Note)}":
                             {
                                 l.Note = tb.Text;
                                 break;

@@ -54,13 +54,13 @@
                     </Grid.RowDefinitions>
                     <DataGrid Grid.Row="0" x:Name="GridOfSent" ItemsSource="{Binding Source}" d:ItemsSource="{d:SampleData}" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding Outside.ID,Mode=OneWay}"/>
-                        <DataGridTextColumn Header="Product Code" IsReadOnly="True" Binding="{Binding Product.ID,Mode=TwoWay}" />
-                        <DataGridTextColumn Header="Product Name" IsReadOnly="True" Binding="{Binding Product.Name,Mode=TwoWay}" />
-                        <DataGridTextColumn Header="AmountSent" IsReadOnly="True" Binding="{Binding Outside.AmountSent,Mode=TwoWay}" />
-                        <DataGridTextColumn Header="AmountSold" Binding="{Binding Outside.AmountSold,Mode=TwoWay}" />
-                        <DataGridTextColumn Header="Remaining" IsReadOnly="True" Binding="{Binding Outside.Remaining,Mode=OneWay}" />
-                        <DataGridCheckBoxColumn Header="Old" Binding="{Binding Outside.Old,Mode=TwoWay}" />
+                        <DataGridTextColumn Header="#" IsReadOnly="True" Binding="{Binding Outside.ID,Mode=OneWay}"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.ProductID}" IsReadOnly="True" Binding="{Binding Product.ID,Mode=TwoWay}" />
+                            <DataGridTextColumn Header="{x:Static properties:Resources.ProductName}" IsReadOnly="True" Binding="{Binding Product.Name,Mode=TwoWay}" />
+                            <DataGridTextColumn Header="{x:Static properties:Resources.SentOutsideAmountSent}" IsReadOnly="True" Binding="{Binding Outside.AmountSent,Mode=TwoWay}" />
+                            <DataGridTextColumn Header="{x:Static properties:Resources.SentOutsideAmountSold}" Binding="{Binding Outside.AmountSold,Mode=TwoWay}" />
+                            <DataGridTextColumn Header="{x:Static properties:Resources.Remaining}" IsReadOnly="True" Binding="{Binding Outside.Remaining,Mode=OneWay}" />
+                            <DataGridCheckBoxColumn Header="{x:Static properties:Resources.Old}" Binding="{Binding Outside.Old,Mode=TwoWay}" />
                     </DataGrid.Columns>
                 </DataGrid>
                     <DockPanel Grid.Row="1">

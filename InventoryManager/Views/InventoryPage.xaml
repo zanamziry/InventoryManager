@@ -93,11 +93,11 @@
                     </Grid.RowDefinitions>
                     <DataGrid d:ItemsSource="{d:SampleData}" x:Name="GridOfInventory" CellEditEnding="OnCellEdited" SelectionChanged="GridOfInventory_SelectionChanged" CanUserDeleteRows="False" CanUserAddRows="False" ItemsSource="{Binding SelectedProduct.Locals}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding ID}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}" Width="65"/>
-                            <DataGridTextColumn Header="Inventory" Binding="{Binding Inventory}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                            <DataGridTextColumn Header="Open" Binding="{Binding Open}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                            <DataGridTextColumn Header="Total" IsReadOnly="True" Binding="{Binding Total}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
-                            <DataGridTemplateColumn Header="ExpireDate" HeaderStyle="{StaticResource GDHeaderStyle}">
+                            <DataGridTextColumn Header="#" Binding="{Binding ID}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}" Width="45"/>
+                            <DataGridTextColumn Header="{x:Static properties:Resources.InventoryPageInventoryHeader}" Binding="{Binding Inventory}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
+                            <DataGridTextColumn Header="{x:Static properties:Resources.InventoryPageOpen}" Binding="{Binding Open}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
+                            <DataGridTextColumn Header="{x:Static properties:Resources.InventoryPageTotal}" IsReadOnly="True" Binding="{Binding Total}" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
+                            <DataGridTemplateColumn Header="{x:Static properties:Resources.InventoryPageExpire}" HeaderStyle="{StaticResource GDHeaderStyle}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <DatePicker SelectedDate="{Binding ExpireDate}" SelectedDateFormat="Short" SelectedDateChanged="DatePicker_SelectedDateChanged">
@@ -113,7 +113,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
+                            <DataGridTextColumn Header="{x:Static properties:Resources.InventoryPageNote}" Binding="{Binding Note}" Width="*" HeaderStyle="{StaticResource GDHeaderStyle}" ElementStyle="{StaticResource GDCellStyle}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Grid Grid.Row="1" Margin="0,10">

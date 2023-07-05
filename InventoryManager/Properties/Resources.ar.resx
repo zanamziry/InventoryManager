@@ -288,13 +288,76 @@
   <data name="InventoryPagePrevious" xml:space="preserve">
     <value>قبل</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="SentOutsideTotalPoints" xml:space="preserve">
     <value>مجموع النقاط</value>
   </data>
   <data name="SettingsCheckForUpdates" xml:space="preserve">
     <value>تحقق من التحديثات</value>
+  </data>
+  <data name="GiveAwayAmountGiven" xml:space="preserve">
+    <value>عدد الهدايا</value>
+  </data>
+  <data name="GiveawayDate" xml:space="preserve">
+    <value>تاريخ العرض</value>
+  </data>
+  <data name="ProductID" xml:space="preserve">
+    <value>کود المنتج</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>اسم المنتج</value>
+  </data>
+  <data name="ProductOld" xml:space="preserve">
+    <value>سعر القديم</value>
+  </data>
+  <data name="ProductPrice" xml:space="preserve">
+    <value>سعر المنتج</value>
+  </data>
+  <data name="ProductPV" xml:space="preserve">
+    <value>نقاط المنتج</value>
+  </data>
+  <data name="Remaining" xml:space="preserve">
+    <value>الباقي</value>
+  </data>
+  <data name="SentOutsideAmountSent" xml:space="preserve">
+    <value>کمية المرسلة</value>
+  </data>
+  <data name="SentOutsideAmountSold" xml:space="preserve">
+    <value>کمية المباعة</value>
+  </data>
+  <data name="SentOutsideLocation" xml:space="preserve">
+    <value>المرکز</value>
+  </data>
+  <data name="MainPageGiveawayTitle" xml:space="preserve">
+    <value>هدايا</value>
+  </data>
+  <data name="MainPageLocalTitle" xml:space="preserve">
+    <value>حقيقي</value>
+  </data>
+  <data name="MainPageOutsideTitle" xml:space="preserve">
+    <value>خارج المرکز</value>
+  </data>
+  <data name="MainPageResultTitle" xml:space="preserve">
+    <value>الناتج</value>
+  </data>
+  <data name="MainPageSystemTitle" xml:space="preserve">
+    <value>سستم</value>
+  </data>
+  <data name="MainPageExpireTitle" xml:space="preserve">
+    <value>تاريخ الصلاحية</value>
+  </data>
+  <data name="InventoryPageExpire" xml:space="preserve">
+    <value>تاريخ الصلاحية</value>
+  </data>
+  <data name="InventoryPageInventoryHeader" xml:space="preserve">
+    <value>المخزن</value>
+  </data>
+  <data name="InventoryPageNote" xml:space="preserve">
+    <value>ملاحضات</value>
+  </data>
+  <data name="InventoryPageOpen" xml:space="preserve">
+    <value>معروض</value>
+  </data>
+  <data name="InventoryPageTotal" xml:space="preserve">
+    <value>مجموع</value>
   </data>
 </root>
