@@ -109,7 +109,8 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
                 switch (e.Column.SortMemberPath)
                 {
                     // Just in Case There are other columns other than this to edit
-                    case $"{nameof(GivenAway)}.{nameof(GivenAway.Amount)}":
+                    //Since our Datacontext if GiftDisplay which is a container for 2 other classes, we need to specify the path GivenAway.Amount
+                    case $"{nameof(GiftDisplay.GivenAway)}.{nameof(GiftDisplay.GivenAway.Amount)}":
                         {
                             if (e.EditingElement is TextBox tb)
                             {

@@ -210,21 +210,21 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
                 if (e.EditingElement is TextBox tb)
                     switch (e.Column.SortMemberPath)
                     {
-                        case $"{nameof(LocalInventory)}.{nameof(LocalInventory.Inventory)}":
+                        case nameof(LocalInventory.Inventory):
                             {
                                 if (int.TryParse(tb.Text, out int a))
                                     l.Inventory = a;
                                 else l.Inventory = 0;
                                 break;
                             }
-                        case $"{nameof(LocalInventory)}.{nameof(LocalInventory.Open)}":
+                        case nameof(LocalInventory.Open):
                             {
                                 if (int.TryParse(tb.Text, out int b))
                                     l.Open = b;
                                 else l.Open = 0;
                                 break;
                             }
-                        case $"{nameof(LocalInventory)}.{nameof(LocalInventory.Note)}":
+                        case nameof(LocalInventory.Note):
                             {
                                 l.Note = tb.Text;
                                 break;

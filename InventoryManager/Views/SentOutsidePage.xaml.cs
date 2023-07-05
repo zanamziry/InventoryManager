@@ -149,7 +149,10 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
                                 if(int.TryParse(tb.Text, out int a))
                                 {
                                     if (a < 0 || a > l.Outside.AmountSent)
+                                    {
+                                        tb.Text = l.Outside.AmountSold.ToString();
                                         return;
+                                    }
                                 }
                                 l.Outside.AmountSold = a;
                             }
