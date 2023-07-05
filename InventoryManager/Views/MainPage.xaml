@@ -81,7 +81,7 @@
                 </StackPanel>
                 <DataGrid d:ItemsSource="{d:SampleData}" Grid.Column="1" IsReadOnly="True" x:Name="GridOfProducts" ItemsSource="{Binding Source}" Margin="{StaticResource SmallRightMargin}" MouseDoubleClick="OnGridDoubleClick">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Product Name" Width="150">
+                        <DataGridTemplateColumn Header="{x:Static properties:Resources.ProductName}" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical" Margin="1">
@@ -91,12 +91,12 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="ID" Binding="{Binding Product.ID}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="System" Binding="{Binding System.CloseBalance}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="Local" Binding="{Binding TotalReal}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="Outside" Binding="{Binding RemainingOutside}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="GiveAway" Binding="{Binding TotalGivenAway}" ElementStyle="{StaticResource GDCellStyle}"/>
-                        <DataGridTextColumn Header="Result" Binding="{Binding Result}">
+                        <DataGridTextColumn Header="{x:Static properties:Resources.ProductID}" Binding="{Binding Product.ID}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.MainPageSystemTitle}" Binding="{Binding System.CloseBalance}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.MainPageLocalTitle}" Binding="{Binding TotalReal}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.MainPageOutsideTitle}" Binding="{Binding RemainingOutside}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.MainPageGiveawayTitle}" Binding="{Binding TotalGivenAway}" ElementStyle="{StaticResource GDCellStyle}"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.MainPageResultTitle}" Binding="{Binding Result}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource GDCellStyle}">
                                     <Setter Property="FontWeight" Value="Bold"/>
@@ -113,19 +113,13 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="Expire" Binding="{Binding NearestExp, StringFormat='{}{0:M/yyyy}'}">
+                        <DataGridTextColumn Header="{x:Static properties:Resources.MainPageExpireTitle}" Binding="{Binding NearestExp, StringFormat='{}{0:M/yyyy}'}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Background" Value="{Binding NearestExp, Converter={StaticResource ExpireToColorConverter}}"/>
                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                     <Setter Property="TextAlignment" Value="Center"/>
                                     <Setter Property="Padding" Value="6.5"/>
-                                    <!--If ExpireDate is Equal to DateTime.MaxDate it means the product doesnt contain any expire dates so Hide the Date-->
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding NearestExp.Ticks}" Value="3155378975999999999">
-                                            <Setter Property="Visibility" Value="Hidden"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>

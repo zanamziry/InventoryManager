@@ -96,6 +96,46 @@ public partial class GiveAwayPage : Page, INotifyPropertyChanged, INavigationAwa
             OnPropertyChanged(nameof(TotalPV));
         }
     }
+    async void OnCellEdited(object sender, DataGridCellEditEndingEventArgs e)
+    {
+        if (e.EditAction == DataGridEditAction.Cancel && e.Cancel == false)
+        {
+            await Remove(e.Row.DataContext as GiftDisplay);
+        }
+        if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
+        {
+            if (e.Row.DataContext is GiftDisplay l)
+            {
+                switch (e.Column.SortMemberPath)
+                {
+                    // Just in Case There are other columns other than this to edit
+                    case $"{nameof(GivenAway)}.{nameof(GivenAway.Amount)}":
+                        {
+                            if (e.EditingElement is TextBox tb)
+                            {
+                                if (int.TryParse(tb.Text, out int a))
+                                {
+                                    if (a < 0)
+                                        return;
+                                }
+                                l.GivenAway.Amount = a;
+                            }
+                            break;
+                        }
+                }
+                try
+                {
+                    await giveawayORM.Update(l.GivenAway);
+                    l.OnPropertyChanged();
+                    OnPropertyChanged(nameof(TotalPV));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Database Error");
+                }
+            }
+        }
+    }
     async Task Remove(GiftDisplay p)
     {
         await giveawayORM.Delete(p.GivenAway);

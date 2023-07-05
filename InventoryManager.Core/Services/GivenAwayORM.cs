@@ -33,6 +33,12 @@ namespace InventoryManager.Core.Services {
             return param;
         }
 
+        public async Task Update(GivenAway param)
+        {
+            string cmd = $"UPDATE {nameof(GivenAway)} SET {nameof(GivenAway.Amount)} = @{nameof(GivenAway.Amount)} WHERE {nameof(GivenAway.ID)} = @{nameof(GivenAway.ID)};";
+            await _dataAccess.ExecuteAsync(cmd, param);
+        }
+
         public async Task<IEnumerable<GivenAway>> SelectByProduct(Product p) {
             string cmd = $"SELECT * FROM {nameof(GivenAway)} WHERE {nameof(GivenAway.ProductID)} = @{nameof(Product.ID)};";
             var products = await _dataAccess.ReadDataAsync<GivenAway>(cmd, p);

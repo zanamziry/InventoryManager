@@ -175,7 +175,7 @@
     <value>Sent Outside</value>
   </data>
   <data name="GiveAwayPageTitle" xml:space="preserve">
-    <value>GiveAways</value>
+    <value>Gifts</value>
   </data>
   <data name="SystemInventoryAgentLabel" xml:space="preserve">
     <value>Agent</value>
@@ -293,5 +293,71 @@
   </data>
   <data name="SettingsCheckForUpdates" xml:space="preserve">
     <value>Check For Updates</value>
+  </data>
+  <data name="GiveAwayAmountGiven" xml:space="preserve">
+    <value>Gifts Quantity</value>
+  </data>
+  <data name="GiveawayDate" xml:space="preserve">
+    <value>Event Date</value>
+  </data>
+  <data name="ProductID" xml:space="preserve">
+    <value>Product ID</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="ProductOld" xml:space="preserve">
+    <value>Old Price</value>
+  </data>
+  <data name="ProductPrice" xml:space="preserve">
+    <value>Product Price</value>
+  </data>
+  <data name="ProductPV" xml:space="preserve">
+    <value>Product PV</value>
+  </data>
+  <data name="Remaining" xml:space="preserve">
+    <value>Remaining </value>
+  </data>
+  <data name="SentOutsideAmountSent" xml:space="preserve">
+    <value>Sent Quantity</value>
+  </data>
+  <data name="SentOutsideAmountSold" xml:space="preserve">
+    <value>Sold Quantity</value>
+  </data>
+  <data name="SentOutsideLocation" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="MainPageGiveawayTitle" xml:space="preserve">
+    <value>Gifts</value>
+  </data>
+  <data name="MainPageLocalTitle" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="MainPageOutsideTitle" xml:space="preserve">
+    <value>Outside</value>
+  </data>
+  <data name="MainPageResultTitle" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="MainPageSystemTitle" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="InventoryPageExpire" xml:space="preserve">
+    <value>Expire</value>
+  </data>
+  <data name="InventoryPageInventoryHeader" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="InventoryPageNote" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="InventoryPageOpen" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="InventoryPageTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="MainPageExpireTitle" xml:space="preserve">
+    <value>Expire</value>
   </data>
 </root>

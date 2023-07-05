@@ -137,21 +137,25 @@ public partial class SentOutsidePage : Page, INotifyPropertyChanged, INavigation
         }
         if (e.EditAction == DataGridEditAction.Commit && e.Cancel == false)
         {
-            if (e.Row.DataContext is SentOutDisplay l && e.Column.Header is string header)
+            if (e.Row.DataContext is SentOutDisplay l)
             {
-                switch (header)
+                switch (e.Column.SortMemberPath)
                 {
                     // Just in Case There are other columns other than this to edit
-                    case nameof(SentOutDisplay.Outside.AmountSold):
+                    case $"{nameof(SentOutDisplay.Outside)}.{nameof(SentOutDisplay.Outside.AmountSold)}":
                         {
                             if (e.EditingElement is TextBox tb)
                             {
                                 if(int.TryParse(tb.Text, out int a))
-                                    l.Outside.AmountSold = a;
+                                {
+                                    if (a < 0 || a > l.Outside.AmountSent)
+                                        return;
+                                }
+                                l.Outside.AmountSold = a;
                             }
                             break;
                         }
-                    case nameof(SentOutDisplay.Outside.Old):
+                    case $"{nameof(SentOutDisplay.Outside)}.{nameof(SentOutDisplay.Outside.Old)}":
                         {
                             if (e.EditingElement is CheckBox cb)
                             {

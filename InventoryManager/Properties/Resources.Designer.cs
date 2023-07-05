@@ -97,6 +97,24 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gifts Quantity.
+        /// </summary>
+        public static string GiveAwayAmountGiven {
+            get {
+                return ResourceManager.GetString("GiveAwayAmountGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Date.
+        /// </summary>
+        public static string GiveawayDate {
+            get {
+                return ResourceManager.GetString("GiveawayDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event Name.
         /// </summary>
         public static string GiveAwayName {
@@ -106,7 +124,7 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GiveAways.
+        ///   Looks up a localized string similar to Gifts.
         /// </summary>
         public static string GiveAwayPageTitle {
             get {
@@ -120,6 +138,15 @@ namespace InventoryManager.Properties {
         public static string InventoryPageAddLabel {
             get {
                 return ResourceManager.GetString("InventoryPageAddLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expire.
+        /// </summary>
+        public static string InventoryPageExpire {
+            get {
+                return ResourceManager.GetString("InventoryPageExpire", resourceCulture);
             }
         }
         
@@ -142,11 +169,38 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventory.
+        /// </summary>
+        public static string InventoryPageInventoryHeader {
+            get {
+                return ResourceManager.GetString("InventoryPageInventoryHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         public static string InventoryPageNext {
             get {
                 return ResourceManager.GetString("InventoryPageNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string InventoryPageNote {
+            get {
+                return ResourceManager.GetString("InventoryPageNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string InventoryPageOpen {
+            get {
+                return ResourceManager.GetString("InventoryPageOpen", resourceCulture);
             }
         }
         
@@ -223,6 +277,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string InventoryPageTotal {
+            get {
+                return ResourceManager.GetString("InventoryPageTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
@@ -250,6 +313,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expire.
+        /// </summary>
+        public static string MainPageExpireTitle {
+            get {
+                return ResourceManager.GetString("MainPageExpireTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export As Excel.
         /// </summary>
         public static string MainPageExportAsExcel {
@@ -268,11 +340,56 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gifts.
+        /// </summary>
+        public static string MainPageGiveawayTitle {
+            get {
+                return ResourceManager.GetString("MainPageGiveawayTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        public static string MainPageLocalTitle {
+            get {
+                return ResourceManager.GetString("MainPageLocalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outside.
         /// </summary>
         public static string MainPageOutsideLabel {
             get {
                 return ResourceManager.GetString("MainPageOutsideLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outside.
+        /// </summary>
+        public static string MainPageOutsideTitle {
+            get {
+                return ResourceManager.GetString("MainPageOutsideTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result.
+        /// </summary>
+        public static string MainPageResultTitle {
+            get {
+                return ResourceManager.GetString("MainPageResultTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        public static string MainPageSystemTitle {
+            get {
+                return ResourceManager.GetString("MainPageSystemTitle", resourceCulture);
             }
         }
         
@@ -313,6 +430,60 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product ID.
+        /// </summary>
+        public static string ProductID {
+            get {
+                return ResourceManager.GetString("ProductID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Name.
+        /// </summary>
+        public static string ProductName {
+            get {
+                return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old Price.
+        /// </summary>
+        public static string ProductOld {
+            get {
+                return ResourceManager.GetString("ProductOld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Price.
+        /// </summary>
+        public static string ProductPrice {
+            get {
+                return ResourceManager.GetString("ProductPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product PV.
+        /// </summary>
+        public static string ProductPV {
+            get {
+                return ResourceManager.GetString("ProductPV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining .
+        /// </summary>
+        public static string Remaining {
+            get {
+                return ResourceManager.GetString("Remaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application needs a restart to change the language.
         /// </summary>
         public static string RestartNeeded {
@@ -327,6 +498,33 @@ namespace InventoryManager.Properties {
         public static string Send {
             get {
                 return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sent Quantity.
+        /// </summary>
+        public static string SentOutsideAmountSent {
+            get {
+                return ResourceManager.GetString("SentOutsideAmountSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sold Quantity.
+        /// </summary>
+        public static string SentOutsideAmountSold {
+            get {
+                return ResourceManager.GetString("SentOutsideAmountSold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string SentOutsideLocation {
+            get {
+                return ResourceManager.GetString("SentOutsideLocation", resourceCulture);
             }
         }
         

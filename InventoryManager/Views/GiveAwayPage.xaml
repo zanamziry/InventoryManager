@@ -63,12 +63,12 @@
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Column="1" Margin="{StaticResource SmallRightMargin}">
-                        <DataGrid x:Name="GridOfSent" d:ItemsSource="{d:SampleData}" ItemsSource="{Binding SelectedGiveAways}" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
+                        <DataGrid x:Name="GridOfSent" d:ItemsSource="{d:SampleData}" ItemsSource="{Binding SelectedGiveAways}" CellEditEnding="OnCellEdited" KeyUp="OnKeyUp" CanUserDeleteRows="False" CanUserAddRows="False" AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" IsReadOnly="True" Binding="{Binding GivenAway.ID, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="ProductID" IsReadOnly="True" Binding="{Binding Product.ID, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Product.Name, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="Amount" IsReadOnly="True" Binding="{Binding GivenAway.Amount, Mode=TwoWay}" />
+                                <DataGridTextColumn Header="#" IsReadOnly="True" Binding="{Binding GivenAway.ID, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="{x:Static properties:Resources.ProductID}" IsReadOnly="True" Binding="{Binding Product.ID, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="{x:Static properties:Resources.ProductName}" IsReadOnly="True" Binding="{Binding Product.Name, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="{x:Static properties:Resources.GiveAwayAmountGiven}" IsReadOnly="False" Binding="{Binding GivenAway.Amount, Mode=TwoWay}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
