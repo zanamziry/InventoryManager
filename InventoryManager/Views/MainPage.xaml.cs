@@ -10,10 +10,9 @@ using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using InventoryManager.Models;
 using GemBox.Spreadsheet;
-using Newtonsoft.Json;
-
+using draw = System.Drawing;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
-using System.Globalization;
+using System.Windows.Media;
 
 namespace InventoryManager.Views;
 
@@ -159,7 +158,15 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         OnPropertyChanged(nameof(GiftPoints));
         OnPropertyChanged(nameof(SourceHasItems));
     }
-
+    SolidColorBrush ExpireToColor(DateTime date)
+    {
+        var timeleft = date.Subtract(DateTime.Now).Days;
+        if (timeleft < 120 && timeleft > 0)
+            return new SolidColorBrush(Color.FromRgb(draw.Color.Yellow.R, draw.Color.Yellow.G, draw.Color.Yellow.B));
+        else if (timeleft <= 0)
+            return new SolidColorBrush(Color.FromRgb(draw.Color.IndianRed.R, draw.Color.IndianRed.G, draw.Color.IndianRed.B));
+        else return new SolidColorBrush(Color.FromArgb(draw.Color.Transparent.A, draw.Color.Transparent.R, draw.Color.Transparent.G, draw.Color.Transparent.B));
+    }
     void INavigationAware.OnNavigatedFrom()
     {
 
