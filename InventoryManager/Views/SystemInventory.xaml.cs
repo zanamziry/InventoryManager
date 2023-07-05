@@ -27,7 +27,7 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     readonly string AgentSettingsKey = "AgentID";
     readonly string LastUpdatedSettingsKey = "LastUpdate";
     private ServiceCenter _selectedAgent;
-    private DateTime lastUpdated;
+    private DateTime? lastUpdated;
     private bool _isLoading;
 
     public bool IsLoading
@@ -47,15 +47,32 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
         }
     }
 
-    public DateTime LastUpdated
+    public DateTime? LastUpdated
     {
-        get { return lastUpdated; }
-        set 
-        { 
+        get
+        {
+            if (lastUpdated == null)
+            {
+                if (App.Current.Properties.Contains(LastUpdatedSettingsKey))
+                {
+                    if(long.TryParse(App.Current.Properties[LastUpdatedSettingsKey].ToString(), out long dateticks))
+                        lastUpdated = new DateTime(dateticks);
+                    else
+                        lastUpdated = null;
+                }
+            }
+            return lastUpdated;
+        }
+        set
+        {
+            if (value == null)
+                return;
             Set(ref lastUpdated ,value);
-            SaveSetting(value.ToString(), LastUpdatedSettingsKey);
+            App.Current.Properties[LastUpdatedSettingsKey] = value.Value.Ticks.ToString();
         }
     }
+
+
 
     private readonly ISystemDataGather _dataGather;
     private readonly IDBSetup _dBSetup;
@@ -138,8 +155,6 @@ public partial class SystemInventory : Page, INotifyPropertyChanged, INavigation
     }
     void INavigationAware.OnNavigatedTo(object parameter)
     {
-        DateTime.TryParse(GetSavedSetting(LastUpdatedSettingsKey), out DateTime d);
-        LastUpdated = d;
         SystemProducts.Clear();
         Task.Run(async () =>
         {

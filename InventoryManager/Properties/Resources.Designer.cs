@@ -628,6 +628,33 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login Test.
+        /// </summary>
+        public static string SettingsPageLoginTest {
+            get {
+                return ResourceManager.GetString("SettingsPageLoginTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Credentials.
+        /// </summary>
+        public static string SettingsPageLoginTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageLoginTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string SettingsPagePassword {
+            get {
+                return ResourceManager.GetString("SettingsPagePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Personalization.
         /// </summary>
         public static string SettingsPagePersonalizationTitle {
@@ -691,6 +718,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string SettingsPageUsername {
+            get {
+                return ResourceManager.GetString("SettingsPageUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Go back.
         /// </summary>
         public static string ShellGoBackButton {
@@ -736,11 +772,11 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agent.
+        ///   Looks up a localized string similar to Close Balance.
         /// </summary>
-        public static string SystemInventoryAgentLabel {
+        public static string SystemInventoryCloseBalance {
             get {
-                return ResourceManager.GetString("SystemInventoryAgentLabel", resourceCulture);
+                return ResourceManager.GetString("SystemInventoryCloseBalance", resourceCulture);
             }
         }
         
@@ -768,6 +804,33 @@ namespace InventoryManager.Properties {
         public static string SystemInventoryLastUpdate {
             get {
                 return ResourceManager.GetString("SystemInventoryLastUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Balance.
+        /// </summary>
+        public static string SystemInventoryOpenBalance {
+            get {
+                return ResourceManager.GetString("SystemInventoryOpenBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Center.
+        /// </summary>
+        public static string SystemInventoryServiceCenterLabel {
+            get {
+                return ResourceManager.GetString("SystemInventoryServiceCenterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sold Quantity.
+        /// </summary>
+        public static string SystemInventorySoldQuantity {
+            get {
+                return ResourceManager.GetString("SystemInventorySoldQuantity", resourceCulture);
             }
         }
         

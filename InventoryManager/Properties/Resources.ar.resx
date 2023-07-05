@@ -174,7 +174,7 @@
   <data name="GiveAwayPageTitle" xml:space="preserve">
     <value>عروض</value>
   </data>
-  <data name="SystemInventoryAgentLabel" xml:space="preserve">
+  <data name="SystemInventoryServiceCenterLabel" xml:space="preserve">
     <value>المركز</value>
   </data>
   <data name="SystemInventoryFetchData" xml:space="preserve">
@@ -359,5 +359,26 @@
   </data>
   <data name="InventoryPageTotal" xml:space="preserve">
     <value>مجموع</value>
+  </data>
+  <data name="SettingsPageLoginTest" xml:space="preserve">
+    <value>تجربة تسجيل الدخول</value>
+  </data>
+  <data name="SettingsPageLoginTitle" xml:space="preserve">
+    <value>معلومات التسجيل</value>
+  </data>
+  <data name="SettingsPagePassword" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="SettingsPageUsername" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="SystemInventoryCloseBalance" xml:space="preserve">
+    <value>الكمية عند الاغلاق</value>
+  </data>
+  <data name="SystemInventoryOpenBalance" xml:space="preserve">
+    <value>الكمية عند الفتح</value>
+  </data>
+  <data name="SystemInventorySoldQuantity" xml:space="preserve">
+    <value>كمية المباعة</value>
   </data>
 </root>
