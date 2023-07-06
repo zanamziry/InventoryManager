@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>IMDXN</id>
-    <version>0.0.0</version>
+    <version>0.0.0.0</version>
     <title>DXN Inventory Manager</title>
     <authors>Zana Masoud</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

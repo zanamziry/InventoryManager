@@ -22,9 +22,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace InventoryManager.Views;
 
 public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAware
-{
-
-    public InventoryPage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
+{public InventoryPage(IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         _dBSetup = dBSetup;
         InventoryORM = _dBSetup.GetTable<LocalInventoryORM>();
