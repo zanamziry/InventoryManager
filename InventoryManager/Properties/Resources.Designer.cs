@@ -97,6 +97,87 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://www.instagram.com/zana_mziry_.
+        /// </summary>
+        public static string ContactMeInstagramUrl {
+            get {
+                return ResourceManager.GetString("ContactMeInstagramUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZANA_MZIRY_.
+        /// </summary>
+        public static string ContactMeInstagramUsername {
+            get {
+                return ResourceManager.GetString("ContactMeInstagramUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0750 386 4007.
+        /// </summary>
+        public static string ContactMePhone {
+            get {
+                return ResourceManager.GetString("ContactMePhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact Me.
+        /// </summary>
+        public static string ContactMeTitle {
+            get {
+                return ResourceManager.GetString("ContactMeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://zanamziry.github.io.
+        /// </summary>
+        public static string ContactMeWebsite {
+            get {
+                return ResourceManager.GetString("ContactMeWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://web.whatsapp.com/send/?phone=9647503864007&amp;text&amp;type=phone_number&amp;app_absent=0.
+        /// </summary>
+        public static string ContactMeWhatsAppUrl {
+            get {
+                return ResourceManager.GetString("ContactMeWhatsAppUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add New Batch.
+        /// </summary>
+        public static string DialogsAddBatch {
+            get {
+                return ResourceManager.GetString("DialogsAddBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Present a Gift.
+        /// </summary>
+        public static string DialogsGiveaway {
+            get {
+                return ResourceManager.GetString("DialogsGiveaway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Product.
+        /// </summary>
+        public static string DialogsSendProduct {
+            get {
+                return ResourceManager.GetString("DialogsSendProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gifts Quantity.
         /// </summary>
         public static string GiveAwayAmountGiven {
@@ -556,6 +637,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://zanamziry.pythonanywhere.com.
+        /// </summary>
+        public static string Server {
+            get {
+                return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check For Updates.
         /// </summary>
         public static string SettingsCheckForUpdates {
@@ -633,6 +723,33 @@ namespace InventoryManager.Properties {
         public static string SettingsPageLoginTest {
             get {
                 return ResourceManager.GetString("SettingsPageLoginTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Failed.
+        /// </summary>
+        public static string SettingsPageLoginTestFailed {
+            get {
+                return ResourceManager.GetString("SettingsPageLoginTestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Successful.
+        /// </summary>
+        public static string SettingsPageLoginTestSuccess {
+            get {
+                return ResourceManager.GetString("SettingsPageLoginTestSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result.
+        /// </summary>
+        public static string SettingsPageLoginTestTitle {
+            get {
+                return ResourceManager.GetString("SettingsPageLoginTestTitle", resourceCulture);
             }
         }
         
@@ -849,6 +966,69 @@ namespace InventoryManager.Properties {
         public static string Total {
             get {
                 return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Update Is Available Do You Want To Update To.
+        /// </summary>
+        public static string UpdateServiceNewUpdate {
+            get {
+                return ResourceManager.GetString("UpdateServiceNewUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Availbable!.
+        /// </summary>
+        public static string UpdateServiceNewUpdateTitle {
+            get {
+                return ResourceManager.GetString("UpdateServiceNewUpdateTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Update Found.
+        /// </summary>
+        public static string UpdateServiceNoUpdateFound {
+            get {
+                return ResourceManager.GetString("UpdateServiceNoUpdateFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was a problem while searching for updates.
+        /// </summary>
+        public static string UpdateServiceProblemOccurred {
+            get {
+                return ResourceManager.GetString("UpdateServiceProblemOccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart Required For the Update To Take Effect.
+        /// </summary>
+        public static string UpdateServiceRestartRequired {
+            get {
+                return ResourceManager.GetString("UpdateServiceRestartRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the latest version.
+        /// </summary>
+        public static string UpdateServiceThisIsTheLatest {
+            get {
+                return ResourceManager.GetString("UpdateServiceThisIsTheLatest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Complete.
+        /// </summary>
+        public static string UpdateServiceUpdateComplete {
+            get {
+                return ResourceManager.GetString("UpdateServiceUpdateComplete", resourceCulture);
             }
         }
     }

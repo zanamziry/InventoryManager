@@ -24,21 +24,23 @@ namespace InventoryManager.Models
         {
             get
             {
-                string outsideNote = "";
+                string outsideNote = string.Empty;
                 foreach(var i in SentOutsides)
                 {
                     if (i.Remaining == 0)
                         continue;
                     outsideNote += $"({i.Remaining} في {i.Location})";
                 }
-                string giftNote = "";
+                string giftNote = string.Empty;
                 foreach (var i in GivenAways)
                 {
                     if (i.Amount == 0)
                         continue;
                     giftNote += $"({i.Amount} عرض {i.Event})";
                 }
-                return $"{outsideNote} # {giftNote}";
+                if (outsideNote.Length < 1 && giftNote.Length < 1)
+                    return string.Empty;
+                return $"{outsideNote} {giftNote}";
             }
         }
         public DateTime? NearestExp

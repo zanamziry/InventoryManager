@@ -164,7 +164,7 @@
             </Grid>
         </Grid>
         <!--#region Add-->
-        <local:ZMDialog Visibility="{Binding ElementName=ToggleAdd,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="Add Batch">
+        <local:ZMDialog Visibility="{Binding ElementName=ToggleAdd,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="{x:Static properties:Resources.DialogsAddBatch}">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 <TextBlock Text="Inventory" Margin="0,3"/>
                 <TextBox x:Name="InventoryAmount" Text="0" PreviewTextInput="InventoryAmount_PreviewTextInput"/>
@@ -184,12 +184,12 @@
         </local:ZMDialog>
         <!--#endregion-->
         <!--#region Send-->
-        <local:ZMDialog Visibility="{Binding ElementName=ToggleSend,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="Send Product">
+        <local:ZMDialog Visibility="{Binding ElementName=ToggleSend,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="{x:Static properties:Resources.DialogsSendProduct}">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 <TextBlock Text="{x:Static properties:Resources.Amount}" Margin="0,3"/>
                 <TextBox x:Name="AmountToSend" Text="0" PreviewTextInput="AmountToSend_PreviewTextInput"/>
                 <TextBlock Text="{x:Static properties:Resources.Location}" Margin="0,3"/>
-                <ComboBox ItemsSource="{Binding Agents}" SelectedIndex="0" x:Name="PlaceToSend"/>
+                <ComboBox ItemsSource="{Binding ServiceCenters}" SelectedIndex="0" x:Name="PlaceToSend"/>
                 <TextBlock Text="{x:Static properties:Resources.Old}" Margin="0,3"/>
                 <CheckBox x:Name="IsOld"/>
                 <Grid Margin="{StaticResource SmallTopBottomMargin}">
@@ -204,7 +204,7 @@
         </local:ZMDialog>
         <!--#endregion-->
         <!--#region GiveAway-->
-        <local:ZMDialog Visibility="{Binding ElementName=ToggleGift,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="GiveAway Product">
+        <local:ZMDialog Visibility="{Binding ElementName=ToggleGift,Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay}" Grid.RowSpan="2" DialogHeight="270" DialogWidth="270" Title="{x:Static properties:Resources.DialogsSendProduct}">
             <StackPanel Margin="{StaticResource SmallLeftTopRightBottomMargin}">
                 <TextBlock Text="{x:Static properties:Resources.Amount}" Margin="0,3"/>
                 <TextBox x:Name="AmountToGive" PreviewTextInput="AmountToGive_PreviewTextInput" Text="1"/>

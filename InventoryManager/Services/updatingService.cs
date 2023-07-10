@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using InventoryManager.Properties;
+using MaterialDesignThemes.Wpf;
 using Squirrel;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace InventoryManager.Services
                     var updateInfo = await manager.CheckForUpdate();
                     if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
                     {
-                        if (MessageBoxResult.Yes == MessageBox.Show($"New Update Is Available Do You Want To Update To {updateInfo.ReleasesToApply.First().Version}", "Update Availbable!", MessageBoxButton.YesNo, MessageBoxImage.Question))
+                        if (MessageBoxResult.Yes == MessageBox.Show($"{Resources.UpdateServiceNewUpdate} {updateInfo.ReleasesToApply.First().Version}", Resources.UpdateServiceNewUpdateTitle, MessageBoxButton.YesNo, MessageBoxImage.Question))
                         {
                             var s = await manager.UpdateApp();
                             ///TODO: Make A popup to show the progress
@@ -31,19 +32,19 @@ namespace InventoryManager.Services
 
                             }
                             */
-                            MessageBox.Show($"Update Complete", "Restart Required For the Update To Take Effect");
+                            MessageBox.Show(Resources.UpdateServiceRestartRequired, Resources.UpdateServiceUpdateComplete);
                             UpdateManager.RestartApp();
                         }
                     }
                     else
                     {
-                        MessageBox.Show($"This is the latest version", "No Updates Available");
+                        MessageBox.Show(Resources.UpdateServiceThisIsTheLatest, Resources.UpdateServiceNoUpdateFound);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"There was a problem while searching for updates\n{ex.Message}", "No Updates Founds");
+                MessageBox.Show($"{Resources.UpdateServiceProblemOccurred}\n{ex.Message}", Resources.UpdateServiceNoUpdateFound);
                 return;
             }
         }

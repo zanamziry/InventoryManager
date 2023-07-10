@@ -15,6 +15,7 @@ using InventoryManager.Core.Models;
 using InventoryManager.Core.Services;
 using InventoryManager.Helpers;
 using InventoryManager.Models;
+using InventoryManager.Services;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
 using static System.Net.Mime.MediaTypeNames;
@@ -44,26 +45,26 @@ public partial class InventoryPage : Page, INotifyPropertyChanged, INavigationAw
     private RelayCommand gotoPrevious;
     private MainInventory _selectedProduct;
     private bool isButtonEnabled;
-    public string[] Agents { get; } =
+    public string[] ServiceCenters { get; } =
     {
-        "Duhok",
-        "Arbil",
-        "Sulaimania",
-        "Kirkuk",
-        "Mosul",
-        "Al-Adhamiya",
-        "Mammon",
-        "Dora",
-        "Maysan",
-        "Najaf",
-        "Basra",
-        "Salah Al-Din",
-        "Karbala",
-        "Diyala",
-        "Babl",
-        "Fallujah",
-        "Diqar",
-        "Al-Ramadi",
+        "دهوک",
+        "اربيل",
+        "سليمانية",
+        "کرکوک",
+        "موصل",
+        "الاعظمية",
+        "المامون",
+        "الدورة",
+        "ميسان",
+        "النجف",
+        "البصرة",
+        "صلاحالدين",
+        "كربلاء",
+        "ديالي",
+        "بابل",
+        "الفلوجة",
+        "ذي قار",
+        "الرمادي",
         };
 
     public LocalInventory SelectedInv

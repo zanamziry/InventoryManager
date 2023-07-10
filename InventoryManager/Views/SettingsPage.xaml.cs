@@ -10,6 +10,8 @@ using InventoryManager.Contracts.Services;
 using InventoryManager.Contracts.Views;
 using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Models;
+using InventoryManager.Properties;
+using InventoryManager.Properties.ar_iq;
 using InventoryManager.Services;
 using Microsoft.Extensions.Options;
 using SQLClient;
@@ -144,8 +146,23 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     {
         var result = await _dataGather.TestLogin(Username, Password);
         if (result)
-            MessageBox.Show("Login Successful","Result",MessageBoxButton.OK);
+            MessageBox.Show(Properties.Resources.SettingsPageLoginTestSuccess, Properties.Resources.SettingsPageLoginTestTitle, MessageBoxButton.OK);
         else
-            MessageBox.Show("Login Failed", "Result", MessageBoxButton.OK,MessageBoxImage.Warning);
+            MessageBox.Show(Properties.Resources.SettingsPageLoginTestFailed, Properties.Resources.SettingsPageLoginTestTitle, MessageBoxButton.OK,MessageBoxImage.Warning);
+    }
+
+    private void OnWhatsAppClicked(object sender, RoutedEventArgs e)
+    {
+        _systemService.OpenInWebBrowser(Properties.Resources.ContactMeWhatsAppUrl);
+    }
+
+    private void OnWebsiteClicked(object sender, RoutedEventArgs e)
+    {
+        _systemService.OpenInWebBrowser(Properties.Resources.ContactMeWebsite);
+    }
+
+    private void OnInstagramClicked(object sender, RoutedEventArgs e)
+    {
+        _systemService.OpenInWebBrowser(Properties.Resources.ContactMeInstagramUrl);
     }
 }

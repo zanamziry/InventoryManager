@@ -89,6 +89,8 @@
                         <TextBlock Text="{x:Static properties:Resources.SettingsPageLoginTest}" Margin="{StaticResource XSmallLeftMargin}"/>
                     </DockPanel>
                 </Button>
+                
+                
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
@@ -100,6 +102,8 @@
                     Text="{Binding ServerAddress, Mode=TwoWay}"
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{StaticResource MahApps.Styles.TextBox}" />
+
+
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Style="{StaticResource SubtitleTextStyle}"
@@ -157,16 +161,39 @@
 
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
-                    AutomationProperties.Name="{Binding Text, ElementName=settingsPrivacyStatement}">
-                    <Hyperlink
-                        Click="OnPrivacyStatementClick"
-                        AutomationProperties.Name="{Binding Text, ElementName=settingsPrivacyStatement}">
-                        <TextBlock
-                            x:Name="settingsPrivacyStatement"
-                            Style="{StaticResource BodyTextStyle}"
-                            Text="{x:Static properties:Resources.SettingsPagePrivacyStatementText}" />
-                    </Hyperlink>
-                </TextBlock>
+                    Style="{StaticResource SubtitleTextStyle}"
+                    Text="{x:Static properties:Resources.ContactMeTitle}" />
+                <DockPanel Margin="{StaticResource SmallTopMargin}">
+                    <Button
+                        Click="OnInstagramClicked"
+                        HorizontalAlignment="Left"
+                        Padding="5,5">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Instagram" UseLayoutRounding="True" Height="30" Width="30"/>
+                            <TextBlock Text="{x:Static properties:Resources.ContactMeInstagramUsername}" VerticalAlignment="Center" FontSize="12" Margin="{StaticResource XSmallLeftMargin}"/>
+                        </DockPanel>
+                    </Button>
+                    <Button
+                        Click="OnWhatsAppClicked"
+                        HorizontalAlignment="Left"
+                        Padding="5"
+                        Margin="{StaticResource XSmallLeftMargin}">
+                        <DockPanel>
+                            <mt:PackIcon Kind="Whatsapp" UseLayoutRounding="True" Height="30" Width="30"/>
+                            <TextBlock Text="{x:Static properties:Resources.ContactMePhone}" VerticalAlignment="Center" FontSize="12" Margin="{StaticResource XSmallLeftMargin}"/>
+                        </DockPanel>
+                    </Button>
+                    <Button
+                        Click="OnWebsiteClicked"
+                        HorizontalAlignment="Left"
+                        Padding="5"
+                        Margin="{StaticResource XSmallLeftMargin}">
+                        <DockPanel>
+                            <mt:PackIcon Kind="web" UseLayoutRounding="True" Height="30" Width="30"/>
+                            <TextBlock Text="{x:Static properties:Resources.ContactMeWebsite}" VerticalAlignment="Center" FontSize="12" Margin="{StaticResource XSmallLeftMargin}"/>
+                        </DockPanel>
+                    </Button>
+                </DockPanel>
             </StackPanel>
         </Grid>
     </ScrollViewer>

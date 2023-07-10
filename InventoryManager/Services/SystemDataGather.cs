@@ -20,7 +20,7 @@ namespace InventoryManager.Services
         private readonly string ServerSettingsKey = "ServerAddress";
         private readonly string UserSettingsKey = "Username";
         private readonly string PassSettingsKey = "Password";
-        public string DEFAULT { get => "https://zanamziry.pythonanywhere.com"; }
+        public string DEFAULT { get => Properties.Resources.Server; }
 
         public string BASE_URL
         {

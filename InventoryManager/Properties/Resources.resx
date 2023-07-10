@@ -381,4 +381,64 @@
   <data name="SystemInventorySoldQuantity" xml:space="preserve">
     <value>Sold Quantity</value>
   </data>
+  <data name="DialogsAddBatch" xml:space="preserve">
+    <value>Add New Batch</value>
+  </data>
+  <data name="DialogsGiveaway" xml:space="preserve">
+    <value>Present a Gift</value>
+  </data>
+  <data name="DialogsSendProduct" xml:space="preserve">
+    <value>Send Product</value>
+  </data>
+  <data name="ContactMeInstagramUrl" xml:space="preserve">
+    <value>https://www.instagram.com/zana_mziry_</value>
+  </data>
+  <data name="ContactMePhone" xml:space="preserve">
+    <value>0750 386 4007</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>https://zanamziry.pythonanywhere.com</value>
+  </data>
+  <data name="SettingsPageLoginTestFailed" xml:space="preserve">
+    <value>Login Failed</value>
+  </data>
+  <data name="SettingsPageLoginTestSuccess" xml:space="preserve">
+    <value>Login Successful</value>
+  </data>
+  <data name="SettingsPageLoginTestTitle" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="UpdateServiceNewUpdate" xml:space="preserve">
+    <value>New Update Is Available Do You Want To Update To</value>
+  </data>
+  <data name="UpdateServiceNewUpdateTitle" xml:space="preserve">
+    <value>Update Availbable!</value>
+  </data>
+  <data name="UpdateServiceNoUpdateFound" xml:space="preserve">
+    <value>No Update Found</value>
+  </data>
+  <data name="UpdateServiceProblemOccurred" xml:space="preserve">
+    <value>There was a problem while searching for updates</value>
+  </data>
+  <data name="UpdateServiceRestartRequired" xml:space="preserve">
+    <value>Restart Required For the Update To Take Effect</value>
+  </data>
+  <data name="UpdateServiceThisIsTheLatest" xml:space="preserve">
+    <value>This is the latest version</value>
+  </data>
+  <data name="UpdateServiceUpdateComplete" xml:space="preserve">
+    <value>Update Complete</value>
+  </data>
+  <data name="ContactMeWebsite" xml:space="preserve">
+    <value>https://zanamziry.github.io</value>
+  </data>
+  <data name="ContactMeInstagramUsername" xml:space="preserve">
+    <value>ZANA_MZIRY_</value>
+  </data>
+  <data name="ContactMeTitle" xml:space="preserve">
+    <value>Contact Me</value>
+  </data>
+  <data name="ContactMeWhatsAppUrl" xml:space="preserve">
+    <value>https://web.whatsapp.com/send/?phone=9647503864007&amp;text&amp;type=phone_number&amp;app_absent=0</value>
+  </data>
 </root>
