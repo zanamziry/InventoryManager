@@ -1,4 +1,7 @@
-﻿using InventoryManager.Properties;
+﻿using InventoryManager.Contracts.Views;
+using InventoryManager.Properties;
+using InventoryManager.Views;
+using MahApps.Metro.Controls.Dialogs;
 using MaterialDesignThemes.Wpf;
 using Squirrel;
 using System;
@@ -13,7 +16,7 @@ namespace InventoryManager.Services
 {
     public static class UpdatingService
     {
-        public static async void Update()
+        public static async void Update(IShellWindow shellWindow)
         {
             try
             {
@@ -24,14 +27,9 @@ namespace InventoryManager.Services
                     {
                         if (MessageBoxResult.Yes == MessageBox.Show($"{Resources.UpdateServiceNewUpdate} {updateInfo.ReleasesToApply.First().Version}", Resources.UpdateServiceNewUpdateTitle, MessageBoxButton.YesNo, MessageBoxImage.Question))
                         {
-                            var s = await manager.UpdateApp();
+                            var progressDialog = await shellWindow.ShowProgress("Updating", "Please Wait For The Update To Finish");
+                            var s = await manager.UpdateApp(o => progressDialog.SetProgress(o));
                             ///TODO: Make A popup to show the progress
-                            /*
-                            while (s.StagingPercentage != null || s.StagingPercentage < 100)
-                            {
-
-                            }
-                            */
                             MessageBox.Show(Resources.UpdateServiceRestartRequired, Resources.UpdateServiceUpdateComplete);
                             UpdateManager.RestartApp();
                         }

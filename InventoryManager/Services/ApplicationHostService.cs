@@ -15,7 +15,6 @@ namespace InventoryManager.Services;
 public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ISystemDataGather _systemDataGather;
     private readonly ILanguageSelectorService _languageSelector;
     private readonly IDBSetup _dBSetup;
     private readonly INavigationService _navigationService;
@@ -24,14 +23,13 @@ public class ApplicationHostService : IHostedService
     private IShellWindow _shellWindow;
     private bool _isInitialized;
 
-    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ISystemDataGather systemDataGather, ILanguageSelectorService languageSelector)
+    public ApplicationHostService(IServiceProvider serviceProvider, IEnumerable<IActivationHandler> activationHandlers, INavigationService navigationService, IPersistAndRestoreService persistAndRestoreService, IDBSetup dBSetup, ILanguageSelectorService languageSelector)
     {
         _serviceProvider = serviceProvider;
         _activationHandlers = activationHandlers;
         _navigationService = navigationService;
         _persistAndRestoreService = persistAndRestoreService;
         _dBSetup = dBSetup;
-        _systemDataGather = systemDataGather;
         _languageSelector = languageSelector;
     }
 
@@ -53,14 +51,13 @@ public class ApplicationHostService : IHostedService
         await Task.CompletedTask;
     }
 
-    private void InitializeAsync()
+    private async void InitializeAsync()
     {
         if (!_isInitialized)
         {
             _persistAndRestoreService.RestoreData();
             _dBSetup.InitializeDatabase();
             _languageSelector.InitializeLanguage();
-            UpdatingService.Update();
         }
     }
 
@@ -69,7 +66,8 @@ public class ApplicationHostService : IHostedService
         if (!_isInitialized)
         {
             _languageSelector.InitializeLanguage();
-
+            UpdatingService.Update(_shellWindow);
+            await _shellWindow.ShowMessage("test", "ok");
             await Task.CompletedTask;
         }
     }

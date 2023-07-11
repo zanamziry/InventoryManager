@@ -12,10 +12,14 @@ using InventoryManager.Core.Contracts.Services;
 using InventoryManager.Models;
 using InventoryManager.Properties;
 using InventoryManager.Properties.ar_iq;
+using MahApps.Metro.Controls;
 using InventoryManager.Services;
 using Microsoft.Extensions.Options;
 using SQLClient;
 using Squirrel;
+using MahApps.Metro.Controls.Dialogs;
+using MaterialDesignThemes.Wpf;
+using LoadingSpinnerControl;
 
 namespace InventoryManager.Views;
 
@@ -30,6 +34,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     private IDBSetup _dBSetup;
     private ILanguageSelectorService _languageSelector;
     private Language _selectedLang;
+    private IShellWindow _shellWindow;
     private string _serverAddress;
     private string _versionDescription;
     private string _password;
@@ -85,7 +90,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
             _languageSelector.SetLanguagePreferences(value);
         }
     }
-    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector)
+    public SettingsPage(IOptions<AppConfig> appConfig, ISystemService systemService, IApplicationInfoService applicationInfoService, ISystemDataGather dataGather, IDBSetup dBSetup, ILanguageSelectorService languageSelector, IShellWindow shellWindow)
     {
         _appConfig = appConfig.Value;
         _systemService = systemService;
@@ -93,6 +98,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
         _dataGather = dataGather;
         _dBSetup = dBSetup;
         _languageSelector = languageSelector;
+        _shellWindow = shellWindow;
         languageSelector.InitializeLanguage();
         FlowDirection = languageSelector.Flow;
         InitializeComponent();
@@ -126,7 +132,7 @@ public partial class SettingsPage : Page, INotifyPropertyChanged, INavigationAwa
     }
     private void OnCheckUpdateClicked(object sender, RoutedEventArgs e)
     {
-        UpdatingService.Update();
+        UpdatingService.Update(_shellWindow);
     }
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     private void OnDeleteAllClicked(object sender, RoutedEventArgs e)

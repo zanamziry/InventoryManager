@@ -9,6 +9,7 @@ using InventoryManager.Contracts.Views;
 
 using MahApps.Metro.Controls;
 using System.Globalization;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace InventoryManager.Views;
 
@@ -128,4 +129,15 @@ public partial class ShellWindow : MetroWindow, IShellWindow, INotifyPropertyCha
     }
 
     private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+    public async Task<ProgressDialogController> ShowProgress(string title, string message, bool isCancelable = false, MetroDialogSettings settings = null)
+    {
+        return await this.ShowProgressAsync(title, message, isCancelable, settings);
+    }
+
+    public async Task<MessageDialogResult> ShowMessage(string title, string message, MessageDialogStyle style = MessageDialogStyle.Affirmative, MetroDialogSettings settings = null)
+    {
+        return await this.ShowMessageAsync(title, message, style, settings);
+    }
 }
