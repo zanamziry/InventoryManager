@@ -158,14 +158,16 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
         OnPropertyChanged(nameof(GiftPoints));
         OnPropertyChanged(nameof(SourceHasItems));
     }
-    SolidColorBrush ExpireToColor(DateTime date)
+    SpreadsheetColor? ExpireToColor(DateTime? date)
     {
-        var timeleft = date.Subtract(DateTime.Now).Days;
+        if (date == null || !date.HasValue)
+            return null;
+        var timeleft = date?.Subtract(DateTime.Now).Days;
         if (timeleft < 120 && timeleft > 0)
-            return new SolidColorBrush(Color.FromRgb(draw.Color.Yellow.R, draw.Color.Yellow.G, draw.Color.Yellow.B));
+            return SpreadsheetColor.FromName(ColorName.Yellow);
         else if (timeleft <= 0)
-            return new SolidColorBrush(Color.FromRgb(draw.Color.IndianRed.R, draw.Color.IndianRed.G, draw.Color.IndianRed.B));
-        else return new SolidColorBrush(Color.FromArgb(draw.Color.Transparent.A, draw.Color.Transparent.R, draw.Color.Transparent.G, draw.Color.Transparent.B));
+            return SpreadsheetColor.FromName(ColorName.Red);
+        else return null;
     }
     void INavigationAware.OnNavigatedFrom()
     {
@@ -245,12 +247,19 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
 
             ws.Cells[i, 6].Value = item.Result;
             ws.Cells[i, 6].Style = cellstyle;
-
-            if(item.NearestExp == null)
+            //Change Background Color if the Expire is near!
+            ws.Cells[i, 7].Style = cellstyle;
+            if (item.NearestExp == null)
                 ws.Cells[i, 7].Value = "";
             else
+            {
                 ws.Cells[i, 7].Value = item.NearestExp?.ToString("M/yyyy");
-            ws.Cells[i, 7].Style = cellstyle;
+                SpreadsheetColor? color = ExpireToColor(item.NearestExp);
+                if (color != null)
+                    ws.Cells[i, 7].Style.FillPattern.SetPattern(FillPatternStyle.Solid, (SpreadsheetColor)color, SpreadsheetColor.FromName(ColorName.Black));
+                else
+                    ws.Cells[i, 7].Style.FillPattern.SetPattern(FillPatternStyle.None, SpreadsheetColor.FromName(ColorName.Empty), SpreadsheetColor.FromName(ColorName.Empty));
+            }
 
             ws.Cells[i, 8].Value = item.Note;
             ws.Cells[i, 8].Style = cellstyle;

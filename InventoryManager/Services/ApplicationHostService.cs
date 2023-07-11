@@ -51,7 +51,7 @@ public class ApplicationHostService : IHostedService
         await Task.CompletedTask;
     }
 
-    private async void InitializeAsync()
+    private void InitializeAsync()
     {
         if (!_isInitialized)
         {
@@ -67,7 +67,6 @@ public class ApplicationHostService : IHostedService
         {
             _languageSelector.InitializeLanguage();
             UpdatingService.Update(_shellWindow);
-            await _shellWindow.ShowMessage("test", "ok");
             await Task.CompletedTask;
         }
     }
