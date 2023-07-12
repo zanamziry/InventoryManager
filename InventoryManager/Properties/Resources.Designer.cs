@@ -889,6 +889,15 @@ namespace InventoryManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Didnt Find Any Products!.
+        /// </summary>
+        public static string SystemDataGatherNoProductsFound {
+            get {
+                return ResourceManager.GetString("SystemDataGatherNoProductsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close Balance.
         /// </summary>
         public static string SystemInventoryCloseBalance {

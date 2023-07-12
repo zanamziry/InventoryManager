@@ -110,7 +110,7 @@ public partial class MainPage : Page, INotifyPropertyChanged, INavigationAware
             }
         }
         else
-            MessageBox.Show("Didnt Find Any Products!");
+            MessageBox.Show(Properties.Resources.SystemDataGatherNoProductsFound);
     }
 
     private void OnGridDoubleClick(object sender, MouseButtonEventArgs e)

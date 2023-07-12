@@ -441,4 +441,7 @@
   <data name="ContactMeWhatsAppUrl" xml:space="preserve">
     <value>https://web.whatsapp.com/send/?phone=9647503864007&amp;text&amp;type=phone_number&amp;app_absent=0</value>
   </data>
+  <data name="SystemDataGatherNoProductsFound" xml:space="preserve">
+    <value>لم يتم العثور على اي منتجات</value>
+  </data>
 </root>
