@@ -74,7 +74,7 @@ public partial class App : Application
         services.AddSingleton<ILanguageSelectorService, LanguageSelectorService>();
 
         // Views
-        services.AddTransient<IShellWindow, ShellWindow>();
+        services.AddSingleton<IShellWindow, ShellWindow>();
 
         services.AddTransient<MainPage>();
         services.AddTransient<InventoryPage>();

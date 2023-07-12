@@ -66,7 +66,7 @@ public class ApplicationHostService : IHostedService
         if (!_isInitialized)
         {
             _languageSelector.InitializeLanguage();
-            UpdatingService.Update(_shellWindow);
+            UpdatingService.Update(_shellWindow, true);
             await Task.CompletedTask;
         }
     }

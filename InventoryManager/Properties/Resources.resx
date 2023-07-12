@@ -444,4 +444,10 @@
   <data name="SystemDataGatherNoProductsFound" xml:space="preserve">
     <value>Didnt Find Any Products!</value>
   </data>
+  <data name="UpdatingServicePleaseWait" xml:space="preserve">
+    <value>Please Wait For The Update To Finish</value>
+  </data>
+  <data name="UpdatingServiceUpdating" xml:space="preserve">
+    <value>Updating</value>
+  </data>
 </root>

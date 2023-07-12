@@ -7,7 +7,9 @@ using Squirrel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,7 +18,7 @@ namespace InventoryManager.Services
 {
     public static class UpdatingService
     {
-        public static async void Update(IShellWindow shellWindow)
+        public static async void Update(IShellWindow shellWindow, bool IsStartup = false)
         {
             try
             {
@@ -25,24 +27,25 @@ namespace InventoryManager.Services
                     var updateInfo = await manager.CheckForUpdate();
                     if (updateInfo.ReleasesToApply != null && updateInfo.ReleasesToApply.Count > 0)
                     {
-                        if (MessageBoxResult.Yes == MessageBox.Show($"{Resources.UpdateServiceNewUpdate} {updateInfo.ReleasesToApply.First().Version}", Resources.UpdateServiceNewUpdateTitle, MessageBoxButton.YesNo, MessageBoxImage.Question))
+                        var UpdateORNo = await shellWindow.ShowMessage(Resources.UpdateServiceNewUpdateTitle, $"{Resources.UpdateServiceNewUpdate} {updateInfo.ReleasesToApply.First().Version}", MessageDialogStyle.AffirmativeAndNegative);
+                        if (MessageDialogResult.Affirmative == UpdateORNo)
                         {
-                            var progressDialog = await shellWindow.ShowProgress("Updating", "Please Wait For The Update To Finish");
-                            var s = await manager.UpdateApp(o => progressDialog.SetProgress(o));
-                            ///TODO: Make A popup to show the progress
-                            MessageBox.Show(Resources.UpdateServiceRestartRequired, Resources.UpdateServiceUpdateComplete);
+                            var DialogController = await shellWindow.ShowProgress(Resources.UpdatingServiceUpdating, Resources.UpdatingServicePleaseWait);
+                            DialogController.Maximum = 100;
+                            DialogController.Minimum = 0;
+                            var s = await manager.UpdateApp(o => DialogController.SetProgress(o));
+                            await DialogController.CloseAsync();
+                            await shellWindow.ShowMessage(Resources.UpdateServiceUpdateComplete, Resources.UpdateServiceRestartRequired);
                             UpdateManager.RestartApp();
                         }
                     }
-                    else
-                    {
-                        MessageBox.Show(Resources.UpdateServiceThisIsTheLatest, Resources.UpdateServiceNoUpdateFound);
-                    }
+                    else if (!IsStartup)
+                        await shellWindow.ShowMessage(Resources.UpdateServiceNoUpdateFound, Resources.UpdateServiceThisIsTheLatest);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{Resources.UpdateServiceProblemOccurred}\n{ex.Message}", Resources.UpdateServiceNoUpdateFound);
+                await shellWindow.ShowMessage(Resources.UpdateServiceNoUpdateFound, $"{Resources.UpdateServiceProblemOccurred}\n{ex.Message}");
                 return;
             }
         }

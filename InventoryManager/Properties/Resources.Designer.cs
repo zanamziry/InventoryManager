@@ -1040,5 +1040,23 @@ namespace InventoryManager.Properties {
                 return ResourceManager.GetString("UpdateServiceUpdateComplete", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Wait For The Update To Finish.
+        /// </summary>
+        public static string UpdatingServicePleaseWait {
+            get {
+                return ResourceManager.GetString("UpdatingServicePleaseWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating.
+        /// </summary>
+        public static string UpdatingServiceUpdating {
+            get {
+                return ResourceManager.GetString("UpdatingServiceUpdating", resourceCulture);
+            }
+        }
     }
 }

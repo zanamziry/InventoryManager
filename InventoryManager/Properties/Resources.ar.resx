@@ -444,4 +444,10 @@
   <data name="SystemDataGatherNoProductsFound" xml:space="preserve">
     <value>لم يتم العثور على اي منتجات</value>
   </data>
+  <data name="UpdatingServicePleaseWait" xml:space="preserve">
+    <value>يرجى انتظار انتهاء التحديث</value>
+  </data>
+  <data name="UpdatingServiceUpdating" xml:space="preserve">
+    <value>جاري التحديث</value>
+  </data>
 </root>
